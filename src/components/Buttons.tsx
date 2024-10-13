@@ -4,7 +4,7 @@ import React from 'react';
 type Sizes = 'small' | 'medium' | 'large' | 'xl' | 'xxl';
 type Button_Colors = 'lightblue' | 'blue' | 'dirty_white' | 'black';
 type Text_Colors = 'white' | 'black';
-type Border_Radius_Size = '15' | '55' | '85';
+type Border_Radius_Size = '8' | '15' | '55' | '85';
 type Text_Style = 'bold' | 'normal';
 
 const {width, height} = Dimensions.get('window');
@@ -28,7 +28,7 @@ const button_size = {
     xxl: {width: (953 / 1080) * width, height: (111 / 2400) * height},
 };
 
-const button_color = {
+const button_color = {  
     lightblue: {color: "#103F6E", opacity: 0.8},
     blue: {color: "#103F6E", opacity: 1},
     dirty_white: {color: "#D9D9D9", opacity: 1},
@@ -41,6 +41,7 @@ const text_colors_props = {
 };
 
 const radius_size = {
+    '8': {borderRadius: 8},
     '15': {borderRadius: 15},
     '55': {borderRadius: 55},
     '85': {borderRadius: 85},
@@ -62,25 +63,10 @@ const Buttons: React.FC<ButtonProps> = ({
   text_style = 'normal',
 }) => {
 
-  // const {height: button_height, width: button_width} =
-  //   button_size[size] || button_size.medium
-
-  // const {color: button_hex_color, opacity: button_opacity} =
-  //   button_color[backgroundColor] || button_color.blue
-
-  // const {color: text_hex_color} =
-  //   text_colors_props[text_color] || text_colors_props.black
-
-  // const {borderRadius: button_radius} =
-  //   radius_size[border_radius]
-
-  // const {fontWeight: text_fontWeight} =
-  //   text_styling[text_style] || text_styling.normal
-
   const buttonSize = button_size[size] || button_size.medium;
   const buttonHexColor = button_color[backgroundColor] || button_color.blue
   const textHexColor = text_colors_props[text_color].color || text_colors_props.black.color;
-  const buttonRadius = radius_size[border_radius].borderRadius;
+  const buttonRadius = Number(radius_size[border_radius].borderRadius);
   const textFontWeight = text_styling[text_style].fontWeight || text_styling.normal.fontWeight;
 
 
@@ -92,14 +78,19 @@ return(
       height: height || buttonSize.height,
       width: width || buttonSize.width,
       borderRadius: buttonRadius,
+      elevation: 5,
       justifyContent: "center",
       alignItems: "center",
+      borderWidth: 1,
     }}>
       <Text
         style={{
           color: textHexColor ,
           fontWeight: text_style || textFontWeight,
           fontSize: 20,
+          textShadowColor: 'rgba(0,0,0,0.2)',
+          textShadowOffset: { width: 0.3, height: 0.5 },
+          textShadowRadius: 3,
         }}>{placeholder}</Text>
     </View>
 )
