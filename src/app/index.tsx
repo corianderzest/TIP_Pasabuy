@@ -1,14 +1,20 @@
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react'
 import Buttons from '../components/Buttons';
+import Inputs from "../components/Inputs"
 
-// const TextEntryTesting = () => {
-
+const TextEntryTesting = () => {
+  return(
+  <View style = {styles.container}>
+    <Inputs
+     placeholder="Search for your order"
+     type="search"/>
+  </View>
   
+  )
+}
 
-// }
-
-// export default TextEntryTesting
+export default TextEntryTesting
 
 const styles = StyleSheet.create({
   container: {
@@ -19,18 +25,17 @@ const styles = StyleSheet.create({
 });
 
 
-const ButtonTesting = () => {
-  return (
-    <View style = {styles.container}> 
-      <Buttons
-      placeholder='Add to cart'
-      backgroundColor='black'
-      text_color="white"
-      border_radius='85'
-      size="xxl"
-      text_style="bold"/> 
-    </View>
-  )
-}
+// const ButtonTesting = () => {
+//   return (
+//     <View style = {styles.container}> 
+//       <Buttons
+//       placeholder='Add to cart'
+//       backgroundColor='black'
+//       text_color="white"
+//       size="xxl"
+//       text_style="bold"/> 
+//     </View>
+//   )
+// }
 
-export default ButtonTesting
+// export default ButtonTesting

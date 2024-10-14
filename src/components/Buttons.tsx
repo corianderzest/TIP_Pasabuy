@@ -4,7 +4,6 @@ import React from 'react';
 type Sizes = 'small' | 'medium' | 'large' | 'xl' | 'xxl';
 type Button_Colors = 'lightblue' | 'blue' | 'dirty_white' | 'black';
 type Text_Colors = 'white' | 'black';
-type Border_Radius_Size = '8' | '15' | '55' | '85';
 type Text_Style = 'bold' | 'normal';
 
 const {width, height} = Dimensions.get('window');
@@ -16,16 +15,15 @@ interface ButtonProps {
   width?: number;
   size?: Sizes;
   text_color?: Text_Colors;
-  border_radius: Border_Radius_Size;
   text_style?: Text_Style;
 };
 
 const button_size = {
-    small: {width: (221 / 1080) * width, height: (67 / 2400) * height}, 
-    medium: {width: (280 / 1080) * width, height: (90 / 2400) * height}, 
-    large: {width: (337 / 1080) * width, height: (125 / 2400) * height}, 
-    xl: {width: (510 / 1080) * width, height: (144 / 2400) * height},
-    xxl: {width: (953 / 1080) * width, height: (111 / 2400) * height},
+    small: {width: (221 / 1080) * width, height: (67 / 2400) * height, borderRadius: 15}, 
+    medium: {width: (280 / 1080) * width, height: (90 / 2400) * height, borderRadius: 15}, 
+    large: {width: (337 / 1080) * width, height: (125 / 2400) * height, borderRadius: 15}, 
+    xl: {width: (510 / 1080) * width, height: (144 / 2400) * height, borderRadius: 85},
+    xxl: {width: (953 / 1080) * width, height: (111 / 2400) * height, borderRadius: 55},
 };
 
 const button_color = {  
@@ -40,13 +38,6 @@ const text_colors_props = {
     white: {color: "#FFFFFF", opacity: 1},
 };
 
-const radius_size = {
-    '8': {borderRadius: 8},
-    '15': {borderRadius: 15},
-    '55': {borderRadius: 55},
-    '85': {borderRadius: 85},
-};
-
 const text_styling = {
   bold: {fontWeight: "bold"},
   normal: {fontWeight: "normal"},
@@ -59,14 +50,12 @@ const Buttons: React.FC<ButtonProps> = ({
   width,
   size = 'small',
   text_color = 'black',
-  border_radius,
   text_style = 'normal',
 }) => {
 
   const buttonSize = button_size[size] || button_size.medium;
   const buttonHexColor = button_color[backgroundColor] || button_color.blue
   const textHexColor = text_colors_props[text_color].color || text_colors_props.black.color;
-  const buttonRadius = Number(radius_size[border_radius].borderRadius);
   const textFontWeight = text_styling[text_style].fontWeight || text_styling.normal.fontWeight;
 
 
@@ -77,7 +66,7 @@ return(
       opacity: buttonHexColor.opacity,
       height: height || buttonSize.height,
       width: width || buttonSize.width,
-      borderRadius: buttonRadius,
+      borderRadius: buttonSize.borderRadius,
       elevation: 5,
       justifyContent: "center",
       alignItems: "center",
