@@ -2,19 +2,9 @@ import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity} from 'reac
 import React from 'react'
 import Buttons from '../components/Buttons';
 import Inputs from "../components/Inputs"
+import HelpGuide from "../components/HelpGuide"
 
-const TextEntryTesting = () => {
-  return(
-  <View style = {styles.container}>
-    <Inputs
-     placeholder="Search for your order"
-     type="search"/>
-  </View>
-  
-  )
-}
 
-export default TextEntryTesting
 
 const styles = StyleSheet.create({
   container: {
@@ -26,16 +16,41 @@ const styles = StyleSheet.create({
 
 
 // const ButtonTesting = () => {
-//   return (
-//     <View style = {styles.container}> 
-//       <Buttons
-//       placeholder='Add to cart'
-//       backgroundColor='black'
-//       text_color="white"
-//       size="xxl"
-//       text_style="bold"/> 
-//     </View>
+//       return (
+//             <View style = {styles.container}> 
+//               <Buttons
+//               placeholder='Add to cart'
+//               backgroundColor='black'
+//               text_color="white"
+//               size="xxl"
+//               text_style="bold"/> 
+//             </View>
+//           )
+//     }
+
+// export default ButtonTesting
+
+// const TextEntryTesting = () => {
+//     return(
+//       <View style = {styles.container}>
+//         <Inputs
+//           placeholder="Search for your order"
+//           type="search"/>
+//       </View>
+
+//       )
+//     }
+
+// export default TextEntryTesting
+    
+// const GuideTesting = () => {
+//   return(
+//   <View style = {styles.container}>
+//   <HelpGuide
+//     type='add_button'
+//   />
+//   </View>
 //   )
 // }
 
-// export default ButtonTesting
+// export default GuideTesting

@@ -27,7 +27,7 @@
       borderRadius: 50,
       paddingLeft: 15,
       paddingTop: 0,
-      borderWidth: 2,}, // testing, remove once header color deployed
+      borderWidth: 2,}, // testing, remove once header color is deployed
     }
   
   const Inputs: React.FC<InputBoxProps> = ({
