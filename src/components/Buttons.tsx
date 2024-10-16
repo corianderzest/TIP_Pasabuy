@@ -1,7 +1,7 @@
 import { View, Text, Button, Dimensions} from 'react-native'
 import React from 'react';
 
-type Sizes = 'small' | 'medium' | 'large' | 'xl' | 'xxl';
+type Sizes = 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'custom';
 type Button_Colors = 'lightblue' | 'blue' | 'dirty_white' | 'black';
 type Text_Colors = 'white' | 'black';
 type Text_Style = 'bold' | 'normal';
@@ -24,6 +24,9 @@ const button_size = {
     large: {width: (337 / 1080) * width, height: (125 / 2400) * height, borderRadius: 15}, 
     xl: {width: (510 / 1080) * width, height: (144 / 2400) * height, borderRadius: 85},
     xxl: {width: (953 / 1080) * width, height: (111 / 2400) * height, borderRadius: 55},
+
+    // for confirmation
+    custom: {width: (270 / 1080) * width, height: (110 / 2400) * height, borderRadius: 8}, 
 };
 
 const button_color = {  
@@ -76,7 +79,7 @@ return(
         style={{
           color: textHexColor ,
           fontWeight: text_style || textFontWeight,
-          fontSize: 20,
+          fontSize: 17,
           textShadowColor: 'rgba(0,0,0,0.2)',
           textShadowOffset: { width: 0.3, height: 0.5 },
           textShadowRadius: 3,

@@ -3,8 +3,21 @@ import React from 'react'
 import Buttons from '../components/Buttons';
 import Inputs from "../components/Inputs"
 import HelpGuide from "../components/HelpGuide"
+import PopUp from "../components/PopUp"
 
+const PopUpTesting = () => {
+  return(
+  <View style = {styles.container}>
+    <PopUp
+    placeholder='Confirm Logout'
+    dialogue='You have successfully registered to TIP Pasabuy! Click Continue to Login.'
+    button_confirmation_1 = 'Cancel'
+    button_confirmation_2 = 'Confirm'/>
+  </View>
+  )
+}
 
+export default PopUpTesting
 
 const styles = StyleSheet.create({
   container: {
