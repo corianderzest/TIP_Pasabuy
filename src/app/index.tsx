@@ -12,7 +12,7 @@ const PopUpTesting = () => {
     placeholder='Confirm Logout'
     dialogue='You have successfully registered to TIP Pasabuy! Click Continue to Login.'
     button_confirmation_1 = 'Cancel'
-    button_confirmation_2 = 'Confirm'/>
+    button_confirmation_2 = 'Confirm'/> 
   </View>
   )
 }
