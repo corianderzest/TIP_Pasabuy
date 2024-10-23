@@ -3,7 +3,6 @@
 
   type Input_Type = 'account' | 'search'
 
-
   const {width, height} = Dimensions.get('window')
 
   interface InputBoxProps {

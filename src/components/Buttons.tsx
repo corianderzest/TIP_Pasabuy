@@ -1,5 +1,6 @@
 import { View, Text, Button, Dimensions} from 'react-native'
 import React from 'react';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 type Sizes = 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'custom';
 type Button_Colors = 'lightblue' | 'blue' | 'dirty_white' | 'black';
@@ -16,6 +17,7 @@ interface ButtonProps {
   size?: Sizes;
   text_color?: Text_Colors;
   text_style?: Text_Style;
+  onPress?: () => void
 };
 
 const button_size = {
@@ -54,6 +56,7 @@ const Buttons: React.FC<ButtonProps> = ({
   size = 'small',
   text_color = 'black',
   text_style = 'normal',
+  onPress
 }) => {
 
   const buttonSize = button_size[size] || button_size.medium;
@@ -63,6 +66,7 @@ const Buttons: React.FC<ButtonProps> = ({
 
 
 return(
+  <TouchableWithoutFeedback onPress={onPress}>
   <View
     style={{
       backgroundColor: buttonHexColor.color,
@@ -73,7 +77,7 @@ return(
       elevation: 5,
       justifyContent: "center",
       alignItems: "center",
-      borderWidth: 1,
+      borderWidth: 0,
     }}>
       <Text
         style={{
@@ -85,6 +89,7 @@ return(
           textShadowRadius: 3,
         }}>{placeholder}</Text>
     </View>
+    </TouchableWithoutFeedback>
 )
 }
 
