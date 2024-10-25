@@ -101,6 +101,7 @@ const LoginPage: React.FC <LoginPageProps> = ({navigation}) => {
           text_color='black'
           text_style='bold'
           size='custom'
+          onPress = {() => navigation.navigate('LoginModal')}
         />
         </View>
       </View>

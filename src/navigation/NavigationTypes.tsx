@@ -5,6 +5,7 @@ export type RootStackParamList = {
   LoginPage: undefined;
   RegisterPage: undefined;
   RegisterModal: undefined;
+  LoginModal: undefined;
 };
 
 export type WelcomePageNavigationProp = NativeStackNavigationProp<
@@ -17,6 +18,11 @@ export type LoginPageNavigationProp = NativeStackNavigationProp<
   'LoginPage'
 >;
 
+export type LoginModalNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'LoginModal'
+>;
+
 export type RegisterPageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'RegisterPage'
@@ -26,4 +32,6 @@ export type RegisterModalNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'RegisterModal'
 >;
+
+
 

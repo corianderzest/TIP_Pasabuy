@@ -7,18 +7,18 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import popUpImage from '../assets/images/PopUpImage.png'
 import modal_background from "../assets/images/modal_background.jpg"
 
-type RegisterModalProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterModal'>;
+type LoginModalProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'LoginModal'>;
 }
 
-const RegisterModal: React.FC <RegisterModalProps> = ({navigation}) => {
+const LoginModal: React.FC <LoginModalProps> = ({navigation}) => {
 
 return(
 <SafeAreaView style = {styles.popUpOrientation}>
     <View style = {styles.popUpContainer}>
       <View style = {styles.popUpHeaderContainer}>
         <Text style = {styles.popUpHeaderText}>
-          Welcome Aboard
+          Hello There!
         </Text>
       </View>
 
@@ -31,13 +31,13 @@ return(
 
       <View style = {styles.popUpTextContainer}>
         <Text style = {styles.popUpTextProps}>
-          You have successfully registered to TIP Pasabuy! Click Continue to Login
+          Click whether you are a Seller or a Customer
         </Text>
       </View>
 
       <View style = {styles.popUpButtonContainer}>
         <Buttons
-          placeholder='Cancel'
+          placeholder='Seller'
           backgroundColor='black'
           text_color='white'
           text_style='bold'
@@ -46,7 +46,7 @@ return(
         />
 
         <Buttons
-          placeholder='Continue'
+          placeholder='Customer'
           backgroundColor='black'
           text_color='white'
           text_style='bold'
@@ -130,4 +130,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default RegisterModal
+export default LoginModal

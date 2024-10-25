@@ -7,8 +7,6 @@ import sample_logo from '../assets/images/sample_logo.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import popUpImage from '../assets/images/PopUpImage.png'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type RegisterPageProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterPage'>;
