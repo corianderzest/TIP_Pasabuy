@@ -8,8 +8,6 @@ import Buttons from '../components/Buttons'
 import facebook from "../icons/facebook.png"
 import instagram from "../icons/instagram.png"
 import twitterx from "../icons/twitterx.png"
-// import LoginPage from './LoginPage'
-// import RegisterPage from './RegisterPage'
 
 const {height, width} = Dimensions.get('window')
 
@@ -32,10 +30,10 @@ const WelcomePage: React.FC <WelcomePageProps> = ({navigation}) => {
         />
       </View>
 
-      <View style = {styles.smallVioletCircle}/>
-      <View style = {styles.bigVioletCircle}/>
-      <View style = {styles.smallGreenCircle}/>
-      <View style = {styles.bigGreenCircle}/>
+      <View style = {styles.smallYellowCircle}/>
+      <View style = {styles.bigYellowCircle}/>
+      <View style = {styles.smallBlackCircle}/>
+      <View style = {styles.bigBlackCircle}/>
       
       <View style = {styles.textContainer}>
         <Text style = {styles.textStyle}>
@@ -47,7 +45,7 @@ const WelcomePage: React.FC <WelcomePageProps> = ({navigation}) => {
         <View style = {styles.loginContainer}>
           <Buttons
             placeholder='Login'
-            backgroundColor='lightblue'
+            backgroundColor='black'
             text_color="white"
             size="xl"
             text_style="bold"
@@ -57,8 +55,8 @@ const WelcomePage: React.FC <WelcomePageProps> = ({navigation}) => {
         <View style = {styles.registerContainer}>
         <Buttons
             placeholder='Register'
-            backgroundColor='blue'
-            text_color="white"
+            backgroundColor='yellow'
+            text_color="black"
             size="xl"
             text_style="bold"
             onPress={() => navigation.navigate('RegisterPage')} 
@@ -102,6 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    backgroundColor: "#F8F7F4"
     // flexDirection: 'column'
   },
 
@@ -116,43 +115,43 @@ const styles = StyleSheet.create({
     height: (500 / 2400) *height,
   },
 
-  smallVioletCircle: {
+  smallYellowCircle: {
     position: 'absolute',
     top: 110,
     left: 100,
     width: 40,
     height: 40,
-    backgroundColor: '#103F6E',
+    backgroundColor: '#F3C623',
     borderRadius: 100,
   },
 
-  bigVioletCircle: {
+  bigYellowCircle: {
     position: 'absolute',
     top: 20,
     right: -18,
     width: 70,
     height: 70,
-    backgroundColor: '#103F6E',
+    backgroundColor: '#F3C623',
     borderRadius: 100,
   },
 
-  smallGreenCircle: {
+  smallBlackCircle: {
     position: 'absolute',
     top: -15,
     left: -15,
     width: 70,
     height: 70,
-    backgroundColor: '#9ECA73',
+    backgroundColor: '#000000',
     borderRadius: 100,
   },
 
-  bigGreenCircle: {
+  bigBlackCircle: {
     position: 'absolute',
     top: 310,
     right: 40,
     width: 35,
     height: 35,
-    backgroundColor: '#9ECA73',
+    backgroundColor: '#000000',
     borderRadius: 100,
   },
 
@@ -168,7 +167,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    top: '60%',
+    top: '62%',
   },
 
   loginContainer: {
@@ -180,7 +179,7 @@ const styles = StyleSheet.create({
   },
 
   updateContainer: { 
-    top: '80%'
+    top: '75%'
   },
 
   textUpdateContainer: {
@@ -190,7 +189,8 @@ const styles = StyleSheet.create({
 
   socialsContainer: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 50,
   }
 
 });

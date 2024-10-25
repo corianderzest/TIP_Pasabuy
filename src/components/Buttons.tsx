@@ -3,8 +3,8 @@ import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 type Sizes = 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'custom';
-type Button_Colors = 'lightblue' | 'blue' | 'dirty_white' | 'black';
-type Text_Colors = 'white' | 'black';
+type Button_Colors = 'lightblue' | 'blue' | 'dirty_white' | 'black' |'yellow';
+type Text_Colors = 'white' | 'black' | 'transparent' | 'yellow';
 type Text_Style = 'bold' | 'normal';
 
 const {width, height} = Dimensions.get('window');
@@ -28,7 +28,7 @@ const button_size = {
     xxl: {width: (953 / 1080) * width, height: (111 / 2400) * height, borderRadius: 55},
 
     // for confirmation
-    custom: {width: (270 / 1080) * width, height: (110 / 2400) * height, borderRadius: 8}, 
+    custom: {width: (270 / 1080) * width, height: (115 / 2400) * height, borderRadius: 8}, 
 };
 
 const button_color = {  
@@ -36,11 +36,14 @@ const button_color = {
     blue: {color: "#103F6E", opacity: 1},
     dirty_white: {color: "#D9D9D9", opacity: 1},
     black: {color: "#000000", opacity: 1},
+    yellow: {color: "#F3C623", opacity: 1},
 };
 
 const text_colors_props = {
     black: {color: "#000000", opacity: 1},
     white: {color: "#FFFFFF", opacity: 1},
+    transparent: {color: "#F8F7F4", opacity: 1},
+    yellow: {color: "#F3C623", opacity: 1},
 };
 
 const text_styling = {
@@ -67,29 +70,32 @@ const Buttons: React.FC<ButtonProps> = ({
 
 return(
   <TouchableWithoutFeedback onPress={onPress}>
-  <View
-    style={{
-      backgroundColor: buttonHexColor.color,
-      opacity: buttonHexColor.opacity,
-      height: height || buttonSize.height,
-      width: width || buttonSize.width,
-      borderRadius: buttonSize.borderRadius,
-      elevation: 5,
-      justifyContent: "center",
-      alignItems: "center",
-      borderWidth: 0,
-    }}>
-      <Text
-        style={{
-          color: textHexColor ,
-          fontWeight: text_style || textFontWeight,
-          fontSize: 17,
-          textShadowColor: 'rgba(0,0,0,0.2)',
-          textShadowOffset: { width: 0.3, height: 0.5 },
-          textShadowRadius: 3,
-        }}>{placeholder}</Text>
-    </View>
-    </TouchableWithoutFeedback>
+      <View
+      style={{
+        backgroundColor: buttonHexColor.color,
+        opacity: buttonHexColor.opacity,
+        height: height || buttonSize.height,
+        width: width || buttonSize.width,
+        borderRadius: buttonSize.borderRadius,
+        elevation: 2.5,
+        justifyContent: "center",
+        alignItems: "center",
+        borderTopWidth: 0.1,
+        borderLeftWidth: 0.1,
+        borderRightWidth: 0.1,
+        borderBottomWidth: 0.1,
+      }}>
+        <Text
+          style={{
+            color: textHexColor ,
+            fontWeight: text_style || textFontWeight,
+            fontSize: 17,
+            textShadowColor: 'rgba(0,0,0,0.2)',
+            textShadowOffset: { width: 0.3, height: 0.5 },
+            textShadowRadius: 3,
+          }}>{placeholder}</Text>
+      </View>
+  </TouchableWithoutFeedback>
 )
 }
 

@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import WelcomePage from '../screens/WelcomePage'
 import LoginPage from '../screens/LoginPage'
 import RegisterPage from '../screens/RegisterPage'
+import RegisterModal from '../screens/RegisterModal';
 import { RootStackParamList } from './NavigationTypes';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -26,6 +27,12 @@ const Navigator = () => {
         <Stack.Screen
           name="RegisterPage"
           component={RegisterPage}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="RegisterModal"
+          component={RegisterModal}
           options={{ headerShown: false }}
         />
 
