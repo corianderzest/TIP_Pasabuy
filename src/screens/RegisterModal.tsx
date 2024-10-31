@@ -52,8 +52,8 @@ return(
           text_style='bold'
           size='custom'
           onPress={() => {
-            console.log('redirect to login failed?')
-            navigation.navigate('LoginPage')}}
+            navigation.navigate('LoginPage')
+            console.log('Redirecting to login success')}}
         />
       </View>
       </View>

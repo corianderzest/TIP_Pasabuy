@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, Dimensions, Animated, Modal } from 'react-native'
+import { View, Text, Image, StyleSheet, Dimensions, Animated, Modal, KeyboardAvoidingView } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react';
 import Buttons from '../components/Buttons'
 import Inputs from '../components/Inputs'
@@ -6,6 +6,7 @@ import sample_logo from '../assets/images/sample_logo.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const {width, height} = Dimensions.get('window')
 
@@ -15,14 +16,26 @@ type LoginPageProps = {
 
 const LoginPage: React.FC <LoginPageProps> = ({navigation}) => {
 
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const auth = getAuth()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+
+  const loginUser = async () => {
+    try{
+      await signInWithEmailAndPassword(auth, email, password)
+      console.log('Login successful')
+      navigation.navigate('LoginModal')
+    } catch(error: any) {
+      console.log('Login unsuccessful: ', error.message)
+    }
+  }
+
+
 
   const slideAnimLeft = useRef(new Animated.Value(-width)).current; 
-  const slideAnimRight = useRef(new Animated.Value(+width)).current; 
+  const slideAnimUp = useRef(new Animated.Value(+width)).current; 
 
-
-
-  //animation for logo
   useEffect(() => {
     Animated.timing(slideAnimLeft, {
       toValue: 0, 
@@ -31,90 +44,92 @@ const LoginPage: React.FC <LoginPageProps> = ({navigation}) => {
     }).start();
   }, [slideAnimLeft]);
 
-  //animation for remaining elements: input, texts, button, etc
   useEffect(() => {
-    Animated.timing(slideAnimRight, {
+    Animated.timing(slideAnimUp, {
       toValue: 0, 
       duration: 1000,
       useNativeDriver: true,  
     }).start();
-  }, [slideAnimRight]);
+  }, [slideAnimUp]);
 
   return (
-    <SafeAreaView style = {styles.container}>
-    <View style = {styles.positioningContainer}>
-      <View style = {styles.imagePosition}>
-        <Animated.View style={[styles.imageContainer, { transform: [{ translateX: slideAnimLeft }] }]}>
-            <Image
-            source={sample_logo}
-            style = {styles.imageProperties}
-            />
+    <KeyboardAvoidingView style = {styles.container}>
+      <SafeAreaView style = {styles.positioningContainer}>
+      
+        <View style = {styles.imagePosition}>
+          <Animated.View style={[styles.imageContainer, { transform: [{ translateX: slideAnimLeft }] }]}>
+              <Image
+              source={sample_logo}
+              style = {styles.imageProperties}
+              />
+          </Animated.View>
+        </View>    
+
+        <Animated.View style={{ transform: [{ translateY: slideAnimUp }]}}>
+        <View style = {styles.textContainer}>
+            <Text style = {styles.headingText}>
+              Welcome Back TIPian!
+            </Text>
+
+          <View style = {styles.subheaderContainer}>
+            <Text style = {styles.subheadingText}>
+              Sign in to continue, make sure to avoid 
+              typographical errors and check for caps lock.
+            </Text>
+          </View>
+        </View>
+    
+        <View style = {styles.inputContainer}>
+          {/* <View style = {styles.inputSpacing}> 
+            <View style = {styles.inputStyling}>
+              <Inputs
+                placeholder='Enter your school ID'  
+                type = 'account'/>
+            </View>
+          </View> */}
+
+          <View style = {styles.inputSpacing}>
+            <View style = {styles.inputStyling}>
+              <Inputs
+                placeholder='Enter your email'  
+                type = 'account'
+                onChangeText={text => setEmail(text)}/>
+            </View>
+          </View>
+
+          <View style = {styles.inputSpacing}>
+            <View style = {styles.inputStyling}>
+              <Inputs
+                placeholder='Enter your password'  
+                type = 'account'
+                secureTextEntry
+                onChangeText={text => setPassword(text)}/>
+            </View>
+          </View>
+        </View>
+
+        <View style = {styles.buttonContainer}>
+          <View style = {styles.buttonStyling}>
+          <Buttons
+            placeholder='Login'
+            backgroundColor='yellow'
+            text_color='black'
+            text_style='bold'
+            size='custom'
+            onPress = {loginUser}
+          />
+          </View>
+        </View>
+
+        <View style = {styles.forgotContainer}>
+            <Text style = {styles.forgotProps}>
+                Forgot Password?
+            </Text>
+        </View>
         </Animated.View>
-      </View>    
 
-      <Animated.View style={{ transform: [{ translateY: slideAnimRight }]}}>
-      <View style = {styles.textContainer}>
-          <Text style = {styles.headingText}>
-            Welcome Back TIPian!
-          </Text>
-
-        <View style = {styles.subheaderContainer}>
-          <Text style = {styles.subheadingText}>
-            Sign in to continue, make sure to avoid 
-            typographical errors and check for caps lock.
-          </Text>
-        </View>
-      </View>
-  
-      <View style = {styles.inputContainer}>
-        <View style = {styles.inputSpacing}> 
-          <View style = {styles.inputStyling}>
-            <Inputs
-              placeholder='Enter your school ID'  
-              type = 'account'/>
-          </View>
-        </View>
-
-        <View style = {styles.inputSpacing}>
-          <View style = {styles.inputStyling}>
-            <Inputs
-              placeholder='Enter your username'  
-              type = 'account'/>
-          </View>
-        </View>
-
-        <View style = {styles.inputSpacing}>
-          <View style = {styles.inputStyling}>
-            <Inputs
-              placeholder='Enter your password'  
-              type = 'account'
-            />
-          </View>
-        </View>
-      </View>
-
-      <View style = {styles.buttonContainer}>
-        <View style = {styles.buttonStyling}>
-        <Buttons
-          placeholder='Login'
-          backgroundColor='yellow'
-          text_color='black'
-          text_style='bold'
-          size='custom'
-          onPress = {() => navigation.navigate('LoginModal')}
-        />
-        </View>
-      </View>
-
-      <View style = {styles.forgotContainer}>
-          <Text style = {styles.forgotProps}>
-              Forgot Password?
-          </Text>
-      </View>
-      </Animated.View>
-    </View>
-
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -129,7 +144,7 @@ const styles = StyleSheet.create({
   },
 
   positioningContainer: {
-    top: '25%',
+    top: '26%',
   },
 
   imagePosition: {

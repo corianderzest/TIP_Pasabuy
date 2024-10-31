@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
   popUpTextProps: {
     fontSize: 13,
     textAlign: 'center',
-
   },
 
 })

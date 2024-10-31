@@ -10,6 +10,8 @@
     type?: Input_Type, 
     width?: number,
     height?: number,
+    onChangeText?: (text: string) => void;
+    secureTextEntry?: boolean;
   }
 
   const Input_Size = {
@@ -34,9 +36,11 @@
   const Inputs: React.FC<InputBoxProps> = ({
     type = 'account',
     placeholder,
+    onChangeText,
+    secureTextEntry = false,
   })=>{
     
-    const [inputValue, setInputValue] = useState('');
+    // const [inputValue, setInputValue] = useState('');
     const input_type = Input_Size[type] || Input_Size.account
     
     return (
@@ -63,8 +67,8 @@
         fontSize: 16,
         fontWeight: '300',
       }}
-      value={inputValue}
-      onChangeText={setInputValue}
+      onChangeText={onChangeText} 
+      secureTextEntry={secureTextEntry}
       placeholder={placeholder}
       >
 
