@@ -1,4 +1,4 @@
-import { View, Text, Button, Dimensions} from 'react-native'
+import { View, Text, Button, Dimensions, StyleSheet} from 'react-native'
 import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
@@ -71,32 +71,34 @@ const Buttons: React.FC<ButtonProps> = ({
 return(
   <TouchableWithoutFeedback onPress={onPress}>
       <View
-      style={{
-        backgroundColor: buttonHexColor.color,
+      style={[styles.container, 
+        {backgroundColor: buttonHexColor.color,
         opacity: buttonHexColor.opacity,
         height: height || buttonSize.height,
         width: width || buttonSize.width,
         borderRadius: buttonSize.borderRadius,
-        elevation: 2.5,
-        justifyContent: "center",
-        alignItems: "center",
-        borderTopWidth: 0.1,
-        borderLeftWidth: 0.1,
-        borderRightWidth: 0.1,
-        borderBottomWidth: 0.1,
-      }}>
+        }]}>
         <Text
           style={{
             color: textHexColor ,
             fontWeight: text_style || textFontWeight,
             fontSize: 17,
-            textShadowColor: 'rgba(0,0,0,0.2)',
-            textShadowOffset: { width: 0.3, height: 0.5 },
-            textShadowRadius: 3,
           }}>{placeholder}</Text>
       </View>
   </TouchableWithoutFeedback>
 )
 }
+
+const styles = StyleSheet.create({
+  container: {
+  elevation: 2.5,
+  justifyContent: "center",
+  alignItems: "center",
+  borderTopWidth: 0.1,
+  borderLeftWidth: 0.1,
+  borderRightWidth: 0.1,
+  borderBottomWidth: 0.1,
+  },
+})
 
 export default Buttons

@@ -37,7 +37,7 @@ const LoginPage: React.FC <LoginPageProps> = ({navigation}) => {
       return false;
     }
 
-    if(!!/\S+@\S+\.\S+/.test(email)){
+    if(!/\S+@\S+\.\S+/.test(email)){
       setErrorMessage("Email is invalid")
       return false
     }

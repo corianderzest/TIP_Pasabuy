@@ -1,4 +1,4 @@
-  import { View, Text, Dimensions, TextInput } from 'react-native'
+  import { View, Text, Dimensions, TextInput, StyleSheet } from 'react-native'
   import React, {useState} from 'react'
 
   type Input_Type = 'account' | 'search'
@@ -40,34 +40,15 @@
     secureTextEntry = false,
   })=>{
     
-    // const [inputValue, setInputValue] = useState('');
     const input_type = Input_Size[type] || Input_Size.account
     
     return (
-
-      
-
       <View
-      style={{
-        width: input_type.width,
-        height: input_type.height,
-        borderRadius: input_type.borderRadius,
-        borderWidth: input_type.borderWidth,
-        backgroundColor: 'rgba(248, 247, 244, 1)',
-        borderBottomWidth: 0.2,
-        borderTopWidth: 0.2,
-        borderLeftWidth: 0.2,
-        borderRightWidth: 0.2,
-      }}>
+      style={[styles.container, input_type]}>
 
       <TextInput
-      style={{
-        paddingTop: input_type.paddingTop,
-        paddingLeft: input_type.paddingLeft,
-        fontSize: 16,
-        fontWeight: '300',
-      }}
-      onChangeText={onChangeText} 
+      style={styles.input}
+      onChangeText={onChangeText}   
       secureTextEntry={secureTextEntry}
       placeholder={placeholder}
       >
@@ -75,8 +56,22 @@
 
       </TextInput>
       </View>
-
     )
   }
+
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: 'rgba(248, 247, 244, 1)',
+      borderBottomWidth: 0.2,
+      borderTopWidth: 0.2,
+      borderLeftWidth: 0.2,
+      borderRightWidth: 0.2,
+    },
+
+    input: {
+      fontSize: 16,
+      fontWeight: '300',
+    }
+  })
 
   export default Inputs

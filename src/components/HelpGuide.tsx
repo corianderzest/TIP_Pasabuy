@@ -8,6 +8,16 @@ import home from "../icons/home.png"
 import order from "../icons/order.png"
 import profile from "../icons/profile.png"
 
+//////////////////////  DON'T EDIT SOMETHING DUNNO WHAT TO DO HERE 'YET' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////  DON'T EDIT SOMETHING DUNNO WHAT TO DO HERE 'YET' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////  DON'T EDIT SOMETHING DUNNO WHAT TO DO HERE 'YET' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////  DON'T EDIT SOMETHING DUNNO WHAT TO DO HERE 'YET' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////  DON'T EDIT SOMETHING DUNNO WHAT TO DO HERE 'YET' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////  DON'T EDIT SOMETHING DUNNO WHAT TO DO HERE 'YET' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////  DON'T EDIT SOMETHING DUNNO WHAT TO DO HERE 'YET' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////  DON'T EDIT SOMETHING DUNNO WHAT TO DO HERE 'YET' \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
 type button_type = 'add_button' | 'cart_button' | 'edit_button' | 'help_button' | 'home_button' | 'order_button' | 'profile_button'
 
 const {width, height} = Dimensions.get('window')
