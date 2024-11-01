@@ -8,7 +8,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
 type RegisterPageProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterPage'>;
@@ -19,7 +18,6 @@ const {width, height} = Dimensions.get('window')
 const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [schoolId, setSchoolId] = useState('');
 
   const auth = getAuth();
 
@@ -61,16 +59,6 @@ const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
         </View>
     
         <View style = {styles.inputContainer}>
-          {/* <View style = {styles.inputSpacing}> 
-            <View style = {styles.inputStyling}>
-              <Inputs
-                placeholder='Enter school ID'  
-                type = 'account'
-                onChangeText={text => setSchoolId(text)}/>
-                
-            </View>
-          </View> */}
-
           <View style = {styles.inputSpacing}>
             <View style = {styles.inputStyling}>
               <Inputs
@@ -103,7 +91,6 @@ const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
             onPress={() => {
               console.log(email)
               console.log(password)
-              console.log(schoolId)
               registerUser()}}/>
             </View>
         </View>

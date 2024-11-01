@@ -5,8 +5,9 @@ import Inputs from '../components/Inputs'
 import sample_logo from '../assets/images/sample_logo.png'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackParamList } from '../navigation/NavigationTypes';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import Notification from '../components/Notif'
 
 const {width, height} = Dimensions.get('window')
 
@@ -19,19 +20,54 @@ const LoginPage: React.FC <LoginPageProps> = ({navigation}) => {
   const auth = getAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
 
+  const [visible, setVisible] = useState(false);
+
+    const showNotification = () => {
+        setVisible(true);
+        setTimeout(() => {
+            setVisible(false);
+        }, 2000); // Notification will disappear after 3 seconds
+    };
+
+  const loginValidation = () => {
+    if(!email){
+      setErrorMessage("Email must be filled")
+      return false;
+    }
+
+    if(!!/\S+@\S+\.\S+/.test(email)){
+      setErrorMessage("Email is invalid")
+      return false
+    }
+
+    if(!password){
+      setErrorMessage("Password must be filled")
+      return false
+    }
+
+    return true
+  }
 
   const loginUser = async () => {
+    setErrorMessage(""); // Reset the error message before validation
+    if (!loginValidation()) {
+        showNotification(); // Show notification if validation fails
+        return; // Exit if validation fails
+    }
+
     try{
+      loginValidation()
       await signInWithEmailAndPassword(auth, email, password)
       console.log('Login successful')
       navigation.navigate('LoginModal')
     } catch(error: any) {
+      setErrorMessage(error.message);
+      showNotification()
       console.log('Login unsuccessful: ', error.message)
     }
   }
-
-
 
   const slideAnimLeft = useRef(new Animated.Value(-width)).current; 
   const slideAnimUp = useRef(new Animated.Value(+width)).current; 
@@ -56,6 +92,12 @@ const LoginPage: React.FC <LoginPageProps> = ({navigation}) => {
     <KeyboardAvoidingView style = {styles.container}>
       <SafeAreaView style = {styles.positioningContainer}>
       
+        {visible && (
+                <Notification
+                    message={errorMessage}
+                />
+        )}
+
         <View style = {styles.imagePosition}>
           <Animated.View style={[styles.imageContainer, { transform: [{ translateX: slideAnimLeft }] }]}>
               <Image
@@ -80,14 +122,6 @@ const LoginPage: React.FC <LoginPageProps> = ({navigation}) => {
         </View>
     
         <View style = {styles.inputContainer}>
-          {/* <View style = {styles.inputSpacing}> 
-            <View style = {styles.inputStyling}>
-              <Inputs
-                placeholder='Enter your school ID'  
-                type = 'account'/>
-            </View>
-          </View> */}
-
           <View style = {styles.inputSpacing}>
             <View style = {styles.inputStyling}>
               <Inputs
