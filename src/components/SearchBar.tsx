@@ -65,18 +65,18 @@ const styles = StyleSheet.create({
   },
 
   imageSize: {
-    width: 37,
-    height: 37,
+    width: 32,
+    height: 32,
   },
 
   profilePositioning: {
     right: '15.5%',
-    bottom: '92%'
+    bottom: '85%'
   },
 
   cartPositioning: {
     left: '102.5%',
-    bottom: '212%'
+    bottom: '190%'
   }
 
 })

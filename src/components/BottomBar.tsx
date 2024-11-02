@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
 
   textProps: {
-    left: '-1%',
+    left: '-7%',
     fontSize: 13,
   },
 

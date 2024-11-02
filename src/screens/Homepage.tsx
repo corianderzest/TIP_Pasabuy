@@ -1,23 +1,48 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import BottomBar from '../components/BottomBar';
 import Animation from '../components/Animation';
-import modal_background from '../assets/images/modal_background.jpg';
-import loginPreviewPhoto from '../assets/images/loginPreviewPhoto.png';
-import newspreview from "../assets/images/newspreview.png";
-import foodcourt from "../assets/images/foodcourt.png"
-import foods from "../assets/images/foods.png"
-import drinks from "../assets/images/drinks.png"
+import foodcourt from '../assets/images/foodcourt.png';
+import foods from '../assets/images/foods.png';
+import drinks from '../assets/images/drinks.png';
+import popular_1 from '../assets/images/popular_1.jpg';
+import popular_2 from '../assets/images/popular_2.jpg';
+import popular_3 from '../assets/images/popular_3.jpg';
+import popular_4 from '../assets/images/popular_4.jpg';
+import popular_5 from '../assets/images/popular_5.jpg';
+import promo from '../assets/images/promo.jpg'
+import promo_1 from '../assets/images/promo_1.jpg'
+import promo_2 from '../assets/images/promo_2.jpg'
+import { useFonts } from 'expo-font';
 
 
 const promo_images = [
-  { id: '1', uri: modal_background },
-  { id: '2', uri: loginPreviewPhoto },
-  { id: '3', uri: newspreview },
+  { id: '1', uri: promo },
+  { id: '2', uri: promo_1 },
+  { id: '3', uri: promo_2 },
+];
+
+const popular_images = [
+  { id: '1', uri: popular_1},
+  { id: '2', uri: popular_2},
+  { id: '3', uri: popular_3},
+  { id: '4', uri: popular_4},
+  { id: '5', uri: popular_5},
 ];
 
 const Homepage = () => {
+
+  const [fonts] = useFonts({
+    'Lato-Bold': require('../assets/fonts/Lato/Lato-Bold.ttf'),
+    'Lato-Regular': require('../assets/fonts/Lato/Lato-Regular.ttf'),
+    'Lato-Black': require('../assets/fonts/Lato/Lato-Black.ttf')
+  })
+
+  if (!fonts) {
+    return null
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar placeholder="Search for your order" />
@@ -40,41 +65,42 @@ const Homepage = () => {
           <View style={styles.scrollHeaderContainer}>
             <Text style={styles.scrollHeaderText}>Hot & Popular</Text>
           </View>
-          <Animation images={promo_images} />
+          <Animation images={popular_images} />
         </View>
       </View>
 
-      <View style={styles.stallContainer}>
+      <TouchableOpacity style={styles.stallContainer}>
         <View style={styles.stallHeaderContainer}>
-        <Text style={styles.scrollHeaderText}>Stalls</Text>
+        <Text style={styles.mealHeaderText}>Stalls</Text>
+        <Text style={styles.subHeaderText}>tap to view</Text>
         </View>
         <Image
           style={styles.foodcourtProps}
           source={foodcourt}
         />
-      </View>
+      </TouchableOpacity>
 
-      <View style = {styles.foodContainer}>
+      <TouchableOpacity style = {styles.foodContainer}>
           <View style={styles.stallHeaderContainer}>
-            <Text style={styles.scrollHeaderText}>Foods</Text>
+            <Text style={styles.mealHeaderText}>Foods</Text>
+            <Text style={styles.subHeaderText}>tap to view</Text>
           </View>
         <Image
           style={styles.mealImageProps}
           source={foods}
         />
-      </View>
+      </TouchableOpacity>
 
-      <View style = {styles.drinkContainer}>
+      <TouchableOpacity style = {styles.drinkContainer}>
           <View style={styles.stallHeaderContainer}>
-            <Text style={styles.scrollHeaderText}>Drinks</Text>
+            <Text style={styles.mealHeaderText}>Drinks</Text>
+            <Text style={styles.subHeaderText}>tap to view</Text>
           </View>
         <Image
           style={styles.mealImageProps}
           source={drinks}
         />
-        </View>
-
-        
+        </TouchableOpacity>
 
     </SafeAreaView>
 
@@ -94,8 +120,29 @@ const styles = StyleSheet.create({
   },
 
   scrollHeaderText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 17,
+    fontFamily: 'Lato-Regular',
+    textShadowColor: '#d1ab92',
+    textShadowOffset: { width: -0.6, height: 0.8 }, 
+    textShadowRadius: 1,
+  },
+
+  mealHeaderText: {
+    fontSize: 23,
+    fontFamily: 'Lato-Black',
+    color: '#faf5f2',
+    textShadowColor: '#302219',
+    textShadowOffset: { width: 0.4, height: 0.2 }, 
+    textShadowRadius: 4,
+  },
+
+  subHeaderText: {
+    color: '#faf5f2',
+    fontSize: 15,
+    fontFamily: 'Lato-Regular',
+    textShadowColor: '#302219',
+    textShadowOffset: { width: 0.4, height: 0.2 }, 
+    textShadowRadius: 4,
   },
 
   promoWrapperPosition: {
@@ -119,64 +166,71 @@ const styles = StyleSheet.create({
   popularScrollWrapper: {
     height: '44%',
     width: '90%',
-    backgroundColor: '#FECD51',
+    backgroundColor: '#fff',
     borderRadius: 20,
     overflow: 'hidden',
-    // borderTopWidth: 0.2,
-    // borderLeftWidth: 0.2,
-    // borderRightWidth: 0.4,
-    // borderBottomWidth: 0.4,
     borderTopLeftRadius: 1,
     elevation: 8,
   },
 
   stallHeaderContainer: {
-    top: "3%",
-    left: "9%"
+    position: 'absolute',
+    alignItems: 'center',
+    top: "27%",
+    left: "28%",
+    zIndex: 1,
   },
 
   stallContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     bottom: "43.5%",
     left: "25%",
     height: "30%",
     width: "40%",
-    backgroundColor: "#FECD51",
+    backgroundColor: "#fff",
     borderRadius: 20,
     overflow: 'hidden',
     elevation: 2,
   },
 
   foodcourtProps: {
-    top: "7%",
-    height: "88%",
+    top: "0%",
+    height: "100%",
     width: "103%",
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    opacity: 0.95,
   },
 
   foodContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     bottom: "73.4%",
     right: "21.5%",
     height: "14.5%",
     width: "47.5%",
-    backgroundColor: "#FECD51",
+    backgroundColor: "#fff",
     borderRadius: 20,
     overflow: 'hidden',
     elevation: 2,
   },
 
   mealImageProps: {
-    top: "7%",
-    height: "94%",
+    top: "0%",
+    height: "107%",
     width: "100%",
-    resizeMode: 'cover'
+    resizeMode: 'cover',
+    opacity: 0.95,
   },
 
   drinkContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     bottom: "72.35%",
     right: "21.5%",
     height: "14.5%",
     width: "47.5%",
-    backgroundColor: "#FECD51",
+    backgroundColor: "#fff",
     borderRadius: 20,
     overflow: 'hidden',
     elevation: 2,

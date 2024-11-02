@@ -7,7 +7,8 @@ import RegisterPage from '../screens/RegisterPage'
 import RegisterModal from '../screens/RegisterModal';
 import LoginModal from '../screens/LoginModal';
 import { RootStackParamList } from './NavigationTypes';
-import Homepage from '../screens/Homepage';
+import Homepage from '../screens/HomePage';
+import FoodPage from '../screens/FoodPage'
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -16,10 +17,16 @@ const Navigator = () => {
       <Stack.Navigator>
         
         <Stack.Screen
+          name="FoodPage"
+          component={FoodPage}
+          options={{headerShown: false}}
+        />
+
+        {/* <Stack.Screen
           name="HomePage"
           component={Homepage}
           options={{headerShown: false}}
-        />
+        /> */}
 
         {/* <Stack.Screen
           name="WelcomePage"
