@@ -1,4 +1,4 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
   WelcomePage: undefined;
@@ -8,41 +8,68 @@ export type RootStackParamList = {
   LoginModal: undefined;
   HomePage: undefined;
   FoodPage: undefined;
+  RatingsReview: undefined;
+  DeliveryHistory: undefined;
+  OrderRequest: undefined;
+  DeliveryRequest: undefined;
+  ForDelivery: undefined;
 };
 
 export type WelcomePageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'WelcomePage'
+  "WelcomePage"
 >;
 
 export type LoginPageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'LoginPage'
+  "LoginPage"
 >;
 
 export type LoginModalNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'LoginModal'
+  "LoginModal"
 >;
 
 export type RegisterPageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'RegisterPage'
+  "RegisterPage"
 >;
 
 export type RegisterModalNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'RegisterModal'
+  "RegisterModal"
 >;
 
 export type HomePageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'HomePage'
+  "HomePage"
 >;
 
 export type FoodPageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'FoodPage'
+  "FoodPage"
 >;
 
+export type RatingsReviewNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "RatingsReview"
+>;
 
+export type DeliveryHistoryNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "DeliveryHistory"
+>;
+
+export type OrderRequestNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "OrderRequest"
+>;
+
+export type DeliveryRequestNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "DeliveryRequest"
+  >;
+export type ForDeliveryNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ForDelivery"
+>;

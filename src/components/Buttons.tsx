@@ -3,11 +3,11 @@ import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 type Sizes = 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'custom';
-type Button_Colors = 'lightblue' | 'blue' | 'dirty_white' | 'black' |'yellow';
+type Button_Colors = 'lightblue' | 'blue' | 'dirty_white' | 'black' |'yellow' | 'red';
 type Text_Colors = 'white' | 'black' | 'transparent' | 'yellow';
 type Text_Style = 'bold' | 'normal';
 
-const {width, height} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window'); 
 
 interface ButtonProps {
   placeholder: string;
@@ -36,7 +36,8 @@ const button_color = {
     blue: {color: "#103F6E", opacity: 1},
     dirty_white: {color: "#D9D9D9", opacity: 1},
     black: {color: "#000000", opacity: 1},
-    yellow: {color: "#F3C623", opacity: 1},
+  yellow: { color: "#F3C623", opacity: 1 },
+    red: { color: "#B60000", opacity: 1 },
 };
 
 const text_colors_props = {

@@ -1,198 +1,199 @@
-import { View, Text, Image, StyleSheet, Dimensions, Animated, Modal, KeyboardAvoidingView } from 'react-native'
-import React, { useRef, useEffect, useState } from 'react';
-import Buttons from '../components/Buttons'
-import Inputs from '../components/Inputs'
-import sample_logo from '../assets/images/sample_logo.png'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { RootStackParamList } from '../navigation/NavigationTypes';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import Notification from '../components/Notif'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  Modal,
+  KeyboardAvoidingView,
+} from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import Buttons from "../components/Buttons";
+import Inputs from "../components/Inputs";
+import sample_logo from "../assets/images/sample_logo.png";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { RootStackParamList } from "../navigation/NavigationTypes";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import Notification from "../components/Notif";
 
-const {width, height} = Dimensions.get('window')
+const { width, height } = Dimensions.get("window");
 
 type LoginPageProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'LoginPage'> 
-}
+  navigation: NativeStackNavigationProp<RootStackParamList, "LoginPage">;
+};
 
-const LoginPage: React.FC <LoginPageProps> = ({navigation}) => {
-
-  const auth = getAuth()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [errorMessage, setErrorMessage] = useState("")
+const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
+  const auth = getAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [visible, setVisible] = useState(false);
 
-    const showNotification = () => {
-        setVisible(true);
-        setTimeout(() => {
-            setVisible(false);
-        }, 2000); // Notification will disappear after 3 seconds
-    };
+  const showNotification = () => {
+    setVisible(true);
+    setTimeout(() => {
+      setVisible(false);
+    }, 2000); // Notification will disappear after 3 seconds
+  };
 
   const loginValidation = () => {
-    if(!email){
-      setErrorMessage("Email must be filled")
+    if (!email) {
+      setErrorMessage("Email must be filled");
       return false;
     }
 
-    if(!/\S+@\S+\.\S+/.test(email)){
-      setErrorMessage("Email is invalid")
-      return false
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setErrorMessage("Email is invalid");
+      return false;
     }
 
-    if(!password){
-      setErrorMessage("Password must be filled")
-      return false
+    if (!password) {
+      setErrorMessage("Password must be filled");
+      return false;
     }
 
-    return true
-  }
+    return true;
+  };
 
   const loginUser = async () => {
     setErrorMessage(""); // Reset the error message before validation
     if (!loginValidation()) {
-        showNotification(); // Show notification if validation fails
-        return; // Exit if validation fails
+      showNotification(); // Show notification if validation fails
+      return; // Exit if validation fails
     }
 
-    try{
-      loginValidation()
-      await signInWithEmailAndPassword(auth, email, password)
-      console.log('Login successful')
-      navigation.navigate('LoginModal')
-    } catch(error: any) {
+    try {
+      loginValidation();
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("Login successful");
+      navigation.navigate("LoginModal");
+    } catch (error: any) {
       setErrorMessage(error.message);
-      showNotification()
-      console.log('Login unsuccessful: ', error.message)
+      showNotification();
+      console.log("Login unsuccessful: ", error.message);
     }
-  }
+  };
 
-  const slideAnimLeft = useRef(new Animated.Value(-width)).current; 
-  const slideAnimUp = useRef(new Animated.Value(+width)).current; 
+  const slideAnimLeft = useRef(new Animated.Value(-width)).current;
+  const slideAnimUp = useRef(new Animated.Value(+width)).current;
 
   useEffect(() => {
     Animated.timing(slideAnimLeft, {
-      toValue: 0, 
+      toValue: 0,
       duration: 1000,
-      useNativeDriver: true,  
+      useNativeDriver: true,
     }).start();
   }, [slideAnimLeft]);
 
   useEffect(() => {
     Animated.timing(slideAnimUp, {
-      toValue: 0, 
+      toValue: 0,
       duration: 1000,
-      useNativeDriver: true,  
+      useNativeDriver: true,
     }).start();
   }, [slideAnimUp]);
 
   return (
-    <KeyboardAvoidingView style = {styles.container}>
-      <SafeAreaView style = {styles.positioningContainer}>
-      
-        {visible && (
-                <Notification
-                    message={errorMessage}
-                />
-        )}
+    <KeyboardAvoidingView style={styles.container}>
+      <SafeAreaView style={styles.positioningContainer}>
+        {visible && <Notification message={errorMessage} />}
 
-        <View style = {styles.imagePosition}>
-          <Animated.View style={[styles.imageContainer, { transform: [{ translateX: slideAnimLeft }] }]}>
-              <Image
-              source={sample_logo}
-              style = {styles.imageProperties}
-              />
+        <View style={styles.imagePosition}>
+          <Animated.View
+            style={[
+              styles.imageContainer,
+              { transform: [{ translateX: slideAnimLeft }] },
+            ]}
+          >
+            <Image source={sample_logo} style={styles.imageProperties} />
           </Animated.View>
-        </View>    
-
-        <Animated.View style={{ transform: [{ translateY: slideAnimUp }]}}>
-        <View style = {styles.textContainer}>
-            <Text style = {styles.headingText}>
-              Welcome Back TIPian!
-            </Text>
-
-          <View style = {styles.subheaderContainer}>
-            <Text style = {styles.subheadingText}>
-              Sign in to continue, make sure to avoid 
-              typographical errors and check for caps lock.
-            </Text>
-          </View>
         </View>
-    
-        <View style = {styles.inputContainer}>
-          <View style = {styles.inputSpacing}>
-            <View style = {styles.inputStyling}>
-              <Inputs
-                placeholder='Enter your email'  
-                type = 'account'
-                onChangeText={text => setEmail(text)}/>
+
+        <Animated.View style={{ transform: [{ translateY: slideAnimUp }] }}>
+          <View style={styles.textContainer}>
+            <Text style={styles.headingText}>Welcome Back TIPian!</Text>
+
+            <View style={styles.subheaderContainer}>
+              <Text style={styles.subheadingText}>
+                Sign in to continue, make sure to avoid typographical errors and
+                check for caps lock.
+              </Text>
             </View>
           </View>
 
-          <View style = {styles.inputSpacing}>
-            <View style = {styles.inputStyling}>
-              <Inputs
-                placeholder='Enter your password'  
-                type = 'account'
-                secureTextEntry
-                onChangeText={text => setPassword(text)}/>
+          <View style={styles.inputContainer}>
+            <View style={styles.inputSpacing}>
+              <View style={styles.inputStyling}>
+                <Inputs
+                  placeholder="Enter your email"
+                  type="account"
+                  onChangeText={(text) => setEmail(text)}
+                />
+              </View>
+            </View>
+
+            <View style={styles.inputSpacing}>
+              <View style={styles.inputStyling}>
+                <Inputs
+                  placeholder="Enter your password"
+                  type="account"
+                  secureTextEntry
+                  onChangeText={(text) => setPassword(text)}
+                />
+              </View>
             </View>
           </View>
-        </View>
 
-        <View style = {styles.buttonContainer}>
-          <View style = {styles.buttonStyling}>
-          <Buttons
-            placeholder='Login'
-            backgroundColor='yellow'
-            text_color='black'
-            text_style='bold'
-            size='custom'
-            onPress = {loginUser}
-          />
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonStyling}>
+              <Buttons
+                placeholder="Login"
+                backgroundColor="yellow"
+                text_color="black"
+                text_style="bold"
+                size="custom"
+                onPress={loginUser}
+              />
+            </View>
           </View>
-        </View>
 
-        <View style = {styles.forgotContainer}>
-            <Text style = {styles.forgotProps}>
-                Forgot Password?
-            </Text>
-        </View>
+          <View style={styles.forgotContainer}>
+            <Text style={styles.forgotProps}>Forgot Password?</Text>
+          </View>
         </Animated.View>
-
       </SafeAreaView>
     </KeyboardAvoidingView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-
-  container:{
+  container: {
     flex: 1,
-    position: 'relative',
+    position: "relative",
     backgroundColor: "#F8F7F4",
-    alignItems: 'center',
-    left: '2%',
+    alignItems: "center",
+    left: "2%",
   },
 
   positioningContainer: {
-    top: '26%',
+    top: "26%",
   },
 
   imagePosition: {
-    alignItems: 'center'
+    alignItems: "center",
   },
 
   imageContainer: {
-    position: 'absolute',   
-    bottom: '100%',
+    position: "absolute",
+    bottom: "100%",
   },
-  
+
   imageProperties: {
     width: (600 / 1080) * width,
-    height: (500 / 2400) *height,
+    height: (500 / 2400) * height,
   },
 
   textContainer: {
@@ -207,25 +208,25 @@ const styles = StyleSheet.create({
 
   headingText: {
     fontSize: 27,
-    fontWeight: '900'
+    fontWeight: "900",
   },
 
   subheadingText: {
     fontSize: 15,
-    fontWeight: '400'
+    fontWeight: "400",
   },
 
   inputContainer: {
-    left: '5%',
-    top: '1%',
+    left: "5%",
+    top: "1%",
     marginVertical: 12,
   },
 
   inputStyling: {
-      elevation: 3,
-      borderRadius: 8,
-      width: (822 / 1080) * width, 
-      height: (128 / 2400) * height, 
+    elevation: 3,
+    borderRadius: 8,
+    width: (822 / 1080) * width,
+    height: (128 / 2400) * height,
   },
 
   inputSpacing: {
@@ -233,27 +234,23 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    left: '55.5%',
-    top: '0%',
+    left: "55.5%",
+    top: "0%",
   },
 
-  buttonStyling: {
-
-  },
+  buttonStyling: {},
 
   forgotContainer: {
-    left: '6%',
-    top: '-9%',
-    
+    left: "6%",
+    top: "-9%",
   },
 
   forgotProps: {
-    fontWeight: '400',
+    fontWeight: "400",
     fontSize: 15,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    color: 'black',
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    color: "black",
   },
+});
 
-})
-
-export default LoginPage
+export default LoginPage;
