@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native'
 import { useState } from 'react'
 import React from 'react'
@@ -88,21 +87,3 @@ const styles = StyleSheet.create({
 })
 
 export default FoodPage
-=======
-import { View, Text } from "react-native";
-import { useState } from "react";
-import React from "react";
-import BottomBar from "../components/BottomBar";
-import SearchBar from "../components/SearchBar";
-import MealOverview from "../components/MealOverview";
-
-const FoodPage = () => {
-  return (
-    <View>
-      <MealOverview id={0} name={""} price={0} description={""} image={""} />
-    </View>
-  );
-};
-
-export default FoodPage;
->>>>>>> 918c69535e8f4395f5a11aee527c2c77d698edb4
