@@ -237,7 +237,6 @@ const styles = StyleSheet.create({
   },
 
   bottomBarPositioning: {
-    left: '-70%',
     bottom: '-83%'
   },
 

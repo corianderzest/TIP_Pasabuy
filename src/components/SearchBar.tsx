@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   cartPositioning: {
     left: '102.5%',
     bottom: '190%'
-  }
+  },
 
 })
 

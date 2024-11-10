@@ -2,27 +2,32 @@ import { View, Text, Image, StyleSheet, Dimensions, SafeAreaView, TouchableWitho
 import { useState } from 'react'
 import React from 'react'
 import add from '../icons/add.png'
+import chicken from '../assets/meals/chicken.png'
+import payment from '../assets/icons/payment.png'
+import popular_icon from '../assets/icons/popular-icon.png'
 
 
+import { firestoreDB } from '../backend/firebaseInitialization'
+import {getDocs} from 'firebase/firestore'
 
 export interface ItemProps {
-  id: number,
-  name: string,
-  price: number,
-  description: string,
-  image: string,
+  // id: number,
+  // name: string,
+  // price: number,
+  // description: string,
+  image: any,
   onPress?: () => void
 }
 
 const {width, height} = Dimensions.get('window')
 
 const MealOverview: React.FC <ItemProps> = ({
-  id,
-  name,
-  price,
-  description,
+  // id,
+  // name,
+  // price,
+  // description,
+  // onPress,
   image,
-  onPress,
 }) => {
 
   const addButton = () => {
@@ -34,18 +39,21 @@ const MealOverview: React.FC <ItemProps> = ({
       
       <View style = {styles.containerWrapper}>
         <View style = {styles.container}>
-
+          
         </View>
       </View>
 
-      <View style = {styles.addPositioning}>
+        <Image
+              style={styles.mealProps}
+              source={image}
+        />  
+
         <TouchableWithoutFeedback onPress={addButton}>
           <Image
           style={styles.imageProps}
           source={add}
           />
         </TouchableWithoutFeedback>
-      </View>
 
     </SafeAreaView>
   )
@@ -54,14 +62,14 @@ const MealOverview: React.FC <ItemProps> = ({
 const styles = StyleSheet.create({
 
   containerPositioning: {
-    top: '20%',
-    alignItems: 'center',
-    position: 'relative',
+    // marginTop: '24%',
+    alignSelf: 'center',
+    position: 'absolute',
   },
 
   containerWrapper: {
     width: (960 / 1080) * width,
-    height: (333 / 2400) * height,
+    height: (250 / 2400) * height,
     backgroundColor: '#FEDC8A',
     opacity: 1,
     borderRadius: 10,
@@ -72,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     top: '28.5%',
     width: (960 / 1080) * width,
-    height: (243 / 2400) * height,
+    height: (235 / 2400) * height,
     backgroundColor: '#FFF',
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
@@ -80,15 +88,19 @@ const styles = StyleSheet.create({
     elevation: 0.3,
   },
 
-  addPositioning: {
-    position: 'absolute',
-    right: '3.3%',
-    top: '-6.5%'
+  mealProps: {
+    height: '100%',
+    width: '28%',
+    bottom: '88%',
+    left: '70%'
   },
 
   imageProps: {
     height: (100 / 2400) * height,
-    width: (90 / 1080) * width
+    width: (90 / 1080) * width,
+    position: 'absolute',
+    right: '-3%',
+    top: '-12%'
   },
 
 })

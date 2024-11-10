@@ -14,7 +14,6 @@ button_confirmation_2: string,
 }
 
 
-
 const PopUp: React.FC <PopUpProps> = ({
   placeholder, 
   dialogue,

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions, Image} from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Image, SafeAreaView} from 'react-native'
 import React from 'react'
 import order from "../icons/order.png"
 import home from "../icons/home.png"
@@ -11,36 +11,44 @@ interface BottomBarProps{
 
 const BottomBar: React.FC <BottomBarProps> = ({}) => {
   return (
-    <View style = {styles.container}>
-      <View style = {styles.positioning}>
+    <SafeAreaView style = {styles.containerPositioning}>
+      <View style = {styles.container}>
+        <View style = {styles.positioning}>
 
-        <View style = {styles.orderContainer}>
-          <Image
-            style={styles.imageProps}
-            source={order}/>
-          <Text style = {styles.textProps}>Orders</Text>
+          <View style = {styles.orderContainer}>
+            <Image
+              style={styles.imageProps}
+              source={order}/>
+            <Text style = {styles.textProps}>Orders</Text>
+          </View>
+
+          <View style = {styles.orderContainer}>
+            <Image
+              style={styles.imageProps}
+              source={home}/>
+            <Text style = {styles.textProps}>Home</Text>
+          </View>
+
         </View>
-
-        <View style = {styles.orderContainer}>
-          <Image
-            style={styles.imageProps}
-            source={home}/>
-          <Text style = {styles.textProps}>Home</Text>
-        </View>
-
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  
+  containerPositioning: {
+    position: 'absolute',
     backgroundColor: "#F3C623",
     width: '136%',
     height: (205 / 2400) * height,
     justifyContent: 'flex-end',
     zIndex: 1,
-    position: 'absolute',
+    alignSelf: 'center',
+  },
+  
+  container: {
+
   },
 
   positioning: {
