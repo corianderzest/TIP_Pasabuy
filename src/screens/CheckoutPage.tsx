@@ -1,11 +1,41 @@
-import React from "react";
-import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import UpperNavbar from "../components/UpperNavbar";
 import BottomNavbar from "../components/BottomNavbar";
-import orders from "../icons/order.png"; 
-import DeliveryAddress from "../components/DeliveryAddress"; 
-import PaymentMethod from "../components/PaymentMethod"; 
-import OrderSummary from "../components/OrderSummary"; 
+import orders from "../icons/order.png";
+import DeliveryAddress from "../components/DeliveryAddress";
+import PaymentMethod from "../components/PaymentMethod";
+import OrderSummary from "../components/OrderSummary";
+import Buttons from "../components/Buttons";
+
+const CheckBoxWithLabel: React.FC = () => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  return (
+    <View style={styles.checkboxContainer}>
+      <TouchableOpacity
+        style={[styles.checkbox, isChecked && styles.checkedBox]}
+        onPress={() => setIsChecked(!isChecked)}
+      >
+        {isChecked && <Text style={styles.checkmark}>✔</Text>} 
+      </TouchableOpacity>
+      <Text style={styles.checkboxLabel}>
+        I hereby give TIP-Pasabuy the permission to share my customer data with
+        Restaurants, and as applicable, their respective affiliates and
+        subsidiaries, for service improvement and/or other related marketing
+        purposes. I can find detailed information about the customer data
+        sharing here.
+      </Text>
+    </View>
+  );
+};
 
 const { width, height } = Dimensions.get("window");
 
@@ -16,19 +46,40 @@ const CheckoutPage: React.FC = () => {
   return (
     <View style={styles.container}>
       <UpperNavbar title="Checkout" />
+
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <Text style={styles.checkoutText}>Checkout</Text>
         <Text style={styles.stallName}>Stall Name</Text>
         <DeliveryAddress />
         <PaymentMethod amount="₱500.00" />
         <OrderSummary />
+
+        {/* CheckBox */}
+        <CheckBoxWithLabel />
+
+        {/* Total Amount */}
+        <View style={styles.totalAmountContainer}>
+          <Text style={styles.totalAmountText}>Total Amount</Text>
+          <Text style={styles.totalAmountValue}>₱500.00</Text>
+        </View>
+
+        {/* Place Order Button */}
+        <View style={styles.buttonContainer}>
+          <Buttons
+            placeholder="Place Order"
+            backgroundColor="black"
+            text_style="normal"
+            text_color="white"
+            size="xxl"
+            height={40}
+            width={width * 0.8}
+            onPress={() => {}}
+          />
+        </View>
       </ScrollView>
 
       <View style={{ height: bottomNavbarHeight }}>
-        <BottomNavbar
-          icon={orders} 
-          iconText="Orders" 
-        />
+        <BottomNavbar icon={orders} iconText="Orders" />
       </View>
     </View>
   );
@@ -40,24 +91,72 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F7F4",
   },
   checkoutText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#333",
     marginTop: 20,
-    marginLeft: 16, 
   },
   stallName: {
-    fontSize: 16,
-    fontWeight: "400", 
+    fontSize: 14,
+    fontWeight: "400",
     color: "#333",
-    marginTop: 10,
-    marginLeft: 16, 
+    marginTop: 1,
+    marginBottom: 5,
   },
   contentContainer: {
-    flexGrow: 1,
     paddingHorizontal: 16,
     marginTop: navbarHeight,
-    paddingBottom: bottomNavbarHeight + 16,
+    paddingBottom: bottomNavbarHeight + 20,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start", 
+    marginTop: 15,
+    marginBottom: 15,
+    flexWrap: "wrap", 
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 2,
+    borderColor: "#6E6E6E",
+    borderRadius: 4,
+    marginRight: 6,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  checkedBox: {
+    backgroundColor: "#007BFF", 
+    borderColor: "#007BFF", 
+  },
+  checkmark: {
+    fontSize: 12,
+    color: "#FFFFFF", 
+  },
+  checkboxLabel: {
+    fontSize: 12,
+    color: "#6E6E6E",
+    flex: 1,
+    flexWrap: "wrap", 
+  },
+  totalAmountContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 8,
+    marginBottom: 10,
+  },
+  totalAmountText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+  },
+  totalAmountValue: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "black",
+  },
+  buttonContainer: {
+    alignItems: "center",
   },
 });
 

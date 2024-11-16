@@ -20,6 +20,7 @@ export type RootStackParamList = {
   StallsPage: undefined;
   CartPage: undefined;
   CheckoutPage: undefined;
+  YourOrderPage: undefined;
 };
 
 export type WelcomePageNavigationProp = NativeStackNavigationProp<
@@ -110,9 +111,14 @@ export type StallsPageNavigationProp = NativeStackNavigationProp<
 export type CartPageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "CartPage"
-  >;
+>;
 
-  export type CheckoutPagegNavigationProp = NativeStackNavigationProp<
-    RootStackParamList,
-    "CheckoutPage"
-  >;
+export type CheckoutPageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "CheckoutPage"
+>;
+
+export type YourOrderPageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "YourOrderPage"
+>;

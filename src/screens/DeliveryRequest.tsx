@@ -78,7 +78,7 @@ const DeliveryRequest: React.FC = () => {
           text_color="white"
           size="xxl"
           width={width * 0.8}
-          height={50}
+          height={40}
           onPress={() => {}}
         />
       </View>

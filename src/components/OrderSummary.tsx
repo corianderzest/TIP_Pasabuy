@@ -28,7 +28,7 @@ const OrderSummary: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    padding: 16,
+    padding: 14,
     borderWidth: 2,
     borderColor: "#E0E0E0",
     borderRadius: 8,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     elevation: 0.5, 
   },
   title: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
     marginBottom: 12,
     alignSelf: "flex-start",
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   itemName: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: "400",
     flex: 1,
   },

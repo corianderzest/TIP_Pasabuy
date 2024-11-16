@@ -21,6 +21,7 @@ import HomeSeller from "../screens/HomeSeller";
 import StallsPage from "../screens/StallsPage";
 import CartPage from "../screens/CartPage";
 import CheckoutPage from "../screens/CheckoutPage";
+import YourOrderPage from "../screens/YourOrderPage";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -32,10 +33,28 @@ const Navigator = () => {
         component={CheckoutPage}
         options={{ headerShown: false }}
       />
-
+      
       {/* <Stack.Screen
+        name="CheckoutPage"
+        component={CheckoutPage}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="YourOrderPage"
+        component={YourOrderPage}
+        options={{ headerShown: false }}
+      />
+      
+      <Stack.Screen
         name="CartPage"
         component={CartPage} 
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="HomePage"
+        component={Homepage} 
         options={{ headerShown: false }}
       />
 
