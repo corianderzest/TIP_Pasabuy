@@ -6,19 +6,18 @@ import SearchBar from '../components/SearchBar';
 import MealOverview from '../components/MealOverview';
 import { firestoreDB } from '../backend/firebaseInitialization';
 import { getDoc, getDocs, doc, collection } from 'firebase/firestore';
-
-import food_1 from '../assets/meals/food_1.png';
-import food_2 from '../assets/meals/food_2.png';
-import food_3 from '../assets/meals/food_3.png';
-import food_4 from '../assets/meals/food_4.png';
-import food_5 from '../assets/meals/food_5.png';
+import coffee_1 from '../assets/meals/coffee_1.png';
+import coffee_2 from '../assets/meals/coffee_2.png';
+import coffee_3 from '../assets/meals/coffee_3.png';
+import lemonade from '../assets/meals/lemonade.png';
+import gulaman from '../assets/meals/gulaman.png';
 
 const mealImages = {
-  'pN6O9IQsAQ5RNSVGaFno': food_1,
-  'eI8y2D2OgkkGMjp9sJSG': food_2,
-  'dSTeVcN9ju0fAEP0cS3y': food_3,
-  '0tfZLleJcmTgdRLXiyjs': food_4,
-  'jhPpkZOVVHT5IVyKbwkW': food_5,
+  't81teUAWsbdLdUZWv6BS': coffee_1,
+  'ugrnoBJ2RkDZsMiqRGJ8': coffee_2,
+  'ikKE7XSHlfCEb4rExF86': coffee_3,
+  'NB2sGtoeLpq4GEMUg07F': gulaman,
+  'xiOEaz9lQIf0qVo6BNPI': lemonade,
 };
 
 type MealItem = {
@@ -30,13 +29,13 @@ type MealItem = {
   image: any
 };
 
-const FoodPage = () => {
+const DrinksPage = () => {
   const [addToCart, setAddToCart] = useState<MealItem[]>([]); 
   const [mealDetails, setMealDetails] = useState<MealItem[]>([]); 
 
   useEffect(() => {
     const fetchMealDetails = async () => {
-      const mealDetailsCollection = collection(firestoreDB, 'food'); 
+      const mealDetailsCollection = collection(firestoreDB, 'coffee'); 
       const mealGetDocs = await getDocs(mealDetailsCollection);
 
       const mealList: MealItem[] = mealGetDocs.docs.map((doc) => {
@@ -63,7 +62,7 @@ const FoodPage = () => {
 
   // Handle meal selection to add to cart
   const getMeal = async (documentID: string) => {
-    const mealDoc = doc(firestoreDB, 'food', documentID);
+    const mealDoc = doc(firestoreDB, 'coffee', documentID);
     const docSnapshot = await getDoc(mealDoc);
 
     try {
@@ -115,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FoodPage;
+export default DrinksPage;

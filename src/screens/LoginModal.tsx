@@ -6,6 +6,7 @@ import { RootStackParamList } from '../navigation/NavigationTypes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import popUpImage from '../assets/images/PopUpImage.png'
 import modal_background from "../assets/images/modal_background.jpg"
+import HomePage from './HomePage';
 
 type LoginModalProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'LoginModal'>;
@@ -53,7 +54,7 @@ return(
           size='custom'
           onPress={() => {
             console.log('redirect to login failed?')
-            navigation.navigate('LoginPage')}}
+            navigation.navigate('HomePage')}}
         />
       </View>
       </View>

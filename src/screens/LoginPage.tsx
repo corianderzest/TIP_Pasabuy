@@ -36,8 +36,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
     setVisible(true);
     setTimeout(() => {
       setVisible(false);
-    }, 2000); // Notification will disappear after 3 seconds
-  };
+    }, 2000); 
+    };
 
   const loginValidation = () => {
     if (!email) {
@@ -59,10 +59,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
   };
 
   const loginUser = async () => {
-    setErrorMessage(""); // Reset the error message before validation
+    setErrorMessage(""); 
     if (!loginValidation()) {
-      showNotification(); // Show notification if validation fails
-      return; // Exit if validation fails
+      showNotification(); 
+      return; 
     }
 
     try {

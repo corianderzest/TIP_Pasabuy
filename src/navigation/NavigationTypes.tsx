@@ -7,12 +7,18 @@ export type RootStackParamList = {
   RegisterModal: undefined;
   LoginModal: undefined;
   HomePage: undefined;
+  DrinksPage: undefined;
   FoodPage: undefined;
   RatingsReview: undefined;
   DeliveryHistory: undefined;
   OrderRequest: undefined;
   DeliveryRequest: undefined;
   ForDelivery: undefined;
+  AboutPage: undefined;
+  ProfilePage: undefined;
+  HomeSeller: undefined;
+  StallsPage: undefined;
+  CartPage: undefined;
 };
 
 export type WelcomePageNavigationProp = NativeStackNavigationProp<
@@ -45,6 +51,11 @@ export type HomePageNavigationProp = NativeStackNavigationProp<
   "HomePage"
 >;
 
+export type DrinksPageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "DrinksPage"
+>;
+
 export type FoodPageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "FoodPage"
@@ -68,8 +79,34 @@ export type OrderRequestNavigationProp = NativeStackNavigationProp<
 export type DeliveryRequestNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "DeliveryRequest"
-  >;
+>;
+
 export type ForDeliveryNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "ForDelivery"
+>;
+
+export type AboutPageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "AboutPage"
+>;
+
+export type ProfilePageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "ProfilePage"
+>;
+
+export type HomeSellerNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "HomeSeller"
+>;
+
+export type StallsPageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "StallsPage"
+>;
+
+export type CartPageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "CartPage"
 >;

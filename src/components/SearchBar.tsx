@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, SafeAreaView, StyleSheet, TextInput, Image } from 'react-native'
+import { View, Text, Dimensions, SafeAreaView, StyleSheet, TextInput, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import profile from "../icons/profile.png"
 import cart from "../icons/cart.png"
@@ -8,13 +8,13 @@ const {width, height} = Dimensions.get('window')
 interface SearchBarProps {
   placeholder: string,
   onChangeText?: (text: string) => void,
-  // onPress: () => void
+  onPress1: () => void
 }
 
 const SearchBar: React.FC <SearchBarProps> = ({
   placeholder,
   onChangeText,
-  // onPress,
+  onPress1,
 }) => {
   return (
     <SafeAreaView style = {styles.container}>
@@ -24,12 +24,15 @@ const SearchBar: React.FC <SearchBarProps> = ({
           {placeholder}
         </TextInput>
 
+        <TouchableOpacity onPress={onPress1}>
         <View style = {styles.profilePositioning}>
           <Image
           style = {styles.imageSize}
           source={profile}
           />
         </View>
+        </TouchableOpacity>
+
 
         <View style = {styles.cartPositioning}>
           <Image
@@ -47,11 +50,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F3C623',
     width: '100%',
-    height: (208 / 2400) * height
+    height: (208 / 2400) * height,
   },
 
   searchBarContainer: {
-    backgroundColor: '#F8F7F4',
+    backgroundColor: '#F8F7F4', 
     width: (781 / 1080) * width,
     height: (95 / 2400) * height,
     borderRadius: 50,
@@ -70,13 +73,13 @@ const styles = StyleSheet.create({
   },
 
   profilePositioning: {
-    right: '15.5%',
-    bottom: '85%'
+    right: '14.5%',
+    bottom: '75%'
   },
 
   cartPositioning: {
     left: '102.5%',
-    bottom: '190%'
+    bottom: '170%'
   },
 
 })

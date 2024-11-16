@@ -15,6 +15,15 @@ import promo from '../assets/images/promo.jpg'
 import promo_1 from '../assets/images/promo_1.jpg'
 import promo_2 from '../assets/images/promo_2.jpg'
 import { useFonts } from 'expo-font';
+import FoodPage from './FoodPage';
+import DrinksPage from './DrinksPage';
+import ProfilePage from './ProfilePage';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/NavigationTypes';
+
+type HomePageProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'HomePage'>;
+}
 
 
 const promo_images = [
@@ -31,7 +40,19 @@ const popular_images = [
   { id: '5', uri: popular_5},
 ];
 
-const Homepage = () => {
+const Homepage: React.FC<HomePageProps> = ({navigation}) => {
+
+  const foodRedirect = () => {
+    navigation.navigate('FoodPage')
+  }
+
+  const drinkRedirect = () => {
+    navigation.navigate('DrinksPage')
+  }
+
+  const profileRedirect = () => {
+    navigation.navigate('ProfilePage')
+  }
 
   const [fonts] = useFonts({
     'Lato-Bold': require('../assets/fonts/Lato/Lato-Bold.ttf'),
@@ -45,7 +66,10 @@ const Homepage = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar placeholder="Search for your order" />
+      <SearchBar 
+      placeholder="Search for your order" 
+      onPress1={profileRedirect}
+      />
 
       <View style = {styles.bottomBarPositioning}>
         <BottomBar/>
@@ -80,7 +104,9 @@ const Homepage = () => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style = {styles.foodContainer}>
+      <TouchableOpacity 
+      onPress = {foodRedirect}
+      style = {styles.foodContainer}>
           <View style={styles.stallHeaderContainer}>
             <Text style={styles.mealHeaderText}>Foods</Text>
             <Text style={styles.subHeaderText}>tap to view</Text>
@@ -91,7 +117,9 @@ const Homepage = () => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style = {styles.drinkContainer}>
+      <TouchableOpacity 
+      onPress = {drinkRedirect}
+      style = {styles.drinkContainer}>
           <View style={styles.stallHeaderContainer}>
             <Text style={styles.mealHeaderText}>Drinks</Text>
             <Text style={styles.subHeaderText}>tap to view</Text>
