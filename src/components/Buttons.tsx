@@ -36,7 +36,7 @@ const button_color = {
     blue: {color: "#103F6E", opacity: 1},
     dirty_white: {color: "#D9D9D9", opacity: 1},
     black: {color: "#000000", opacity: 1},
-  yellow: { color: "#F3C623", opacity: 1 },
+    yellow: { color: "#F3C623", opacity: 1 },
     red: { color: "#B60000", opacity: 1 },
 };
 

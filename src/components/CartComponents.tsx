@@ -7,18 +7,22 @@ interface CartProps{
   itemName: string,
   price: number,
   quantity: number,
+  decreasePress: () => void,
+  increasePress: () => void,
 }
 
 const CartComponents: React.FC <CartProps> = ({
   itemName,
   price,
   quantity,
+  increasePress, 
+  decreasePress,
 }) => {
   return (
     <SafeAreaView>
       <View style = {styles.quantityContainer}>
         
-        <TouchableOpacity>
+        <TouchableOpacity onPress={decreasePress}>
           <View>
             <Text style = {styles.arithmeticProps}> - </Text>
           </View>
@@ -26,7 +30,7 @@ const CartComponents: React.FC <CartProps> = ({
           
         <Text style = {styles.arithmeticProps}>{quantity}</Text>
         
-        <TouchableOpacity>
+        <TouchableOpacity  onPress={increasePress}>
           <View>
             <Text style = {styles.arithmeticProps}> + </Text>
           </View>
