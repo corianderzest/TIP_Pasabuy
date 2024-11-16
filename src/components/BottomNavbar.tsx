@@ -8,25 +8,30 @@ const { width, height } = Dimensions.get("window");
 
 interface BottomNavbarProps {
   onPress?: () => void;
-  placeholder?: string,
+  placeholder?: string;
+  icon?: any;
+  iconText?: string;
 }
 
-const BottomNavbar: React.FC<BottomNavbarProps> = ({placeholder}) => {
+const BottomNavbar: React.FC<BottomNavbarProps> = ({
+  placeholder,
+  icon,
+  iconText,
+}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.positioning}>
-        <View style={styles.iconContainer}>
-        <TouchableOpacity>
-          <Image style={styles.deliveriesIcon} source={deliveries} />
+      <View style={styles.iconContainer}>
+        {/* Deliveries Icon */}
+        <TouchableOpacity style={styles.deliveriesWrapper}>
+          <Image style={styles.deliveriesIcon} source={icon || deliveries} />
+          <Text style={styles.iconText}>{iconText || "Deliveries"}</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Image style={styles.imageProps} source={home}/>
+
+        {/* Home Icon */}
+        <TouchableOpacity style={styles.homeWrapper}>
+          <Image style={styles.homeIcon} source={home} />
+          <Text style={styles.iconText}>Home</Text>
         </TouchableOpacity>
-        </View>
-        <View style = {styles.subheaderContainer}>
-          <Text style = {[styles.subheaderText, {marginRight: '37%'}]}>Deliveries</Text>
-          <Text style = {[styles.subheaderText, {marginLeft: '50%'}]}>Home</Text> 
-        </View>
       </View>
     </View>
   );
@@ -42,48 +47,45 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
 
-  positioning: {
+  iconContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     alignItems: "center",
-    width: "93%",
-    paddingHorizontal: "5%",
+    flex: 1,
   },
 
-  iconContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
+  deliveriesWrapper: {
     alignItems: "center",
-    flexDirection: 'row', 
-    marginHorizontal: '24%',
-    bottom: '15%',
-    left: '3%'
+    justifyContent: "center",
+  },
+
+  homeWrapper: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   deliveriesIcon: {
-    width: 40,
-    height: 40,
+    width: 38,
+    height: 33,
   },
 
-  imageProps: {
+  homeIcon: {
     width: 38,
     height: 32,
+    marginBottom: 1,
   },
 
-  subheaderContainer: {
-    position: 'absolute',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    left: '30.8%',
-    bottom: '-30%',
-    
-    
+  iconText: {
+    fontSize: 13,
+    textAlign: "center",
   },
 
-  subheaderText: {
-      alignSelf: 'center',
+  placeholderText: {
+    fontSize: 16,
+    textAlign: "center",
+    color: "#333",
+    marginTop: 10,
   },
-
 });
 
 export default BottomNavbar;

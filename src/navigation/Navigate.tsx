@@ -15,19 +15,25 @@ import OrderRequest from "../screens/OrderRequest";
 import DeliveryRequest from "../screens/DeliveryRequest";
 import ForDelivery from "../screens/ForDelivery";
 import FoodPage from "../screens/FoodPage";
-import AboutPage from "../screens/AboutPage"
+import AboutPage from "../screens/AboutPage";
 import ProfilePage from "../screens/ProfilePage";
 import HomeSeller from "../screens/HomeSeller";
 import StallsPage from "../screens/StallsPage";
 import CartPage from "../screens/CartPage";
+import CheckoutPage from "../screens/CheckoutPage";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   return (
     <Stack.Navigator>
-      
       <Stack.Screen
+        name="CheckoutPage"
+        component={CheckoutPage}
+        options={{ headerShown: false }}
+      />
+
+      {/* <Stack.Screen
         name="CartPage"
         component={CartPage} 
         options={{ headerShown: false }}
@@ -39,12 +45,6 @@ const Navigator = () => {
         options={{ headerShown: false }}
       />
 
-      <Stack.Screen
-        name="HomePage"
-        component={Homepage}
-        options={{ headerShown: false }}
-      />
-    
       <Stack.Screen
         name="StallsPage"
         component={StallsPage}
@@ -93,24 +93,23 @@ const Navigator = () => {
         options={{ headerShown: false }}
       />
 
-     <Stack.Screen
+      <Stack.Screen
         name="RatingsReview"
         component={RatingsReview}
         options={{ headerShown: false }}
       />
-    
+
       <Stack.Screen
         name="DrinksPage"
         component={DrinksPage}
         options={{headerShown: false}}
       /> 
 
-       <Stack.Screen
+      <Stack.Screen
         name="FoodPage"
         component={FoodPage} 
         options={{ headerShown: false }}
       /> 
-
 
       <Stack.Screen
         name="LoginPage"
@@ -134,8 +133,7 @@ const Navigator = () => {
         name="LoginModal"
         component={LoginModal}
         options={{ headerShown: false }}
-      /> 
-
+      /> */}
     </Stack.Navigator>
   );
 };

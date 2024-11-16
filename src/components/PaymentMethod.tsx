@@ -24,7 +24,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ amount }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: (900 / 1080) * width,
+    width: "100%",
     padding: 16,
     borderWidth: 2,
     borderColor: "#E0E0E0",
