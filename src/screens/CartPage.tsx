@@ -7,6 +7,7 @@ import BottomBar from '../components/BottomBar'
 import CartComponents from '../components/CartComponents'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';
+import Buttons from '../components/Buttons'
 
 type CartPageProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'CartPage'>;
@@ -32,8 +33,16 @@ const CartPage: React.FC <CartPageProps> = ({navigation}) => {
 
   const [count, setCount] = useState(1)
 
-  const increment = () => {
-    
+  const increment = () => {setCount(count + 1)}
+
+  const decrement = () => {
+    if (count > 1){
+      setCount(count - 1)
+    }
+  }
+
+  const debug = () => {
+    console.log('Click Success')  
   }
 
   return (
@@ -59,9 +68,27 @@ const CartPage: React.FC <CartPageProps> = ({navigation}) => {
     <View style = {styles.componentPositioning}>
     <CartComponents
       itemName='Hazelnut Iced Coffee'
-      quantity={1}
+      quantity={count}
       price={80}
+      decreasePress={decrement}
+      increasePress={increment}
     />
+    </View>
+
+    <View style = {styles.amountContainer}>
+      <Text style = {styles.textAmount}>Total Amount:</Text>
+      <Text style = {styles.textTotalAmount}>1233.00</Text>
+    </View>
+
+    <View style = {styles.buttonPositioning}>
+      <Buttons
+        placeholder='Review payment and address'
+        backgroundColor='black'
+        size='xxl'
+        text_color='white'
+        text_style='bold'
+        onPress={debug}
+      />
     </View>
 
     </SafeAreaView>
@@ -72,6 +99,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f7f4'
+  },
+
+  amountContainer: {
+    top: '48%',
+    right: '9%'
+  },
+
+  textAmount: {
+    fontSize: 17,
+    fontFamily: 'Lato-Black',
+    textAlign: 'right',
+  },
+
+  textTotalAmount: {
+    top: '10%',
+    // right: '25%',
+    fontSize: 15,
+    fontFamily: 'Lato-Regular',
+    textAlign: 'right',
+  },
+
+  buttonPositioning: {
+    flex: 1,
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    bottom: '10%'
   },
 
   estimationProps: {
