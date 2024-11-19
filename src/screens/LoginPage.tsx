@@ -7,6 +7,7 @@ import {
   Animated,
   Modal,
   KeyboardAvoidingView,
+  TouchableOpacity
 } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import Buttons from "../components/Buttons";
@@ -147,6 +148,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
             </View>
           </View>
 
+              <TouchableOpacity>
           <View style={styles.buttonContainer}>
             <View style={styles.buttonStyling}>
               <Buttons
@@ -159,6 +161,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
               />
             </View>
           </View>
+              </TouchableOpacity>
 
           <View style={styles.forgotContainer}>
             <Text style={styles.forgotProps}>Forgot Password?</Text>

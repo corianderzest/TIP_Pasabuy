@@ -8,14 +8,18 @@ const {width, height} = Dimensions.get('window')
 interface SearchBarProps {
   placeholder: string,
   onChangeText?: (text: string) => void,
-  onPress1: () => void
+  profilePress?: () => void
+  cartPress?: () => void
+  
 }
 
 const SearchBar: React.FC <SearchBarProps> = ({
   placeholder,
   onChangeText,
-  onPress1,
+  profilePress,
+  cartPress,
 }) => {
+
   return (
     <SafeAreaView style = {styles.container}>
       <View style = {styles.searchBarContainer}>
@@ -24,7 +28,7 @@ const SearchBar: React.FC <SearchBarProps> = ({
           {placeholder}
         </TextInput>
 
-        <TouchableOpacity onPress={onPress1}>
+        <TouchableOpacity onPress={profilePress}>
         <View style = {styles.profilePositioning}>
           <Image
           style = {styles.imageSize}
@@ -33,13 +37,14 @@ const SearchBar: React.FC <SearchBarProps> = ({
         </View>
         </TouchableOpacity>
 
-
-        <View style = {styles.cartPositioning}>
-          <Image
-          style = {styles.imageSize}
-          source={cart}
-          />
-        </View>
+        <TouchableOpacity onPress={cartPress}>
+          <View style = {styles.cartPositioning}>
+            <Image
+            style = {styles.imageSize}
+            source={cart}
+            />
+          </View>
+        </TouchableOpacity>
 
       </View>
     </SafeAreaView>

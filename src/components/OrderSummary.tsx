@@ -5,7 +5,7 @@ const { width } = Dimensions.get("window");
 
 const OrderSummary: React.FC = () => {
   return (
-    <View style={styles.container}>
+    <View style={styles.summaryContainer}>
       <Text style={styles.title}>Order Summary</Text>
       <View style={styles.itemContainer}>
         <Text style={styles.itemName}>Product ABC</Text>
@@ -26,7 +26,7 @@ const OrderSummary: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  summaryContainer: {
     width: '100%',
     padding: 14,
     borderWidth: 2,

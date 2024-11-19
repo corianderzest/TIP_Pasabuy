@@ -18,6 +18,7 @@ import { useFonts } from 'expo-font';
 import FoodPage from './FoodPage';
 import DrinksPage from './DrinksPage';
 import ProfilePage from './ProfilePage';
+import StallsPage from './StallsPage';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';
 
@@ -50,8 +51,16 @@ const Homepage: React.FC<HomePageProps> = ({navigation}) => {
     navigation.navigate('DrinksPage')
   }
 
+  const stallRedirect = () => {
+    navigation.navigate('StallsPage')
+  }
+
   const profileRedirect = () => {
     navigation.navigate('ProfilePage')
+  }
+
+  const cartRedirect = () => {
+    navigation.navigate('CartPage')
   }
 
   const [fonts] = useFonts({
@@ -68,7 +77,8 @@ const Homepage: React.FC<HomePageProps> = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <SearchBar 
       placeholder="Search for your order" 
-      onPress1={profileRedirect}
+      profilePress={profileRedirect}
+      cartPress={cartRedirect}
       />
 
       <View style = {styles.bottomBarPositioning}>
@@ -93,7 +103,9 @@ const Homepage: React.FC<HomePageProps> = ({navigation}) => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.stallContainer}>
+      <TouchableOpacity 
+      onPress={stallRedirect}
+      style={styles.stallContainer}>
         <View style={styles.stallHeaderContainer}>
         <Text style={styles.mealHeaderText}>Stalls</Text>
         <Text style={styles.subHeaderText}>tap to view</Text>

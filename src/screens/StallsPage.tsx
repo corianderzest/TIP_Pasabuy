@@ -6,12 +6,31 @@ import SearchBar from '../components/SearchBar'
 import BottomBar from '../components/BottomBar'
 import shake from '../assets/meals/shake.png'
 import cake from '../assets/meals/cake.png'
+import { RootStackParamList } from '../navigation/NavigationTypes'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
-const StallsPage = () => {
+
+type StallsNavigation = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'StallsPage'>
+}
+
+const StallsPage: React.FC<StallsNavigation> = ({navigation}) => {
+  
+  const profileRedirect = () => {
+    navigation.navigate('ProfilePage')
+  }
+
+  const cartRedirect = () => {
+    navigation.navigate('CartPage')
+  }
+
   return (
     <SafeAreaView style = {styles.container}>
-
-      <SearchBar placeholder='Search for your order'/>
+     
+      <SearchBar 
+      placeholder='Search for your order'
+      profilePress={profileRedirect}
+      cartPress={cartRedirect}/>
 
       <StallComponent
         placeholder='Tapsilog ni Rod Vince'

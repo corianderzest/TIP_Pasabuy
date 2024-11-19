@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, Dimensions, Animated, Modal, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Image, StyleSheet, Dimensions, Animated, Modal, KeyboardAvoidingView, TouchableOpacity } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react';
 import Buttons from '../components/Buttons'
 import loginPreviewPhoto from '../assets/images/loginPreviewPhoto.png'
@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackParamList } from '../navigation/NavigationTypes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, setDoc } from 'firebase/firestore'
 
 type RegisterPageProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterPage'>;
@@ -18,19 +19,29 @@ const {width, height} = Dimensions.get('window')
 const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
 
   const auth = getAuth();
+  const firestoreDB = getFirestore();
 
-  const registerUser = async () => {
+  const registerUser = async (email: string, name:string, address: string) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const credentials = await createUserWithEmailAndPassword(auth, email, password);
+      const user = credentials.user
+
+      await setDoc(doc(firestoreDB, 'users', user.uid), {
+        email,
+        name,
+        address,
+      })
+
       console.log('Registration successful');
-      navigation.navigate('RegisterModal');  // Navigate to modal on success
+      navigation.navigate('RegisterModal'); 
     } catch (error: any) {
       console.error('Registration failed:', error.message);
     }
   };
-
 
   return (
     <KeyboardAvoidingView style = {styles.container}>
@@ -78,8 +89,29 @@ const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
               />
             </View>
           </View>
+
+           <View style = {styles.inputSpacing}>
+            <View style = {styles.inputStyling}>
+              <Inputs
+                placeholder='Enter Profile Name'  
+                type = 'account'
+                onChangeText={text => setName(text)}/>
+            </View>
+          </View>
+
+           <View style = {styles.inputSpacing}>
+            <View style = {styles.inputStyling}>
+              <Inputs
+                placeholder='Enter Address'  
+                type = 'account'
+                onChangeText={text => setAddress(text)}/>
+            </View>
+          </View>
+
         </View>
 
+        
+        <TouchableOpacity>
         <View style = {styles.buttonContainer}>
           <View style = {styles.buttonStyling}>
           <Buttons
@@ -91,9 +123,10 @@ const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
             onPress={() => {
               console.log(email)
               console.log(password)
-              registerUser()}}/>
+              registerUser(email, name, address)}}/>
             </View>
         </View>
+              </TouchableOpacity>
 
         <View style = {styles.forgotContainer}>
             <Text style = {styles.forgotProps}>

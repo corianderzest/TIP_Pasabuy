@@ -45,30 +45,20 @@ const ProfilePage = () => {
       </View>
 
       <View style={styles.clickablesContainer}>
-        <ProfileClickables
-          placeholder='Set Profile Name'
-          image={name}
-        />
 
-        <ProfileClickables
-          placeholder='Set Delivery Address'
-          image={address}
-        />
 
-        <ProfileClickables
-          placeholder='Change Photo'
-          image={photo}
-        />
 
         <ProfileClickables
           placeholder='Transaction History'
           image={history}
         />
 
-        <ProfileClickables
-          placeholder='Help'
-          image={help}
-        />
+        <View style = {styles.helpSpace}>
+          <ProfileClickables
+            placeholder='Help'
+            image={help}
+          />
+        </View>
 
         <View style={styles.spacing}>
           <ProfileClickables
@@ -93,6 +83,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8f7f4'
   },
 
+  helpSpace: {
+    top: '8%'
+  },
+
   imageContainer: {
     top: '3%',
     alignSelf: 'center',
@@ -115,7 +109,7 @@ const styles = StyleSheet.create({
   },
 
   spacing: {
-    top: '18%'
+    top: '47%'
   },
 
   detailsProps: {
@@ -139,11 +133,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#fff',
     width: (900 / 1080) * width,
-    height: (980 / 2400) * height,
+    height: (550 / 2400) * height,
     borderTopLeftRadius: 15,
     borderBottomLeftRadius: 15,
     borderTopRightRadius: 15,
     borderBottomRightRadius: 15,
+    elevation: 2,
   },
 
   bottomBarPositioning: {

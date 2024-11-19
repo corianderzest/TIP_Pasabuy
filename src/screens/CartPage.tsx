@@ -1,109 +1,217 @@
-import { View, Text, Dimensions, SafeAreaView, StyleSheet } from 'react-native'
-import React from 'react'
-import { useState } from 'react'
-import { useFonts } from 'expo-font'
-import SearchBar from '../components/SearchBar'
-import BottomBar from '../components/BottomBar'
-import CartComponents from '../components/CartComponents'
+import { View, Text, Dimensions, SafeAreaView, StyleSheet, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useFonts } from 'expo-font';
+import SearchBar from '../components/SearchBar';
+import BottomBar from '../components/BottomBar';
+import CartComponents from '../components/CartComponents';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';
-import Buttons from '../components/Buttons'
+import Buttons from '../components/Buttons';
+import { firestoreDB } from '../backend/firebaseInitialization';
+import { collection, getDocs, setDoc, doc, deleteDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 type CartPageProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'CartPage'>;
-}
+};
 
-const {width, height} = Dimensions.get('window')
+const { width, height } = Dimensions.get('window');
 
-const CartPage: React.FC <CartPageProps> = ({navigation}) => {
-
+const CartPage: React.FC<CartPageProps> = ({ navigation }) => {
   const [fonts] = useFonts({
     'Lato-Bold': require('../assets/fonts/Lato/Lato-Bold.ttf'),
     'Lato-Regular': require('../assets/fonts/Lato/Lato-Regular.ttf'),
-    'Lato-Black': require('../assets/fonts/Lato/Lato-Black.ttf')
-  })
+    'Lato-Black': require('../assets/fonts/Lato/Lato-Black.ttf'),
+  });
 
   if (!fonts) {
-    return null
+    return null;
   }
 
   const profileRedirect = () => {
-    navigation.navigate('ProfilePage')
+    navigation.navigate('ProfilePage');
+  };
+
+  const checkoutRedirect = () => {
+    navigation.navigate('CheckoutPage')
+    console.log('Click success redirect to checkout page')  
   }
 
-  const [count, setCount] = useState(1)
 
-  const increment = () => {setCount(count + 1)}
+  const [cartItems, setCartItems] = useState<any[]>([]); // store the items
+  const [totalAmount, setTotalAmount] = useState(0);
 
-  const decrement = () => {
-    if (count > 1){
-      setCount(count - 1)
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      const user = getAuth().currentUser;
+      if (user) {
+        // doc ref
+        const cartRef = collection(firestoreDB, 'cart', user.uid, 'cartItems');
+        try {
+          const cartSnapshot = await getDocs(cartRef);
+          const cartList = cartSnapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              name: data.name,
+              description: data.description,
+              price: data.price,
+              quantity: data.quantity || 1, 
+              image: data.image,
+            };
+          });
+          setCartItems(cartList);
+
+          //  total
+          const total = cartList.reduce((acc, item) => acc + item.price * item.quantity, 0);
+          setTotalAmount(total);
+        } catch (err) {
+          console.error('Error fetching cart items:', err);
+        }
+      } else {
+        console.log('User is not logged in');
+      }
+    };
+
+    fetchCartItems();
+  }, []);
+
+// dynamic total calculator
+const calculateTotalAmount = (items: any[]) => {
+  const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  setTotalAmount(total);
+  updateTotalInDatabase(total);
+};
+
+// increment calculator
+const increment = (itemId: string) => {
+  setCartItems((prevItems) => {
+    const updatedItems = prevItems.map((item) =>
+      item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    calculateTotalAmount(updatedItems);
+    return updatedItems;
+  });
+};
+
+// decrement calculator
+const decrement = async (itemId: string) => {
+  setCartItems((prevItems) => {
+    const updatedItems = prevItems
+      .map((item) =>
+        item.id === itemId
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+      .filter((item) => {
+        if (item.id === itemId && item.quantity <= 0) {
+          removeFromDatabase(itemId); 
+          return false; 
+        }
+        return true;
+      });
+    calculateTotalAmount(updatedItems);
+    return updatedItems;
+  });
+};
+
+const removeFromDatabase = async (itemId: string) => {
+  const user = getAuth().currentUser;
+  if (user) {
+    try {
+      const itemRef = doc(firestoreDB, 'cart', user.uid, 'cartItems', itemId);
+      await deleteDoc(itemRef);
+      console.log(`Item ${itemId} removed from database.`);
+    } catch (err) {
+      console.error('Error removing item from database:', err);
     }
+  } else {
+    console.log('User is not logged in');
   }
+};
 
-  const debug = () => {
-    console.log('Click Success')  
+const updateTotalInDatabase = async (total: number) => {
+  const user = getAuth().currentUser;
+  if (user) {
+    try {
+      const totalRef = doc(firestoreDB, 'cart', user.uid);
+      await setDoc(
+        totalRef,
+        { totalAmount: total }, // Update or add the totalAmount field
+        { merge: true } // Merge with existing fields
+      );
+      console.log('Total amount updated in database:', total);
+    } catch (error) {
+      console.error('Error updating total amount in database:', error);
+    }
+  } else {
+    console.log('User is not logged in');
   }
+};
 
   return (
-    <SafeAreaView style = {styles.container}>
-
-    <SearchBar 
-    placeholder='Search for your order'
-    onPress1={profileRedirect}/>
-    <View style = {styles.bottomBarPositioning}>
-    <BottomBar/>
-    </View>
-    <View style = {styles.headerContainer}>
-    <Text style = {styles.headerStyling}>Cart</Text>
-    </View>
-
-    <View style = {styles.estimateProps}>
-      <View style = {styles.estimatePositioning}>
-      <Text style = {styles.estimationProps}>Estimated Delivery</Text>
-      <Text style = {styles.timeProps}>12:05</Text>
+    <SafeAreaView style={styles.container}>
+      <SearchBar placeholder="Search for your order" profilePress={profileRedirect} />
+      <View style={styles.bottomBarPositioning}>
+        <BottomBar />
       </View>
-    </View>
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerStyling}>Cart</Text>
+      </View>
 
-    <View style = {styles.componentPositioning}>
-    <CartComponents
-      itemName='Hazelnut Iced Coffee'
-      quantity={count}
-      price={80}
-      decreasePress={decrement}
-      increasePress={increment}
-    />
-    </View>
+      <View style={styles.estimateProps}>
+        <View style={styles.estimatePositioning}>
+          <Text style={styles.estimationProps}>Estimated Delivery</Text>
+          <Text style={styles.timeProps}>15:00 minutes</Text>
+        </View>
+      </View>
 
-    <View style = {styles.amountContainer}>
-      <Text style = {styles.textAmount}>Total Amount:</Text>
-      <Text style = {styles.textTotalAmount}>1233.00</Text>
-    </View>
+      {cartItems.length > 0 ? (
+        <View style={[styles.componentPositioning, {gap: 25}]}>
+          {cartItems.map((item) => (
+            <CartComponents
+              key={item.id}
+              itemName={item.name}
+              quantity={item.quantity}
+              price={item.price}
+              decreasePress={() => decrement(item.id)}
+              increasePress={() => increment(item.id)}
+            />
+          ))}
+        </View>
+      ) : (
+        <Text style={[styles.emptyCartMessage, {top: '15%'}]}>Your cart is empty.</Text>
+      )}
 
-    <View style = {styles.buttonPositioning}>
-      <Buttons
-        placeholder='Review payment and address'
-        backgroundColor='black'
-        size='xxl'
-        text_color='white'
-        text_style='bold'
-        onPress={debug}
-      />
-    </View>
+      <View style={styles.amountContainer}>
+        <Text style={styles.textAmount}>Total Amount:</Text>
+        <Text style={styles.textTotalAmount}>{totalAmount.toFixed(2)}</Text>
+      </View>
 
+      <View style={styles.buttonPositioning}>
+        <Buttons
+          placeholder="Review payment and address"
+          backgroundColor="black"
+          size="xxl"
+          text_color="white"
+          text_style="bold"
+          onPress={checkoutRedirect}
+        />
+      </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f7f4'
+    backgroundColor: '#f8f7f4',
   },
 
   amountContainer: {
-    top: '48%',
-    right: '9%'
+    position: 'absolute',
+    top: '78%',
+    right: '9%',
   },
 
   textAmount: {
@@ -114,7 +222,6 @@ const styles = StyleSheet.create({
 
   textTotalAmount: {
     top: '10%',
-    // right: '25%',
     fontSize: 15,
     fontFamily: 'Lato-Regular',
     textAlign: 'right',
@@ -124,25 +231,31 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'flex-end',
-    bottom: '10%'
+    bottom: '10%',
+  },
+
+  emptyCartMessage: {
+    textAlign: 'center',
+    fontSize: 25,
+    color: '#888',
   },
 
   estimationProps: {
     color: '#A18C8C',
     fontFamily: 'Lato-Regular',
     fontSize: 20,
-    top: '10%'
+    top: '10%',
   },
 
   timeProps: {
     fontFamily: 'Lato-Black',
     fontSize: 25,
-    top: '35%'
+    top: '35%',
   },
 
   estimatePositioning: {
     left: '4%',
-    top: '8%'
+    top: '8%',
   },
 
   headerContainer: {
@@ -167,13 +280,12 @@ const styles = StyleSheet.create({
   },
 
   bottomBarPositioning: {
-    bottom: '-83%'
+    bottom: '-83%',
   },
 
   componentPositioning: {
-    top: '7%'
+    top: '7%',
   },
+});
 
-})
-
-export default CartPage
+export default CartPage;

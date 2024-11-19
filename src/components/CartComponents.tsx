@@ -39,6 +39,7 @@ const CartComponents: React.FC <CartProps> = ({
       </View>
 
       <View style = {styles.itemContainer}>
+      
       <Text style = {styles.itemProps}>{itemName}</Text>
       <Text style = {styles.priceProps}>₱{price}</Text>
       </View>

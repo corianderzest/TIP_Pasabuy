@@ -5,7 +5,11 @@ import BottomBar from '../components/BottomBar';
 import SearchBar from '../components/SearchBar';
 import MealOverview from '../components/MealOverview';
 import { firestoreDB } from '../backend/firebaseInitialization';
-import { getDoc, getDocs, doc, collection } from 'firebase/firestore';
+import { getDoc, getDocs, doc, collection, setDoc } from 'firebase/firestore';
+import { RootStackParamList } from '../navigation/NavigationTypes';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { getAuth } from 'firebase/auth';
+
 import coffee_1 from '../assets/meals/coffee_1.png';
 import coffee_2 from '../assets/meals/coffee_2.png';
 import coffee_3 from '../assets/meals/coffee_3.png';
@@ -20,6 +24,10 @@ const mealImages = {
   'xiOEaz9lQIf0qVo6BNPI': lemonade,
 };
 
+type DrinksPageProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'DrinksPage'>
+}
+
 type MealItem = {
   id: string
   name: string
@@ -29,7 +37,7 @@ type MealItem = {
   image: any
 };
 
-const DrinksPage = () => {
+const DrinksPage: React.FC <DrinksPageProps> = ({navigation}) => {
   const [addToCart, setAddToCart] = useState<MealItem[]>([]); 
   const [mealDetails, setMealDetails] = useState<MealItem[]>([]); 
 
@@ -61,26 +69,43 @@ const DrinksPage = () => {
   }, []);
 
   // Handle meal selection to add to cart
-  const getMeal = async (documentID: string) => {
+   const getMeal = async (documentID: string) => {
     const mealDoc = doc(firestoreDB, 'coffee', documentID);
     const docSnapshot = await getDoc(mealDoc);
 
-    try {
-      if (docSnapshot.exists()) {
-        const mealData = { ...docSnapshot.data(), id: docSnapshot.id } as MealItem;
-        setAddToCart((prev) => [...prev, mealData]);
-        console.log('Added Successfully:', mealData);
+     try {
+    if (docSnapshot.exists()) {
+      const mealData = { ...docSnapshot.data(), id: docSnapshot.id } as MealItem;
+      const user = getAuth().currentUser;
+      if (user) {
+        const cartRef = collection(firestoreDB, 'cart', user.uid, 'cartItems');
+        await setDoc(doc(cartRef), { ...mealData, quantity: 1 }); 
+        console.log('Added to Cart Successfully:', mealData);
       } else {
-        console.log('No such document!');
+        console.log('User is not logged in');
       }
-    } catch (err) {
-      console.error(err);
+    } else {
+      console.log('No such document!');
     }
-  };
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+  const profileRedirect = () => {
+    navigation.navigate('ProfilePage')
+  }
+
+  const cartRedirect = () => {
+    navigation.navigate('CartPage')
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar placeholder="Search for your order" />
+      <SearchBar 
+      placeholder="Search for your order" 
+      profilePress={profileRedirect}
+      cartPress={cartRedirect}/>
 
       {mealDetails.map((meal, index) => (
         <View key={meal.id} style={[styles.mealContainer, { top: `${11.5 + 16 * index}%`, alignSelf: 'center' }]}>

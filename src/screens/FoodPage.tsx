@@ -5,13 +5,22 @@ import BottomBar from '../components/BottomBar';
 import SearchBar from '../components/SearchBar';
 import MealOverview from '../components/MealOverview';
 import { firestoreDB } from '../backend/firebaseInitialization';
-import { getDoc, getDocs, doc, collection } from 'firebase/firestore';
+import { setDoc, getDoc, getDocs, doc, collection } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+import { RootStackParamList } from '../navigation/NavigationTypes';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import food_1 from '../assets/meals/food_1.png';
 import food_2 from '../assets/meals/food_2.png';
 import food_3 from '../assets/meals/food_3.png';
 import food_4 from '../assets/meals/food_4.png';
 import food_5 from '../assets/meals/food_5.png';
+import ProfilePage from './ProfilePage';
+import CartPage from './CartPage';
+
+type FoodProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'FoodPage'>
+}
 
 const mealImages = {
   'pN6O9IQsAQ5RNSVGaFno': food_1,
@@ -30,7 +39,7 @@ type MealItem = {
   image: any
 };
 
-const FoodPage = () => {
+const FoodPage: React.FC <FoodProps> = ({navigation}) => {
   const [addToCart, setAddToCart] = useState<MealItem[]>([]); 
   const [mealDetails, setMealDetails] = useState<MealItem[]>([]); 
 
@@ -66,22 +75,52 @@ const FoodPage = () => {
     const mealDoc = doc(firestoreDB, 'food', documentID);
     const docSnapshot = await getDoc(mealDoc);
 
-    try {
-      if (docSnapshot.exists()) {
-        const mealData = { ...docSnapshot.data(), id: docSnapshot.id } as MealItem;
-        setAddToCart((prev) => [...prev, mealData]);
-        console.log('Added Successfully:', mealData);
+     try {
+    if (docSnapshot.exists()) {
+      const mealData = { ...docSnapshot.data(), id: docSnapshot.id } as MealItem;
+      const user = getAuth().currentUser;
+      if (user) {
+        const cartRef = collection(firestoreDB, 'cart', user.uid, 'cartItems');
+        await setDoc(doc(cartRef), { ...mealData, quantity: 1 }); 
+        console.log('Added to Cart Successfully:', mealData);
       } else {
-        console.log('No such document!');
+        console.log('User is not logged in');
       }
-    } catch (err) {
-      console.error(err);
+    } else {
+      console.log('No such document!');
     }
-  };
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+  const profileRedirect = () => {
+    navigation.navigate('ProfilePage')
+  }
+
+  const cartRedirect = () => {
+    navigation.navigate('CartPage')
+  }
+
+  //   try {
+  //     if (docSnapshot.exists()) {
+  //       const mealData = { ...docSnapshot.data(), id: docSnapshot.id } as MealItem;
+  //       setAddToCart((prev) => [...prev, mealData]);
+  //       console.log('Added Successfully:', mealData);
+  //     } else {
+  //       console.log('No such document!');
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar placeholder="Search for your order" />
+      <SearchBar 
+      placeholder="Search for your order" 
+      profilePress={profileRedirect}
+      cartPress={cartRedirect}/>
 
       {mealDetails.map((meal, index) => (
         <View key={meal.id} style={[styles.mealContainer, { top: `${11.5 + 16 * index}%`, alignSelf: 'center' }]}>

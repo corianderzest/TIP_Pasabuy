@@ -27,14 +27,28 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   return (
+
+    // <Stack.Navigator initialRouteName="WelcomePage">
     <Stack.Navigator>
       <Stack.Screen
-        name="CheckoutPage"
-        component={CheckoutPage}
+        name="LoginPage"
+        component={LoginPage}
         options={{ headerShown: false }}
       />
-      
-      {/* <Stack.Screen
+
+      <Stack.Screen
+        name="RegisterPage"
+        component={RegisterPage}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="CartPage"
+        component={CartPage} 
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
         name="CheckoutPage"
         component={CheckoutPage}
         options={{ headerShown: false }}
@@ -46,12 +60,6 @@ const Navigator = () => {
         options={{ headerShown: false }}
       />
       
-      <Stack.Screen
-        name="CartPage"
-        component={CartPage} 
-        options={{ headerShown: false }}
-      />
-
       <Stack.Screen
         name="HomePage"
         component={Homepage} 
@@ -73,12 +81,6 @@ const Navigator = () => {
       <Stack.Screen
         name="HomeSeller"
         component={HomeSeller}
-        options={{ headerShown: false }}
-      />
-
-      <Stack.Screen
-        name="ProfilePage"
-        component={ProfilePage}
         options={{ headerShown: false }}
       />
 
@@ -131,18 +133,6 @@ const Navigator = () => {
       /> 
 
       <Stack.Screen
-        name="LoginPage"
-        component={LoginPage}
-        options={{ headerShown: false }}
-      />
-
-      <Stack.Screen
-        name="RegisterPage"
-        component={RegisterPage}
-        options={{ headerShown: false }}
-      />
-
-      <Stack.Screen
         name="RegisterModal"
         component={RegisterModal}
         options={{ headerShown: false }}
@@ -152,7 +142,13 @@ const Navigator = () => {
         name="LoginModal"
         component={LoginModal}
         options={{ headerShown: false }}
-      /> */}
+      />
+
+      <Stack.Screen
+        name="ProfilePage"
+        component={ProfilePage}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
