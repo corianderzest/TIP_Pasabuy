@@ -38,10 +38,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F7F4",
   },
   description: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "400",
-    color: "#333",
+    color: "#6E6E6E",
     marginVertical: 16,
+    top: '1%',
     textAlign: "center",
   },
   contentContainer: {

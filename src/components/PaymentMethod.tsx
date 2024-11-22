@@ -6,7 +6,7 @@ import paymentMethodImage from "../icons/paymentMethod.png"; // Change this to y
 const { width, height } = Dimensions.get("window");
 
 type PaymentMethodProps = {
-  amount: string;
+  amount?: string;
 };
 
 const PaymentMethod: React.FC<PaymentMethodProps> = ({ amount }) => {
@@ -25,7 +25,7 @@ const PaymentMethod: React.FC<PaymentMethodProps> = ({ amount }) => {
         {/* Cash */}
         <View style={styles.amountContainer}>
           <Text style={styles.cash}>Cash</Text>
-          <Text style={styles.amountValue}>{amount || "₱0.00"}</Text>
+          <Text style={styles.amountValue}>{amount}</Text>
         </View>
       </View>
     </View>

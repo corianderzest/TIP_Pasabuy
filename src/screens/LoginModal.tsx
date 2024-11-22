@@ -43,7 +43,7 @@ return(
           text_color='white'
           text_style='bold'
           size='custom'
-          onPress={() => navigation.navigate('WelcomePage')}
+          onPress={() => navigation.navigate('HomeSeller')}
         />
 
         <Buttons

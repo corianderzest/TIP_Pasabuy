@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     height: (205 / 2400) * height,
     justifyContent: "center",
     position: "absolute",
-    bottom: 0,
+    bottom: '-12%',
   },
 
   iconContainer: {

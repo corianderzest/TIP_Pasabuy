@@ -13,11 +13,75 @@ import orders from "../icons/order.png";
 import logo from "../icons/Logo.png";
 import OrderSummary from "../components/OrderSummary";
 import BuyBuddyName from "../components/BuyBuddyName";
+import {collection, getDocs, doc, getDoc,} from "firebase/firestore"
+import { firestoreDB } from "../backend/firebaseInitialization";
+import { getAuth } from "firebase/auth";
+import { useEffect, useState } from "react";
+
 
 const { width, height } = Dimensions.get("window");
 const bottomNavbarHeight = 60;
 
 const YourOrderPage: React.FC = () => {
+
+    const [priceTotalAmount, setPriceTotalAmount] = useState<number>(0)
+    const [orderData, setOrderData] = useState<any[]>([])
+
+
+  useEffect(() => {
+  const fetchOrder = async () => {
+    const user = getAuth().currentUser;
+    if(user){
+    try{
+    const summaryRef = collection(firestoreDB, 'cart', user.uid, 'cartItems');
+    const querySnapshot = await getDocs(summaryRef);
+
+    const order = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+        return{
+          id: doc.id,
+          name: data.name,
+          description: data.description,
+          price: data.price,
+          quantity: data.quantity || 1
+        }}) 
+        setOrderData(order)
+        console.log(order)
+  } catch (error) {
+    console.error('Data failed to retrieve', error)
+  }} else {
+    console.log('User invalid...')
+  }}
+   fetchOrder();
+}, [])
+
+  useEffect(() => {
+  const fetchTotal = async () => {
+  const user = getAuth().currentUser;
+  if(user){
+    try{
+    const amountPrice = doc(firestoreDB, 'cart', user.uid)
+    const docSnap = await getDoc(amountPrice)
+
+    if (docSnap.exists()){
+      const data = docSnap.data()
+      const totalAmount = data.totalAmount || 0
+      setPriceTotalAmount(totalAmount)
+      console.log('total amount: ', totalAmount)  
+    }
+  } catch(err) {
+    console.error(err)
+  }} else {
+    console.log('invalid user..!..')
+  }
+  }
+  fetchTotal();
+}, [])
+
+const priceCalculator = (price: number, quantity: number) => {
+  return price * quantity
+}
+
   return (
     <View style={styles.container}>
       {/* Upper Navbar */}
@@ -35,7 +99,7 @@ const YourOrderPage: React.FC = () => {
           <Text style={styles.estimatedDeliveryText}>
             Estimated Delivery Time
           </Text>
-          <Text style={styles.timeMinsText}>Time Mins</Text>
+          <Text style={styles.timeMinsText}>15:00</Text>
         </View>
 
         {/* Divider */}
@@ -47,17 +111,32 @@ const YourOrderPage: React.FC = () => {
         </Text>
 
         {/* Order Summary Component */}
-        <OrderSummary />
+        <View style={styles.summaryContainer}>
+          <Text style={styles.title}>Order Summary</Text>
+          
+          {orderData.length > 0 ? (
+            orderData.map((order) => {
+                const priceUpdate = priceCalculator(order.price, order.quantity) 
+              return(             
+          <View style={styles.itemContainer} key={order.id}>
+            <Text style={styles.itemName}>{order.name} x{order.quantity}</Text>
+            <Text style={styles.price}>₱{priceUpdate}</Text>
+          </View>
+      )})) : (<Text style={styles.itemName}>No items in cart</Text>)}
+        </View> 
 
         {/* BuyBuddy Name Section */}
         <BuyBuddyName name={"BuyBuddy Name"} />
       </ScrollView>
 
       {/* Total Amount Section - Moved outside the ScrollView */}
+      {priceTotalAmount > 0 ? (
       <View style={styles.totalAmountContainer}>
         <Text style={styles.totalAmountText}>Total Amount</Text>
-        <Text style={styles.totalAmountValue}>₱500.00</Text>
-      </View>
+        <Text style={styles.totalAmountValue}>₱{priceTotalAmount}</Text>
+      </View>) : (
+        <Text style={styles.totalAmountValue}>No price available...</Text>
+      )}
 
       {/* Bottom Navbar */}
       <View style={styles.bottomNavbarContainer}>
@@ -72,6 +151,45 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F8F7F4",
     justifyContent: "space-between",
+  },
+
+   summaryContainer: {
+    width: '100%',
+    padding: 14,
+    borderWidth: 2,
+    borderColor: "#E0E0E0",
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    alignItems: "flex-start",
+    marginVertical: 16,
+    alignSelf: "center",
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 0.5, 
+  },
+  title: {
+    fontSize: 15,
+    fontWeight: "bold",
+    marginBottom: 12,
+    alignSelf: "flex-start",
+  },
+  itemContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingVertical: 4,
+  },
+  itemName: {
+    fontSize: 13,
+    fontWeight: "400",
+    flex: 1,
+  },
+  price: {
+    fontSize: 15,
+    fontWeight: "600",
+    textAlign: "right",
   },
   contentContainer: {
     paddingHorizontal: 16,
@@ -99,7 +217,8 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   timeMinsText: {
-    fontSize: 20,
+    fontSize: 22,
+    top: '12%',
     fontWeight: "600",
     color: "black",
   },

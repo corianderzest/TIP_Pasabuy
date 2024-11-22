@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Dimensions,
   Animated,
-  Modal,
   KeyboardAvoidingView,
   TouchableOpacity
 } from "react-native";
@@ -30,15 +29,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
   const [visible, setVisible] = useState(false);
-
-  const showNotification = () => {
-    setVisible(true);
-    setTimeout(() => {
-      setVisible(false);
-    }, 2000); 
-    };
 
   const loginValidation = () => {
     if (!email) {
@@ -60,22 +51,18 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
   };
 
   const loginUser = async () => {
-    setErrorMessage(""); 
-    if (!loginValidation()) {
-      showNotification(); 
-      return; 
-    }
-
-    try {
-      loginValidation();
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login successful");
-      navigation.navigate("LoginModal");
-    } catch (error: any) {
-      setErrorMessage(error.message);
-      showNotification();
-      console.log("Login unsuccessful: ", error.message);
-    }
+    setErrorMessage("")
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        console.log("Login successful");
+        setEmail("");
+        setPassword("");
+        navigation.navigate("LoginModal");
+      } catch (error: any) {
+        setErrorMessage(error.message);
+        console.log("Login unsuccessful: ", error.message);
+      }
+    
   };
 
   const slideAnimLeft = useRef(new Animated.Value(-width)).current;
@@ -95,7 +82,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
       duration: 1000,
       useNativeDriver: true,
     }).start();
-  }, [slideAnimUp]);
+  }, [slideAnimUp]);  
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -104,10 +91,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
 
         <View style={styles.imagePosition}>
           <Animated.View
-            style={[
-              styles.imageContainer,
-              { transform: [{ translateX: slideAnimLeft }] },
-            ]}
+            style={[styles.imageContainer, { transform: [{ translateX: slideAnimLeft }] }]}
           >
             <Image source={sample_logo} style={styles.imageProperties} />
           </Animated.View>
@@ -131,6 +115,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
                 <Inputs
                   placeholder="Enter your email"
                   type="account"
+                  value={email}
                   onChangeText={(text) => setEmail(text)}
                 />
               </View>
@@ -141,6 +126,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
                 <Inputs
                   placeholder="Enter your password"
                   type="account"
+                  value={password}
                   secureTextEntry
                   onChangeText={(text) => setPassword(text)}
                 />
@@ -148,20 +134,20 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
             </View>
           </View>
 
-              <TouchableOpacity>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttonStyling}>
-              <Buttons
-                placeholder="Login"
-                backgroundColor="yellow"
-                text_color="black"
-                text_style="bold"
-                size="custom"
-                onPress={loginUser}
-              />
+          <TouchableOpacity>
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonStyling}>
+                <Buttons
+                  placeholder="Login"
+                  backgroundColor="yellow"
+                  text_color="black"
+                  text_style="bold"
+                  size="custom"
+                  onPress={loginUser}
+                />
+              </View>
             </View>
-          </View>
-              </TouchableOpacity>
+          </TouchableOpacity>
 
           <View style={styles.forgotContainer}>
             <Text style={styles.forgotProps}>Forgot Password?</Text>

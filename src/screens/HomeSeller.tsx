@@ -5,21 +5,41 @@ import request from '../icons/profileicons/request.png'
 import history from '../icons/profileicons/history.png'
 import BottomNavbar from '../components/BottomNavbar'
 import SearchBar from '../components/SearchBar'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RootStackParamList } from '../navigation/NavigationTypes'
 
-function HomeSeller() {
+type NavigationProp = {
+  navigation: StackNavigationProp<RootStackParamList, 'HomeSeller'>
+}
+
+const HomeSeller: React.FC <NavigationProp> = ({
+  navigation
+}) => {
+
+  const profileRedirect = () => {
+    navigation.navigate('ProfilePage')
+  }
+
+  const cartRedirect = () => {
+    navigation.navigate('CartPage')
+  }
+
   return (
     <View style = {styles.container}>
       <SearchBar
         placeholder='Search for your order'
-        // onPress1={'ProfilePage'}
+        profilePress={profileRedirect}
+        cartPress={cartRedirect}
       />
       <SellerComponent  
         image={history}
         placeholder='Delivery History'
+        onPress={() => {navigation.navigate('DeliveryHistory')}}
       />
       <SellerComponent  
-        image={request}
         placeholder='Order Request'
+        image={request}
+        onPress={() => {navigation.navigate('OrderRequest')}}
       />
       <View style = {styles.bottomBarPositioning}>
         <BottomNavbar/>

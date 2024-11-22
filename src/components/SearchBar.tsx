@@ -3,6 +3,7 @@ import React from 'react'
 import profile from "../icons/profile.png"
 import cart from "../icons/cart.png"
 
+
 const {width, height} = Dimensions.get('window')
 
 interface SearchBarProps {
@@ -10,7 +11,6 @@ interface SearchBarProps {
   onChangeText?: (text: string) => void,
   profilePress?: () => void
   cartPress?: () => void
-  
 }
 
 const SearchBar: React.FC <SearchBarProps> = ({

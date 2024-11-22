@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, SafeAreaView, Dimensions, Image} from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, Dimensions, Image, TouchableWithoutFeedback} from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import TouchableWithoutFeedback from 'react-native-gesture-handler'
+// import TouchableWithoutFeedback from 'react-native-gesture-handler'
 import { useFonts } from 'expo-font'
+
 
 const {width, height} = Dimensions.get('window')
 
@@ -29,7 +30,7 @@ const SellerComponent: React.FC <SellerComponentProps> = ({
   }
 
   return (
-    <TouchableOpacity>
+    <TouchableWithoutFeedback onPress={onPress}>
       <SafeAreaView style = {styles.container}>
 
         <View style = {styles.imageContainer}>
@@ -44,7 +45,7 @@ const SellerComponent: React.FC <SellerComponentProps> = ({
         </View>
 
       </SafeAreaView>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   )
 }
 

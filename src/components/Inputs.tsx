@@ -10,8 +10,9 @@
     type?: Input_Type, 
     width?: number,
     height?: number,
-    onChangeText?: (text: string) => void;
-    secureTextEntry?: boolean;
+    onChangeText?: (text: string) => void,
+    secureTextEntry?: boolean,
+    value?: any,
   }
 
   const Input_Size = {
@@ -38,6 +39,7 @@
     placeholder,
     onChangeText,
     secureTextEntry = false,
+    value,
   })=>{
     
     const input_type = Input_Size[type] || Input_Size.account
@@ -51,6 +53,7 @@
       onChangeText={onChangeText}   
       secureTextEntry={secureTextEntry}
       placeholder={placeholder}
+      value={value}
       >
 
 
