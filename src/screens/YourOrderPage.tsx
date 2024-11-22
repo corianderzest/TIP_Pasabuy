@@ -26,6 +26,7 @@ const YourOrderPage: React.FC = () => {
 
     const [priceTotalAmount, setPriceTotalAmount] = useState<number>(0)
     const [orderData, setOrderData] = useState<any[]>([])
+    const [isAccepted, setIsAccepted] = useState<boolean>(false)
 
 
   useEffect(() => {
@@ -36,16 +37,20 @@ const YourOrderPage: React.FC = () => {
     const summaryRef = collection(firestoreDB, 'cart', user.uid, 'cartItems');
     const querySnapshot = await getDocs(summaryRef);
 
-    const order = querySnapshot.docs.map((doc) => {
+    const order = querySnapshot.docs.map((doc) => { 
       const data = doc.data();
         return{
           id: doc.id,
           name: data.name,
           description: data.description,
           price: data.price,
-          quantity: data.quantity || 1
+          quantity: data.quantity || 1,
+          orderStatus: data.orderAccepted 
         }}) 
         setOrderData(order)
+
+        const allAccepted = order.every((o) => o.orderStatus === true);
+        setIsAccepted(allAccepted)
         console.log(order)
   } catch (error) {
     console.error('Data failed to retrieve', error)
@@ -97,9 +102,11 @@ const priceCalculator = (price: number, quantity: number) => {
         {/* Estimated Delivery Time Section */}
         <View style={styles.estimatedDeliveryContainer}>
           <Text style={styles.estimatedDeliveryText}>
-            Estimated Delivery Time
+            Order Status
           </Text>
-          <Text style={styles.timeMinsText}>15:00</Text>
+          <Text style={styles.timeMinsText}>
+            {isAccepted ? 'Delivery is on the way' : 'Waiting to be accepted'}
+            </Text>
         </View>
 
         {/* Divider */}
@@ -217,7 +224,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   timeMinsText: {
-    fontSize: 22,
+    fontSize: 18,
     top: '12%',
     fontWeight: "600",
     color: "black",

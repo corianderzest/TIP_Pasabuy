@@ -80,11 +80,11 @@ const styles = StyleSheet.create({
   },
 
   imageProps: {
-    height: '60%',
+    height: '60%',  
     width: '50%',
   },
 
-  textContainer: {
+  textContainer: {  
     position: 'absolute',
     left: '42%',
   },

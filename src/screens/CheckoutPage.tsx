@@ -16,7 +16,7 @@ import OrderSummary from "../components/OrderSummary";
 import Buttons from "../components/Buttons";
 import { RootStackParamList } from "../navigation/NavigationTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {collection, getDocs, doc, getDoc, addDoc} from "firebase/firestore"
+import {collection, getDocs, doc, getDoc, setDoc, addDoc} from "firebase/firestore"
 import { firestoreDB } from "../backend/firebaseInitialization";
 import { getAuth } from "firebase/auth";
 
@@ -35,6 +35,8 @@ const CheckoutPage: React.FC <CheckoutProps> = ({navigation}) => {
   const [orderData, setOrderData] = useState<any[]>([]);
   const [priceTotalAmount, setPriceTotalAmount] = useState<number>(0)
   const [address, setAddress] = useState<any[]>([]);
+  const [isAccepted, setIsAccepted] = useState(false)
+  const [recipient, setRecipient] = useState('')
    
   const currentTime = new Date();
   const formattedTime = currentTime.toLocaleString();
@@ -87,7 +89,7 @@ useEffect(() => {
 
     if (docSnapshot.exists()){
       const data = docSnapshot.data()
-      const totalAmount = data.totalAmount || 0
+      const totalAmount = data.totalAmount
       setPriceTotalAmount(totalAmount)
       console.log('total amount: ', totalAmount)  
     }
@@ -111,9 +113,11 @@ useEffect (() => {
         if(snapshot.exists()){
           const data = snapshot.data();
           const userAddress = data.address || ''
+          const userName = data.name || ''
           setAddress(userAddress);
+          setRecipient(userName)
           console.log('User address: ', address)
-        }
+        } 
       } catch(err) { 
         console.error(err)
       }
@@ -141,7 +145,7 @@ useEffect (() => {
   }
 
   // retrieve data
-  const orderDocument = {
+  const orderDocument =  {
     orderItems: orderData.map(order => ({
       id: order.id,
       name: order.name,
@@ -150,12 +154,19 @@ useEffect (() => {
       quantity: order.quantity,
       total: priceCalculator(order.price, order.quantity),
     })),
-    totalAmount: priceTotalAmount,
+    totalAmount: orderData.reduce(
+      (sum, order) => sum + priceCalculator(order.price, order.quantity),
+      0
+    ),
     address: address,
-    date: formattedTime, 
+    recipient: recipient,
+    orderDate: formattedTime, 
     uniqueID: randomID,
-    isAccepted: false, 
+    orderAccepted: false, 
+    
   };
+
+  setIsAccepted(orderDocument.orderAccepted)
 
   // save data
   try {
