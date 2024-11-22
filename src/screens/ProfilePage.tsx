@@ -7,13 +7,21 @@ import address from '../icons/profileicons/address.png'
 import help from '../icons/profileicons/help.png'
 import history from '../icons/profileicons/history.png'
 import logout from '../icons/profileicons/logout.png'
-import name from '../icons/profileicons/name.png'
+import name from '../icons/profileicons/name.png' 
 import photo from '../icons/profileicons/photo.png'
 import { useFonts } from 'expo-font'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { RootStackParamList } from '../navigation/NavigationTypes'
+import { getAuth, signOut } from 'firebase/auth';
+import { app } from '../backend/firebaseInitialization'
+
+type ProfileProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'ProfilePage'>
+}
 
 const { width, height } = Dimensions.get('window')
 
-const ProfilePage = () => {
+const ProfilePage: React.FC <ProfileProps> = ({navigation}) => {
 
   const [fonts] = useFonts({
     'Lato-Bold': require('../assets/fonts/Lato/Lato-Bold.ttf'),
@@ -23,6 +31,17 @@ const ProfilePage = () => {
 
   if (!fonts) {
     return null
+  }
+
+  const logoutRedirect = async () => {
+     try {
+    const auth = getAuth(app); 
+    await signOut(auth); 
+    console.log('User logged out successfully');
+    navigation.navigate('WelcomePage');  
+  } catch (error) {
+    console.error('Error logging out: ', error);  
+  }
   }
 
   return (
@@ -64,6 +83,7 @@ const ProfilePage = () => {
           <ProfileClickables
             placeholder='Logout Account'
             image={logout}
+            onPress={logoutRedirect}
           />
         </View>
       </View>

@@ -16,10 +16,9 @@ import OrderSummary from "../components/OrderSummary";
 import Buttons from "../components/Buttons";
 import { RootStackParamList } from "../navigation/NavigationTypes";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {collection, getDocs, doc, getDoc,} from "firebase/firestore"
+import {collection, getDocs, doc, getDoc, setDoc, addDoc} from "firebase/firestore"
 import { firestoreDB } from "../backend/firebaseInitialization";
 import { getAuth } from "firebase/auth";
-
 
 type CheckoutProps = {
   navigation: StackNavigationProp<RootStackParamList, 'CheckoutPage'>
@@ -34,10 +33,24 @@ const CheckoutPage: React.FC <CheckoutProps> = ({navigation}) => {
   
   const [isChecked, setIsChecked] = useState(false);
   const [orderData, setOrderData] = useState<any[]>([]);
-  const [priceTotalAmount, setPriceTotalAmount] = useState<any[]>([])
+  const [priceTotalAmount, setPriceTotalAmount] = useState<number>(0)
+  const [address, setAddress] = useState<any[]>([]);
+  const [isAccepted, setIsAccepted] = useState(false)
+  const [recipient, setRecipient] = useState('')
    
   const currentTime = new Date();
   const formattedTime = currentTime.toLocaleString();
+  const randomID = generateRandomId();
+
+  function generateRandomId(length: number = 8): string {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
 
 useEffect(() => {
   const fetchOrder = async () => {
@@ -78,7 +91,7 @@ useEffect(() => {
       const data = docSnapshot.data()
       const totalAmount = data.totalAmount
       setPriceTotalAmount(totalAmount)
-      console.log('total amount: ', totalAmount)
+      console.log('total amount: ', totalAmount)  
     }
   } catch(err) {
     console.error(err)
@@ -89,14 +102,83 @@ useEffect(() => {
   fetchTotal();
 }, [])
 
-  const receiptRedirect = () => {
-    if (!isChecked){
-    console.log('Checkbox must be filled!');
-  } else {
-    navigation.navigate('YourOrderPage');
-    console.log('Redirect Successful!')
+useEffect (() => {
+  const fetchAddress = async () => {
+    const user = getAuth().currentUser
+    if(user){
+      try{
+        const userRef = doc(firestoreDB, 'users', user.uid)
+        const snapshot = await getDoc(userRef)
+        
+        if(snapshot.exists()){
+          const data = snapshot.data();
+          const userAddress = data.address || ''
+          const userName = data.name || ''
+          setAddress(userAddress);
+          setRecipient(userName)
+          console.log('User address: ', address)
+        } 
+      } catch(err) { 
+        console.error(err)
+      }
+    } else {
+      console.log('user not found...')
+    }
+  } 
+  fetchAddress();
+}, [])
+
+  const priceCalculator = (price: number, quantity: number) => {
+    return price * quantity
   }
-}   
+
+ const receiptRedirect = async () => {
+  if (!isChecked) {
+    console.log('Checkbox must be filled!');  
+    return; 
+  }
+
+  const user = getAuth().currentUser;
+  if (!user) {
+    console.log('No user logged in.');
+    return;
+  }
+
+  // retrieve data
+  const orderDocument =  {
+    orderItems: orderData.map(order => ({
+      id: order.id,
+      name: order.name,
+      description: order.description,
+      price: order.price,
+      quantity: order.quantity,
+      total: priceCalculator(order.price, order.quantity),
+    })),
+    totalAmount: orderData.reduce(
+      (sum, order) => sum + priceCalculator(order.price, order.quantity),
+      0
+    ),
+    address: address,
+    recipient: recipient,
+    orderDate: formattedTime, 
+    uniqueID: randomID,
+    orderAccepted: false, 
+    
+  };
+
+  setIsAccepted(orderDocument.orderAccepted)
+
+  // save data
+  try {
+    const orderRef = collection(firestoreDB, 'order');
+    await addDoc(orderRef, orderDocument);
+    console.log('Order placed successfully!');
+    navigation.navigate('YourOrderPage'); 
+  } catch (err) {
+    console.error('Error placing order:', err);
+  }
+};
+
 
   return (
     <View style={styles.container}>
@@ -105,26 +187,38 @@ useEffect(() => {
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <Text style={styles.checkoutText}>Checkout</Text>
         <Text style={styles.stallName}>Stall Name</Text>
-        <DeliveryAddress />
-        <PaymentMethod amount="₱500.00" />
+        
+        {address.length > 0 ? (
+        <DeliveryAddress 
+          address={address}
+        />) : (
+          <Text>No address found</Text>
+        )}
+
+
+        <PaymentMethod/>
 
         <View style={styles.summaryContainer}>
           <Text style={styles.title}>Order Summary</Text>
           
           {orderData.length > 0 ? (
-            orderData.map((order) => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.itemName}>{order.name}</Text>
-            <Text style={styles.price}>{order.price}</Text>
+            orderData.map((order) => {
+                const priceUpdate = priceCalculator(order.price, order.quantity) 
+              return(             
+          <View style={styles.itemContainer} key={order.id}>
+            <Text style={styles.itemName}>{order.name} x{order.quantity}</Text>
+            <Text style={styles.price}>₱{priceUpdate}</Text>
           </View>
-      ))) : (<Text style={styles.itemName}>No items in cart</Text>)}
+      )})) : (<Text style={styles.itemName}>No items in cart</Text>)}
         </View>
 
 
+        {priceTotalAmount > 0 && (
         <View style={styles.totalAmountContainer}>
           <Text style={styles.totalAmountText}>Total Amount</Text>
-          <Text style={styles.totalAmountValue}>₱500.00</Text>
+          <Text style={styles.totalAmountValue}>₱{priceTotalAmount}</Text>
         </View>
+        )}
 
          <View style={styles.checkboxContainer}>
 
@@ -153,7 +247,9 @@ useEffect(() => {
             size="xxl"
             height={40}
             width={width * 0.8}
-            onPress={receiptRedirect}
+            onPress={() => {
+              receiptRedirect()
+            }}
           />
         </View>
       </ScrollView>
@@ -161,7 +257,7 @@ useEffect(() => {
       <View style={{ height: bottomNavbarHeight }}>
         <BottomNavbar icon={orders} iconText="Orders" />
       </View>
-    </View>
+    </View> 
   );
 };
 

@@ -11,6 +11,7 @@ interface ClickableProps {
 const ProfileClickables: React.FC <ClickableProps> = ({
   placeholder,
   image,
+  onPress
 }) => {
 
     const [fonts] = useFonts({
@@ -25,7 +26,7 @@ const ProfileClickables: React.FC <ClickableProps> = ({
 
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style = {styles.container}>
         <View style = {styles.detailProps}>
           <Image

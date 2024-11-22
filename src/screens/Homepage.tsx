@@ -27,6 +27,11 @@ type HomePageProps = {
 }
 
 
+export const profileRedirect: React.FC <HomePageProps> = ({navigation}) => {
+    navigation.navigate('ProfilePage')
+    return null
+  }
+
 const promo_images = [
   { id: '1', uri: promo },
   { id: '2', uri: promo_1 },

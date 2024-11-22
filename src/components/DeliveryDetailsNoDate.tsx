@@ -1,13 +1,29 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
-
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from "react-native";
 import locationImage from "../icons/location.png";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/NavigationTypes";
+
+type DeliveryProps = {
+  containerPress?: () => void,
+  address?: string,
+  amount?: number,
+  recipient?: string,
+}
 
 const { width, height } = Dimensions.get("window");
 
-const DeliveryDetailsNoDate: React.FC = () => {
+const DeliveryDetailsNoDate: React.FC<DeliveryProps> = ({
+  containerPress,
+  address,
+  amount,
+  recipient
+
+}) => {
   return (
+    <TouchableOpacity onPress={containerPress}>
     <View style={styles.container}>
+      
       {/* Location Image */}
       <Image source={locationImage} style={styles.locationImage} />
 
@@ -15,16 +31,17 @@ const DeliveryDetailsNoDate: React.FC = () => {
       <View style={styles.textContainer}>
         <View style={styles.nameAmountContainer}>
           {/* Customer Name */}
-          <Text style={styles.customerName}>Customer Name</Text>
+          <Text style={styles.customerName}>{recipient}</Text>
 
           {/* Amount */}
-          <Text style={styles.amount}>Amount</Text>
+          <Text style={styles.amount}>₱{amount}</Text>
         </View>
 
         {/* Address */}
-        <Text style={styles.address}>Address</Text>
+        <Text style={styles.address}>{address}</Text>
       </View>
-    </View>
+    </View> 
+    </TouchableOpacity>
   );
 };
 
@@ -70,11 +87,13 @@ const styles = StyleSheet.create({
   address: {
     fontSize: 14,
     fontWeight: "400",
-    marginTop: 4,
+    top: '2%',
     color: "#6E6E6E",
   },
   amount: {
     fontSize: 16,
+    top: '2%',
+    right: '22%',
     fontWeight: "700",
     color: "black",
   },

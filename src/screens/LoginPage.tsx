@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Dimensions,
   Animated,
-  Modal,
   KeyboardAvoidingView,
   TouchableOpacity,
 } from "react-native";
@@ -122,7 +121,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
       duration: 1000,
       useNativeDriver: true,
     }).start();
-  }, [slideAnimUp]);
+  }, [slideAnimUp]);  
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -136,10 +135,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
 
         <View style={styles.imagePosition}>
           <Animated.View
-            style={[
-              styles.imageContainer,
-              { transform: [{ translateX: slideAnimLeft }] },
-            ]}
+            style={[styles.imageContainer, { transform: [{ translateX: slideAnimLeft }] }]}
           >
             <Image source={sample_logo} style={styles.imageProperties} />
           </Animated.View>
@@ -163,6 +159,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
                 <Inputs
                   placeholder="Enter your email"
                   type="account"
+                  value={email}
                   onChangeText={(text) => setEmail(text)}
                 />
               </View>
@@ -173,6 +170,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
                 <Inputs
                   placeholder="Enter your password"
                   type="account"
+                  value={password}
                   secureTextEntry
                   onChangeText={(text) => setPassword(text)}
                 />

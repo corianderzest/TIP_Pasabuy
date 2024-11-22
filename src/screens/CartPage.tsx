@@ -15,6 +15,8 @@ type CartPageProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'CartPage'>;
 };
 
+
+
 const { width, height } = Dimensions.get('window');
 
 const CartPage: React.FC<CartPageProps> = ({ navigation }) => {
@@ -90,6 +92,7 @@ const increment = (itemId: string) => {
       item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
     );
     calculateTotalAmount(updatedItems);
+    updateItemInDatabase(itemId, updatedItems.find(item => item.id === itemId)?.quantity || 1);
     return updatedItems;
   });
 };
@@ -111,6 +114,9 @@ const decrement = async (itemId: string) => {
         return true;
       });
     calculateTotalAmount(updatedItems);
+    if (updatedItems.find(item => item.id === itemId)?.quantity) {
+        updateItemInDatabase(itemId, updatedItems.find(item => item.id === itemId)?.quantity);
+      }
     return updatedItems;
   });
 };
@@ -121,14 +127,30 @@ const removeFromDatabase = async (itemId: string) => {
     try {
       const itemRef = doc(firestoreDB, 'cart', user.uid, 'cartItems', itemId);
       await deleteDoc(itemRef);
-      console.log(`Item ${itemId} removed from database.`);
+      console.log(`Item ${itemId} removed from database`);
     } catch (err) {
-      console.error('Error removing item from database:', err);
+      console.error('Unable to remove item ', err);
     }
   } else {
     console.log('User is not logged in');
   }
 };
+
+const updateItemInDatabase = async (itemId: string, quantity: number) => {
+    const user = getAuth().currentUser;
+    if (user) {
+      try {
+        const itemRef = doc(firestoreDB, 'cart', user.uid, 'cartItems', itemId);
+        // const priceRef = doc(firestoreDB, 'cart', user.uid, 'cartItems');
+        await setDoc(itemRef, { quantity }, { merge: true });
+        console.log(`Item ${itemId} updated in database with new quantity: ${quantity}`);
+      } catch (err) {
+        console.error('Error updating item in database:', err);
+      }
+    } else {
+      console.log('User is not logged in');
+    }
+  };
 
 const updateTotalInDatabase = async (total: number) => {
   const user = getAuth().currentUser;
@@ -137,8 +159,8 @@ const updateTotalInDatabase = async (total: number) => {
       const totalRef = doc(firestoreDB, 'cart', user.uid);
       await setDoc(
         totalRef,
-        { totalAmount: total }, // Update or add the totalAmount field
-        { merge: true } // Merge with existing fields
+        { totalAmount: total },
+        { merge: true } 
       );
       console.log('Total amount updated in database:', total);
     } catch (error) {

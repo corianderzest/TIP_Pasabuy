@@ -5,21 +5,24 @@ import locationImage from "../icons/location.png";
 
 const { width, height } = Dimensions.get("window");
 
-const DeliveryAddress: React.FC = () => {
+type DeliveryProps = {
+  address?: any;
+}
+
+const DeliveryAddress: React.FC<DeliveryProps> = ({address}) => {
   return (
     <View style={styles.container}>
-      {/* Location Image */}
+
       <Image source={locationImage} style={styles.locationImage} />
 
-      {/* Delivery Address and Location */}
       <View style={styles.textContainer}>
         <View style={styles.nameAmountContainer}>
-          {/* Delivery Address */}
+
           <Text style={styles.customerName}>Delivery Address</Text>
         </View>
 
-        {/* Address */}
-        <Text style={styles.address}>Address</Text>
+
+        <Text style={styles.address}>{address}</Text>
       </View>
     </View>
   );
