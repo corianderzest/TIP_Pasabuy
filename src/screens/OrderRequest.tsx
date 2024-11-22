@@ -4,7 +4,7 @@ import UpperNavbar from "../components/UpperNavbar";
 import BottomNavbar from "../components/BottomBarSeller"; 
 import DeliveryDetailsNoDate from "../components/DeliveryDetailsNoDate";
 import { firestoreDB } from "../backend/firebaseInitialization";
-import { collection, onSnapshot } from "firebase/firestore"; // Changed to onSnapshot for real-time listener
+import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 

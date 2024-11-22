@@ -35,13 +35,7 @@ const Navigator = () => {
         component={WelcomePage}
         options={{ headerShown: false }}
       />
-
-      {/*<Stack.Screen
-        name="TransactionHistory"
-        component={TransactionHistory}
-        options={{ headerShown: false }}
-      />
-
+      
       <Stack.Screen
         name="TransactionDetails"
         component={TransactionDetails}
@@ -49,10 +43,11 @@ const Navigator = () => {
       />
 
       <Stack.Screen
-        name="WelcomePage"
-        component={WelcomePage}
+        name="TransactionHistory"
+        component={TransactionHistory}
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name="LoginPage"
         component={LoginPage}
@@ -165,7 +160,7 @@ const Navigator = () => {
         name="ProfilePage"
         component={ProfilePage}
         options={{ headerShown: false }}
-      />*/}
+      />
     </Stack.Navigator>
   );
 };
