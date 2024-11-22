@@ -7,7 +7,7 @@ import {
   Animated,
   Modal,
   KeyboardAvoidingView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import Buttons from "../components/Buttons";
@@ -18,6 +18,7 @@ import { RootStackParamList } from "../navigation/NavigationTypes";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import Notification from "../components/Notif";
+import ValidationModal from "../screens/ValidationModal";
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,53 +31,79 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const [visible, setVisible] = useState(false);
+
+  const showValidationModal = (message: string) => {
+    setErrorMessage(message);
+    setModalVisible(true);
+  };
 
   const showNotification = () => {
     setVisible(true);
     setTimeout(() => {
       setVisible(false);
-    }, 2000); 
-    };
-
-  const loginValidation = () => {
-    if (!email) {
-      setErrorMessage("Email must be filled");
-      return false;
-    }
-
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setErrorMessage("Email is invalid");
-      return false;
-    }
-
-    if (!password) {
-      setErrorMessage("Password must be filled");
-      return false;
-    }
-
-    return true;
+    }, 2000);
   };
 
   const loginUser = async () => {
-    setErrorMessage(""); 
-    if (!loginValidation()) {
-      showNotification(); 
-      return; 
+    setErrorMessage("");
+
+    if (!email && !password) {
+      const userFriendlyMessage =
+        "Please fill in both email and password fields.";
+      setErrorMessage(userFriendlyMessage);
+      showNotification();
+      showValidationModal(userFriendlyMessage);
+      return;
+    }
+
+    else if (!email) {
+      const userFriendlyMessage = "Please enter your email.";
+      setErrorMessage(userFriendlyMessage);
+      showNotification();
+      showValidationModal(userFriendlyMessage);
+      return;
+    }
+
+    else if (!password) {
+      const userFriendlyMessage = "Please enter your password.";
+      setErrorMessage(userFriendlyMessage);
+      showNotification();
+      showValidationModal(userFriendlyMessage);
+      return;
     }
 
     try {
-      loginValidation();
       await signInWithEmailAndPassword(auth, email, password);
       console.log("Login successful");
       navigation.navigate("LoginModal");
     } catch (error: any) {
-      setErrorMessage(error.message);
+      console.error("Login unsuccessful: ", error.message);
+
+      let userFriendlyMessage = "An error occurred. Please try again.";
+
+      if (error.code === "auth/invalid-email") {
+        userFriendlyMessage =
+          "The email address is not valid. Please check your email.";
+      } else if (error.code === "auth/invalid-credential") {
+        userFriendlyMessage = "Invalid credentials. Please check your details.";
+      } else if (password.length < 4) {
+        const userFriendlyMessage =
+          "Password must be at least 4 characters long.";
+        setErrorMessage(userFriendlyMessage);
+        showNotification();
+        showValidationModal(userFriendlyMessage);
+        return;
+      }
+
+      setErrorMessage(userFriendlyMessage);
       showNotification();
-      console.log("Login unsuccessful: ", error.message);
+      showValidationModal(userFriendlyMessage);
     }
   };
+
 
   const slideAnimLeft = useRef(new Animated.Value(-width)).current;
   const slideAnimUp = useRef(new Animated.Value(+width)).current;
@@ -100,6 +127,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <SafeAreaView style={styles.positioningContainer}>
+        <ValidationModal
+          visible={isModalVisible}
+          message={errorMessage}
+          onClose={() => setModalVisible(false)}
+        />
         {visible && <Notification message={errorMessage} />}
 
         <View style={styles.imagePosition}>
@@ -148,20 +180,20 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
             </View>
           </View>
 
-              <TouchableOpacity>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttonStyling}>
-              <Buttons
-                placeholder="Login"
-                backgroundColor="yellow"
-                text_color="black"
-                text_style="bold"
-                size="custom"
-                onPress={loginUser}
-              />
+          <TouchableOpacity>
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonStyling}>
+                <Buttons
+                  placeholder="Login"
+                  backgroundColor="yellow"
+                  text_color="black"
+                  text_style="bold"
+                  size="custom"
+                  onPress={loginUser}
+                />
+              </View>
             </View>
-          </View>
-              </TouchableOpacity>
+          </TouchableOpacity>
 
           <View style={styles.forgotContainer}>
             <Text style={styles.forgotProps}>Forgot Password?</Text>

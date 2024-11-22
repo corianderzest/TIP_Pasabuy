@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, StyleSheet, Dimensions, Image } from 'react-native'
 import React from 'react'
 import SearchBar from '../components/SearchBar'
-import BottomBar from '../components/BottomBar'
+import BottomBar from '../components/BottomBarCustomer'
 import ProfileClickables from '../components/ProfileClickables'
 import address from '../icons/profileicons/address.png'
 import help from '../icons/profileicons/help.png'

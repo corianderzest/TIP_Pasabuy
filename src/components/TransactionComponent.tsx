@@ -5,14 +5,11 @@ import locationImage from "../icons/location.png";
 
 const { width, height } = Dimensions.get("window");
 
-const DeliveryDetails: React.FC = () => {
+const TransactionHistory: React.FC = () => {
   return (
     <View style={styles.container}>
-      {/* Location Image */}
-      <Image source={locationImage} style={styles.locationImage} />
-
       {/* Customer Name, Address, and Amount */}
-      <View style={styles.textContainer}> 
+      <View style={styles.textContainer}>
         <View style={styles.nameAmountContainer}>
           {/* Customer Name */}
           <Text style={styles.customerName}>Customer Name</Text>
@@ -48,12 +45,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 0.5,
   },
-  locationImage: {
-    width: 40,
-    height: 42,
-    marginRight: 13,
-    marginTop: 16,
-  },
   textContainer: {
     flexDirection: "column",
     flex: 1,
@@ -84,9 +75,9 @@ const styles = StyleSheet.create({
   deliveryDate: {
     fontSize: 14,
     fontWeight: "400",
-    marginTop: 4,
+    marginTop: 24,
     color: "#6E6E6E",
   },
 });
 
-export default DeliveryDetails;
+export default TransactionHistory;

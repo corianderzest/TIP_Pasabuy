@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import BottomNavbar from "../components/BottomNavbar";
+import BottomNavbar from "../components/BottomBarSeller";
 import leftArrowIcon from "../icons/arrow.png";
 import helpIcon from "../icons/help.png";
 import logo from "../icons/Logo.png";

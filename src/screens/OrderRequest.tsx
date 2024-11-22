@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions, ScrollView } from "react-native";
 import UpperNavbar from "../components/UpperNavbar"; 
-import BottomNavbar from "../components/BottomNavbar"; 
+import BottomNavbar from "../components/BottomBarSeller"; 
 import DeliveryDetailsNoDate from "../components/DeliveryDetailsNoDate";
 
 const { width, height } = Dimensions.get("window");

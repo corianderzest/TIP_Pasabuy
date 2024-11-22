@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import UpperNavbar from "../components/UpperNavbar";
-import BottomNavbar from "../components/BottomNavbar";
+import BottomNavbar from "../components/BottomBarSeller";
 import orders from "../icons/order.png";
 import DeliveryAddress from "../components/DeliveryAddress";
 import PaymentMethod from "../components/PaymentMethod";

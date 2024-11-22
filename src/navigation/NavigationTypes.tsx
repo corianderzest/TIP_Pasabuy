@@ -21,6 +21,8 @@ export type RootStackParamList = {
   CartPage: undefined;
   CheckoutPage: undefined;
   YourOrderPage: undefined;
+  TransactionHistory: undefined;
+  TransactionDetails: undefined;
 };
 
 export type WelcomePageNavigationProp = NativeStackNavigationProp<
@@ -121,4 +123,14 @@ export type CheckoutPageNavigationProp = NativeStackNavigationProp<
 export type YourOrderPageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "YourOrderPage"
->;
+  >;
+
+  export type TransactionHistoryNavigationProp = NativeStackNavigationProp<
+    RootStackParamList,
+    "TransactionHistory"
+  >;
+
+  export type TransactionDetailsNavigationProp = NativeStackNavigationProp<
+    RootStackParamList,
+    "TransactionDetails"
+  >;

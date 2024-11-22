@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import BottomBar from '../components/BottomBar';
+import BottomBar from '../components/BottomBarCustomer';
 import SearchBar from '../components/SearchBar';
 import MealOverview from '../components/MealOverview';
 import { firestoreDB } from '../backend/firebaseInitialization';

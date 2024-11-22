@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native';
 import SearchBar from '../components/SearchBar';
-import BottomBar from '../components/BottomBar';
+import BottomBar from '../components/BottomBarCustomer';
 import Animation from '../components/Animation';
 import foodcourt from '../assets/images/foodcourt.png';
 import foods from '../assets/images/foods.png';

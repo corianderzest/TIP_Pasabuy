@@ -2,7 +2,7 @@ import { View, Text, Dimensions, SafeAreaView, StyleSheet, Image } from 'react-n
 import React, { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import SearchBar from '../components/SearchBar';
-import BottomBar from '../components/BottomBar';
+import BottomBar from '../components/BottomBarCustomer';
 import CartComponents from '../components/CartComponents';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/NavigationTypes';

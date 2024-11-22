@@ -7,7 +7,7 @@ import RegisterPage from "../screens/RegisterPage";
 import RegisterModal from "../screens/RegisterModal";
 import LoginModal from "../screens/LoginModal";
 import { RootStackParamList } from "./NavigationTypes";
-import Homepage from "../screens/HomePage";
+import HomePage from "../screens/HomePage";
 import DrinksPage from "../screens/DrinksPage";
 import RatingsReview from "../screens/RatingsReview";
 import DeliveryHistory from "../screens/DeliveryHistory";
@@ -22,14 +22,37 @@ import StallsPage from "../screens/StallsPage";
 import CartPage from "../screens/CartPage";
 import CheckoutPage from "../screens/CheckoutPage";
 import YourOrderPage from "../screens/YourOrderPage";
+import TransactionHistory from "../screens/TransactionHistory";
+import TransactionDetails from "../screens/TransactionDetails";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const Navigator = () => {
   return (
-
-    // <Stack.Navigator initialRouteName="WelcomePage">
     <Stack.Navigator>
+      <Stack.Screen
+        name="WelcomePage"
+        component={WelcomePage}
+        options={{ headerShown: false }}
+      />
+
+      {/*<Stack.Screen
+        name="TransactionHistory"
+        component={TransactionHistory}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="TransactionDetails"
+        component={TransactionDetails}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="WelcomePage"
+        component={WelcomePage}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="LoginPage"
         component={LoginPage}
@@ -44,7 +67,7 @@ const Navigator = () => {
 
       <Stack.Screen
         name="CartPage"
-        component={CartPage} 
+        component={CartPage}
         options={{ headerShown: false }}
       />
 
@@ -59,16 +82,10 @@ const Navigator = () => {
         component={YourOrderPage}
         options={{ headerShown: false }}
       />
-      
-      <Stack.Screen
-        name="HomePage"
-        component={Homepage} 
-        options={{ headerShown: false }}
-      />
 
       <Stack.Screen
-        name="WelcomePage"
-        component={WelcomePage} 
+        name="HomePage"
+        component={HomePage}
         options={{ headerShown: false }}
       />
 
@@ -123,14 +140,14 @@ const Navigator = () => {
       <Stack.Screen
         name="DrinksPage"
         component={DrinksPage}
-        options={{headerShown: false}}
-      /> 
+        options={{ headerShown: false }}
+      />
 
       <Stack.Screen
         name="FoodPage"
-        component={FoodPage} 
+        component={FoodPage}
         options={{ headerShown: false }}
-      /> 
+      />
 
       <Stack.Screen
         name="RegisterModal"
@@ -148,7 +165,7 @@ const Navigator = () => {
         name="ProfilePage"
         component={ProfilePage}
         options={{ headerShown: false }}
-      />
+      />*/}
     </Stack.Navigator>
   );
 };
