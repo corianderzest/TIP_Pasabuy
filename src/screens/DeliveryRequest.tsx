@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,66 +10,120 @@ import {
 } from "react-native";
 import BottomNavbar from "../components/BottomBarSeller";
 import Buttons from "../components/Buttons";
-import OrderSummary from "../components/OrderSummary";
 import PaymentMethod from "../components/PaymentMethod";
 import leftArrowIcon from "../icons/arrow.png";
+import { firestoreDB } from "../backend/firebaseInitialization";
+import { getDoc, doc, collection, getDocs, updateDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/NavigationTypes";
 
 const { width, height } = Dimensions.get("window");
 
 const navbarHeight = 60;
 const bottomNavbarHeight = 60;
 
-const DeliveryRequest: React.FC = () => {
+interface NavigationProp {
+  navigation: StackNavigationProp<RootStackParamList, 'DeliveryRequest'>
+}
+
+const DeliveryRequest: React.FC<NavigationProp> = ({ navigation }) => {
+  const [orderData, setOrderData] = useState<any[]>([]);
+  const [address, setAddress] = useState('');
+  const [name, setName] = useState('');
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [orderID, setOrderID] = useState<string>(''); 
+
+  useEffect(() => {
+    const user = getAuth().currentUser;
+    const fetchOrder = async () => {
+      if (user) {
+        try {
+          const docRef = collection(firestoreDB, 'order');
+          const docSnap = await getDocs(docRef);
+
+          docSnap.docs.forEach((doc) => {
+            const data = doc.data();
+            const recipientName = data.recipient;
+            const recipientAddress = data.address;
+            const totalAmount = data.totalAmount;
+            const orderItems = data.orderItems;
+            const orderID = doc.id; 
+
+            setAddress(recipientAddress);
+            setName(recipientName);
+            setTotalAmount(totalAmount);
+            setOrderData(orderItems);
+            setOrderID(orderID); 
+          });
+
+        } catch (err) {
+          console.error('fetch error... ', err);
+        }
+      } else {
+        console.error('user not found...');
+      }
+    };
+    fetchOrder();
+  }, []);
+
+  const priceCalculator = (price: number, quantity: number) => {
+    return price * quantity;
+  };
+
+  const handleAcceptOrder = async () => {
+    try {
+      if (orderID) {
+        const orderRef = doc(firestoreDB, 'order', orderID); 
+        await updateDoc(orderRef, {
+          orderAccepted: true, 
+        });
+        navigation.navigate('ForDelivery');
+      }
+    } catch (error) {
+      console.error('Error updating order status: ', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {/* Upper Navbar */}
       <View style={styles.navbarContainer}>
-        {/* Left Arrow Icon */}
         <TouchableOpacity style={styles.leftArrowContainer}>
           <Image source={leftArrowIcon} style={styles.leftArrowIcon} />
         </TouchableOpacity>
-
-        {/* Title */}
         <Text style={styles.navbarTitle}>Delivery Request</Text>
-
-        {/* Decline Button */}
-        <View style={styles.buttonContainer}>
-          <Buttons
-            placeholder="Decline"
-            backgroundColor="red"
-            text_style="normal"
-            text_color="white"
-            size="medium"
-            width={120}
-            onPress={() => {}}
-          />
-        </View>
       </View>
 
-      {/* Content Section */}
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        {/* Customer Name and Address */}
         <View style={styles.customerInfoContainer}>
-          <Text style={styles.customerName}>Customer Name</Text>
-          <Text style={styles.address}>Address</Text>
+          <Text style={styles.customerName}>{name}</Text>
+          <Text style={styles.address}>{address}</Text>
         </View>
 
-        <View style={styles.whiteContainer}></View>
+        <View style={styles.summaryContainer}>
+          <Text style={styles.title}>Order Summary</Text>
+          {orderData.length > 0 ? (
+            orderData.map((order) => (
+              <View style={styles.itemContainer} key={order.id}>
+                <Text style={styles.itemName}>
+                  {order.name} x{order.quantity}
+                </Text>
+                <Text style={styles.price}>₱{order.total}</Text>
+              </View>
+            ))
+          ) : (
+            <Text style={styles.itemName}>No items in cart</Text>
+          )}
+        </View>
 
-        {/* Order Summary Section */}
-        <OrderSummary />
-
-        {/* Payment Method Component */}
-        <PaymentMethod amount="Amount" />
+        <PaymentMethod />
       </ScrollView>
 
-      {/* Total and Amount Section */}
       <View style={styles.totalAmountContainer}>
         <Text style={styles.totalText}>Total</Text>
-        <Text style={styles.amountText}>Amount</Text>
+        <Text style={styles.amountText}>₱{totalAmount}</Text>
       </View>
 
-      {/* Accept Button */}
       <View style={styles.acceptButtonContainer}>
         <Buttons
           placeholder="Accept"
@@ -79,11 +133,10 @@ const DeliveryRequest: React.FC = () => {
           size="xxl"
           width={width * 0.8}
           height={40}
-          onPress={() => {}}
+          onPress={handleAcceptOrder} 
         />
       </View>
 
-      {/* Bottom Navbar */}
       <View style={{ height: bottomNavbarHeight }}>
         <BottomNavbar />
       </View>
@@ -92,6 +145,44 @@ const DeliveryRequest: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+
+    summaryContainer: {
+    width: '100%',
+    padding: 14,
+    borderWidth: 2,
+    borderColor: "#E0E0E0",
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF",
+    alignItems: "flex-start",
+    marginVertical: 16,
+    alignSelf: "center",
+    elevation: 0.5, 
+  },
+
+  title: {
+    fontSize: 15,
+    fontWeight: "bold",
+    marginBottom: 12,
+    alignSelf: "flex-start",
+  },
+
+    itemContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    paddingVertical: 4,
+  },
+  itemName: {
+    fontSize: 13,
+    fontWeight: "400",
+    flex: 1,
+  },
+  price: {
+    fontSize: 15,
+    fontWeight: "600",
+    textAlign: "right",
+  },
+
   container: {
     flex: 1,
     backgroundColor: "#F8F7F4",
@@ -146,12 +237,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginBottom: 2,
-    marginTop: 16,
+    top: '21%',
+    right: '4%',
   },
   address: {
     fontSize: 16,
     fontWeight: "400",
     color: "#6E6E6E",
+    top: '20%',
+    right: '4%',
   },
   whiteContainer: {
     width: (900 / 1080) * width,

@@ -14,7 +14,7 @@ const CustomerInfoWithMail: React.FC = () => {
 
           {/* Customer Info */}
           <View style={styles.textContainer}>
-            <Text style={styles.customerName}>Customer Name</Text>
+            <Text style={styles.customerName}>BuyBuddy</Text>
             <Text style={styles.message}>Message</Text>
           </View>
         </View>
@@ -32,11 +32,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 16,
     padding: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 0.5,
+    elevation: 1.5,
   },
   container: {
     flexDirection: "row",

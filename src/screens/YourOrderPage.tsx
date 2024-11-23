@@ -17,7 +17,7 @@ import {collection, getDocs, doc, getDoc,} from "firebase/firestore"
 import { firestoreDB } from "../backend/firebaseInitialization";
 import { getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
-
+import order from "../icons/order.png"
 
 const { width, height } = Dimensions.get("window");
 const bottomNavbarHeight = 60;
@@ -48,9 +48,6 @@ const YourOrderPage: React.FC = () => {
           orderStatus: data.orderAccepted 
         }}) 
         setOrderData(order)
-
-        const allAccepted = order.every((o) => o.orderStatus === true);
-        setIsAccepted(allAccepted)
         console.log(order)
   } catch (error) {
     console.error('Data failed to retrieve', error)
@@ -59,6 +56,29 @@ const YourOrderPage: React.FC = () => {
   }}
    fetchOrder();
 }, [])
+
+  useEffect(() => {
+    const fetchStatus = async() => {
+    const user = getAuth().currentUser
+    if(user){
+      try{
+        const statusRef = collection(firestoreDB, 'order')
+        const statusSnap = await getDocs(statusRef)
+
+       statusSnap.docs.forEach((doc) => {
+        const data = doc.data()
+        const currentStatus = data.orderAccepted
+        console.log(currentStatus)
+        setIsAccepted(currentStatus)
+       })
+      } catch(err) {
+        console.log('fetch status error: ', err)
+      }
+    } else {
+      console.error('invalid user...')
+    }}
+    fetchStatus()
+  }, [])
 
   useEffect(() => {
   const fetchTotal = async () => {
@@ -105,7 +125,7 @@ const priceCalculator = (price: number, quantity: number) => {
             Order Status
           </Text>
           <Text style={styles.timeMinsText}>
-            {isAccepted ? 'Delivery is on the way' : 'Waiting to be accepted'}
+            {isAccepted !== null ? (isAccepted ? 'Delivery is on the way' : 'Waiting to be accepted') : 'Loading...'}
             </Text>
         </View>
 
@@ -133,7 +153,7 @@ const priceCalculator = (price: number, quantity: number) => {
         </View> 
 
         {/* BuyBuddy Name Section */}
-        <BuyBuddyName name={"BuyBuddy Name"} />
+        <BuyBuddyName name={"BuyBuddy"} />
       </ScrollView>
 
       {/* Total Amount Section - Moved outside the ScrollView */}
@@ -147,7 +167,10 @@ const priceCalculator = (price: number, quantity: number) => {
 
       {/* Bottom Navbar */}
       <View style={styles.bottomNavbarContainer}>
-        <BottomNavbar icon={orders} iconText="Orders" />
+        <BottomNavbar 
+        deliveriesIcon={order}
+        deliveriesText="Orders" 
+        />
       </View>
     </View>
   );

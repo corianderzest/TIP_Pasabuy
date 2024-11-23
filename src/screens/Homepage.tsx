@@ -87,7 +87,9 @@ const Homepage: React.FC<HomePageProps> = ({navigation}) => {
       />
 
       <View style = {styles.bottomBarPositioning}>
-        <BottomBar/>
+        <BottomBar
+        orderPress={() => {navigation.navigate('YourOrderPage')}}
+        />
       </View>
 
       <View style={styles.promoWrapperPosition}>

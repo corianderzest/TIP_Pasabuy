@@ -7,13 +7,20 @@ import { firestoreDB } from "../backend/firebaseInitialization";
 import { collection, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/NavigationTypes";
+
+type orderProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'OrderRequest'>
+}
 
 const { width, height } = Dimensions.get("window");
-
 const navbarHeight = 60;
 const bottomNavbarHeight = 60;
 
-const OrderRequest: React.FC = () => {
+const OrderRequest: React.FC<orderProps> = ({
+  navigation,
+}) => {
   const [orderItems, setOrderItems] = useState<any[]>([]);
 
   useEffect(() => {
@@ -64,6 +71,7 @@ const OrderRequest: React.FC = () => {
               recipient={order.name}
               amount={order.amount}
               address={order.address}
+              containerPress={() => {navigation.navigate('DeliveryRequest')}}
             />
           ))
         ) : (

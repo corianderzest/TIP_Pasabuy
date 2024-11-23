@@ -19,6 +19,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import {collection, getDocs, doc, getDoc, setDoc, addDoc} from "firebase/firestore"
 import { firestoreDB } from "../backend/firebaseInitialization";
 import { getAuth } from "firebase/auth";
+import order from "../icons/order.png"
 
 type CheckoutProps = {
   navigation: StackNavigationProp<RootStackParamList, 'CheckoutPage'>
@@ -128,6 +129,8 @@ useEffect (() => {
   fetchAddress();
 }, [])
 
+  
+
   const priceCalculator = (price: number, quantity: number) => {
     return price * quantity
   }
@@ -178,8 +181,6 @@ useEffect (() => {
     console.error('Error placing order:', err);
   }
 };
-
-
   return (
     <View style={styles.container}>
       <UpperNavbar title="Checkout" />
@@ -194,7 +195,6 @@ useEffect (() => {
         />) : (
           <Text>No address found</Text>
         )}
-
 
         <PaymentMethod/>
 
@@ -255,7 +255,9 @@ useEffect (() => {
       </ScrollView>
 
       <View style={{ height: bottomNavbarHeight }}>
-        <BottomNavbar icon={orders} iconText="Orders" />
+        <BottomNavbar           
+        deliveriesIcon={order}
+        deliveriesText="Orders" />
       </View>
     </View> 
   );

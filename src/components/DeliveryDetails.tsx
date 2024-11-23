@@ -5,7 +5,19 @@ import locationImage from "../icons/location.png";
 
 const { width, height } = Dimensions.get("window");
 
-const DeliveryDetails: React.FC = () => {
+type DeliveryProps = {
+  recipient?: string,
+  address?: string,
+  deliveryDate?: any,
+  amount?: number,
+}
+
+const DeliveryDetails: React.FC<DeliveryProps> = ({
+  recipient,
+  address,
+  deliveryDate,
+  amount
+}) => {
   return (
     <View style={styles.container}>
       {/* Location Image */}
@@ -15,17 +27,17 @@ const DeliveryDetails: React.FC = () => {
       <View style={styles.textContainer}> 
         <View style={styles.nameAmountContainer}>
           {/* Customer Name */}
-          <Text style={styles.customerName}>Customer Name</Text>
+          <Text style={styles.customerName}>{recipient}</Text>
 
           {/* Amount */}
-          <Text style={styles.amount}>Amount</Text>
+          <Text style={styles.amount}>₱{amount}</Text>
         </View>
 
         {/* Address */}
-        <Text style={styles.address}>Address</Text>
+        <Text style={styles.address}>{address}</Text>
 
         {/* Delivery Date */}
-        <Text style={styles.deliveryDate}>Delivery Date</Text>
+        <Text style={styles.deliveryDate}>{deliveryDate}</Text>
       </View>
     </View>
   );
@@ -80,6 +92,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     color: "black",
+    top: '8%',
+    right: '30%'
   },
   deliveryDate: {
     fontSize: 14,

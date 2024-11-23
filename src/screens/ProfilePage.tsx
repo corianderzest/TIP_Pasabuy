@@ -70,6 +70,7 @@ const ProfilePage: React.FC <ProfileProps> = ({navigation}) => {
         <ProfileClickables
           placeholder='Transaction History'
           image={history}
+          onPress={() => {navigation.navigate('TransactionHistory')}}
         />
 
         <View style = {styles.helpSpace}>

@@ -15,13 +15,109 @@ import logo from "../icons/Logo.png";
 import StoreCustomerInfo from "../components/StoreCustomerInfo";
 import CustomerInfoWithMail from "../components/CustomerInfoWithMail";
 import Buttons from "../components/Buttons";
+import { firestoreDB } from "../backend/firebaseInitialization";
+import {addDoc, deleteDoc, collection, doc, getDoc, getDocs, } from 'firebase/firestore'
+import { getAuth } from "firebase/auth";
+import { useState, useEffect } from "react";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigation/NavigationTypes";
 
 const { width, height } = Dimensions.get("window");
 
 const navbarHeight = 60;
 const bottomNavbarHeight = 60;
 
-const ForDelivery: React.FC = () => {
+type DeliveryProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'ForDelivery'>
+}
+
+const ForDelivery: React.FC<DeliveryProps> = ({
+  navigation
+}) => {
+
+  const [recipientName, setRecipientName] = useState<string>('')
+  const [recipientAddress, setRecipientAddress] = useState<string>('')
+  const [orderDate, setOrderDate] = useState<string>('')
+  const [amount, setAmount] = useState<number>(0)
+  const [uniqueID, setUniqueID] = useState<string>('')
+  const [documentId, setDocumentId] = useState<string | null>(null);
+  const user = getAuth().currentUser
+
+useEffect(() => {
+  const fetchData = async() => {
+    if(user){
+      try{
+        const dataRef = collection(firestoreDB, 'order')
+        const dataSnap = await getDocs(dataRef)
+        console.log(dataSnap.docs.map(doc => doc.data()));
+
+        dataSnap.docs.forEach((doc)=> {
+          const data = doc.data()
+          const name = data.recipient
+          const address = data.address
+          const date = data.orderDate
+          const amount = data.totalAmount
+          const uniqueID = data.uniqueID
+
+          setRecipientName(name)
+          setRecipientAddress(address)
+          setOrderDate(date)
+          setAmount(amount)
+          setUniqueID(uniqueID)
+          setDocumentId(doc.id);
+        })
+      }catch(err){
+        console.error('fetching failed... ', err)
+      }
+    } else {
+      console.error('user not found....')
+    }
+  }
+  fetchData()
+}, [])
+
+const orderDocument = {
+  name: recipientName,
+  address: recipientAddress,
+  date: orderDate,
+  amount: amount,
+  uniqueID: uniqueID,
+}
+
+const addData = async () => {
+  if(user){
+    try{
+      const historyRef = collection(firestoreDB, 'transactionHistory')
+      await addDoc(historyRef, orderDocument)
+      console.log('sucessfully added history....')
+    } catch(err){
+      console.error('failed adding data', err)
+    }
+  }else{
+    console.log('user not found...')
+  }
+}
+
+const deleteData = async() => {
+  if(user && documentId){
+    try{
+      const orderRef = doc(firestoreDB, 'order', documentId)
+      await deleteDoc(orderRef)
+      console.log('successfully removed the item... ')
+    } catch(err){
+      console.error('error deleting data...', err)
+    }
+  } else {
+    console.error('user invalid...')
+  }
+}
+
+  const arrivalButton = () => {
+    addData();
+    deleteData();
+    navigation.navigate('OrderRequest')
+  }
+
   return (
     <View style={styles.container}>
       {/* Upper Navbar */}
@@ -40,50 +136,39 @@ const ForDelivery: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Content Section */}
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        {/* Logo */}
+
         <View style={styles.logoContainer}>
           <Image source={logo} style={styles.logo} />
         </View>
-        {/* Estimated Delivery Time Section */}
+
         <View style={styles.estimatedDeliveryContainer}>
           <Text style={styles.estimatedDeliveryText}>
-            Estimated Delivery Time
+            A customer is waiting for you
           </Text>
-          <Text style={styles.timeMinsText}>Time Mins</Text>
+          <Text style={styles.timeMinsText}>Hurry Up</Text>
         </View>
-        {/* Divider */}
-        <View style={styles.boldDivider} />
-        {/* Message */}
-        <Text style={styles.statusMessage}>
-          Preparing your food. Your BuyBuddy will pick it up when it’s ready.
-        </Text>
-        {/* Store and Customer Info */}
-        <StoreCustomerInfo />
 
-        {/* Customer Info with Mail */}
+
+        <View style = {styles.messaging}>
         <CustomerInfoWithMail />
+        </View>
       </ScrollView>
-
-      {/* Total and Amount Section */}
-      <View style={styles.totalAmountContainer}>
-        <Text style={styles.totalText}>Total</Text>
-        <Text style={styles.amountText}>Amount</Text>
-      </View>
 
       {/* Accept Button */}
       <View style={styles.acceptButtonContainer}>
+        <TouchableOpacity>
         <Buttons
-          placeholder="Arrived at Vendor"
+          placeholder="Order Arrived"
           backgroundColor="black"
           text_style="normal"
           text_color="white"
           size="xxl"
           width={width * 0.8}
           height={50}
-          onPress={() => {}}
+          onPress={arrivalButton}
         />
+        </TouchableOpacity>
       </View>
 
       {/* Bottom Navbar */}
@@ -99,6 +184,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F8F7F4",
   },
+  
+  messaging: {
+    top: '-8%'
+  },
+
   navbarContainer: {
     backgroundColor: "#F3C623",
     width: "100%",

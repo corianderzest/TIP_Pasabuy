@@ -2,31 +2,40 @@ import { View, Text, StyleSheet, Dimensions, Image, SafeAreaView} from 'react-na
 import React from 'react'
 import order from "../icons/order.png"
 import home from "../icons/home.png"
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 const {width, height} = Dimensions.get('window')
 
 interface BottomBarProps{
-  onPress?: () => void
+ orderPress?: () => void,
+ homePress?: () => void
 }
 
-const BottomBar: React.FC <BottomBarProps> = ({}) => {
+const BottomBar: React.FC <BottomBarProps> = ({
+  orderPress,
+  homePress
+}) => {
   return (
     <SafeAreaView style = {styles.containerPositioning}>
       <View style = {styles.container}>
         <View style = {styles.positioning}>
 
           <View style = {styles.orderContainer}>
+          <TouchableWithoutFeedback onPress={orderPress}>
             <Image
               style={styles.imageProps}
               source={order}/>
             <Text style = {styles.textProps}>Orders</Text>
+          </TouchableWithoutFeedback>
           </View>
 
           <View style = {styles.orderContainer}>
+          <TouchableWithoutFeedback onPress={homePress}>
             <Image
               style={styles.imageProps}
               source={home}/>
             <Text style = {styles.textProps}>Home</Text>
+          </TouchableWithoutFeedback>
           </View>
 
         </View>

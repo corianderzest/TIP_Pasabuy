@@ -7,30 +7,41 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const { width, height } = Dimensions.get("window");
 
 interface BottomNavbarProps {
-  onPress?: () => void;
-  placeholder?: string;
-  icon?: any;
-  iconText?: string;
+  onPressDeliveries?: () => void;
+  onPressHome?: () => void;
+  deliveriesIcon?: any;
+  deliveriesText?: string;
+  homeIcon?: any;
+  homeText?: string;
 }
 
 const BottomNavbar: React.FC<BottomNavbarProps> = ({
-  placeholder,
-  icon,
-  iconText,
+  onPressDeliveries,
+  onPressHome,
+  deliveriesIcon,
+  deliveriesText,
+  homeIcon,
+  homeText,
 }) => {
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
         {/* Deliveries Icon */}
-        <TouchableOpacity style={styles.deliveriesWrapper}>
-          <Image style={styles.deliveriesIcon} source={icon || deliveries} />
-          <Text style={styles.iconText}>{iconText || "Deliveries"}</Text>
+        <TouchableOpacity
+          style={styles.deliveriesWrapper}
+          onPress={onPressDeliveries}
+        >
+          <Image
+            style={styles.deliveriesIcon}
+            source={deliveriesIcon || deliveries}
+          />
+          <Text style={styles.iconText}>{deliveriesText || "Deliveries"}</Text>
         </TouchableOpacity>
 
         {/* Home Icon */}
-        <TouchableOpacity style={styles.homeWrapper}>
-          <Image style={styles.homeIcon} source={home} />
-          <Text style={styles.iconText}>Home</Text>
+        <TouchableOpacity style={styles.homeWrapper} onPress={onPressHome}>
+          <Image style={styles.homeIcon} source={homeIcon || home} />
+          <Text style={styles.iconText}>{homeText || "Home"}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -44,7 +55,7 @@ const styles = StyleSheet.create({
     height: (205 / 2400) * height,
     justifyContent: "center",
     position: "absolute",
-    bottom: '-12%',
+    bottom: "-12%",
   },
 
   iconContainer: {
@@ -78,13 +89,6 @@ const styles = StyleSheet.create({
   iconText: {
     fontSize: 13,
     textAlign: "center",
-  },
-
-  placeholderText: {
-    fontSize: 16,
-    textAlign: "center",
-    color: "#333",
-    marginTop: 10,
   },
 });
 
