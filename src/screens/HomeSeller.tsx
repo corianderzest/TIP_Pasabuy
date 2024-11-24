@@ -6,6 +6,7 @@ import history from "../icons/profileicons/history.png";
 import BottomNavbar from "../components/BottomBarSeller";
 import SearchBar from "../components/SearchBar";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 type HomeSellerProps = {
   navigation: NativeStackNavigationProp<any>; 
@@ -14,17 +15,23 @@ type HomeSellerProps = {
 function HomeSeller({ navigation }: HomeSellerProps) {
   return (
     <View style={styles.container}>
-      <SearchBar placeholder="Search for your order" />
-      <TouchableOpacity onPress={() => navigation.navigate("DeliveryHistory")}>
-        <SellerComponent image={history} placeholder="Delivery History" />
-      </TouchableOpacity>
+      <SearchBar 
+      placeholder="Search for your order" 
+      profilePress={() => {navigation.navigate('SellerProfile')}}/>
+        <SellerComponent 
+        image={history} 
+        placeholder="Delivery History" 
+        onPress={() => navigation.navigate("DeliveryHistory")}/>
 
-      <TouchableOpacity onPress={() => navigation.navigate("OrderRequest")}>
-        <SellerComponent image={request} placeholder="Order Request" />
-      </TouchableOpacity>
+        <SellerComponent 
+        image={request} placeholder="Order Request" 
+        onPress={() => navigation.navigate("OrderRequest")}/>
 
       <View style={styles.bottomBarPositioning}>
-        <BottomNavbar />
+        <BottomNavbar 
+        onPressDeliveries={() => {navigation.navigate('ForDelivery')}}
+        onPressHome={() => {navigation.navigate('HomeSeller')}}
+        />
       </View>
     </View>
   );

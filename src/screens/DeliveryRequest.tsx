@@ -17,6 +17,7 @@ import { getDoc, doc, collection, getDocs, updateDoc } from "firebase/firestore"
 import { getAuth } from "firebase/auth";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigation/NavigationTypes";
+import UpperNavbar from "../components/UpperNavbar";
 
 const { width, height } = Dimensions.get("window");
 
@@ -87,12 +88,10 @@ const DeliveryRequest: React.FC<NavigationProp> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.navbarContainer}>
-        <TouchableOpacity style={styles.leftArrowContainer}>
-          <Image source={leftArrowIcon} style={styles.leftArrowIcon} />
-        </TouchableOpacity>
-        <Text style={styles.navbarTitle}>Delivery Request</Text>
-      </View>
+
+          <UpperNavbar title="Delivery Request" 
+      backPress={() => {navigation.goBack()}}/>
+
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.customerInfoContainer}>
@@ -138,7 +137,9 @@ const DeliveryRequest: React.FC<NavigationProp> = ({ navigation }) => {
       </View>
 
       <View style={{ height: bottomNavbarHeight }}>
-        <BottomNavbar />
+        <BottomNavbar 
+        onPressDeliveries={() => {navigation.navigate('ForDelivery')}}
+        onPressHome={() => {navigation.navigate('HomeSeller')}}/>
       </View>
     </View>
   );
@@ -202,6 +203,7 @@ const styles = StyleSheet.create({
   leftArrowContainer: {
     position: "absolute",
     left: 15,
+    top: 17,
   },
   leftArrowIcon: {
     width: 25,

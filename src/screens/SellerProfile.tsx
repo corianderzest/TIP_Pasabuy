@@ -15,9 +15,10 @@ import { RootStackParamList } from '../navigation/NavigationTypes'
 import { getAuth, signOut } from 'firebase/auth';
 import { app } from '../backend/firebaseInitialization'
 import { firestoreDB } from '../backend/firebaseInitialization'
-import {collection, getDocs} from 'firebase/firestore'
+import {collection, getDocs, query, where, doc, getDoc} from 'firebase/firestore'
 import { useEffect } from 'react'
 import profilesample from '../icons/profileicons/profilesample.png'
+import BottomNavbar from '../components/BottomBarSeller'
 
 type ProfileProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ProfilePage'>
@@ -26,14 +27,6 @@ type ProfileProps = {
 const { width, height } = Dimensions.get('window')
 
 const ProfilePage: React.FC <ProfileProps> = ({navigation}) => {
-
-  const profileRedirect = () => {
-    navigation.navigate('ProfilePage')
-  }
-
-  const cartRedirect = () => {
-    navigation.navigate('CartPage')
-  }
 
   const user = getAuth().currentUser
   const [name, setName] = useState<string>('')
@@ -59,73 +52,66 @@ const ProfilePage: React.FC <ProfileProps> = ({navigation}) => {
     console.error('Error logging out: ', error);  
   }
   }
-
-  useEffect(() => {
-    const fetchUserData = async() => {
-      if(user){
-        try{
-          const userRef = collection(firestoreDB, 'users')
-          const userSnap = await getDocs(userRef)
-
-          userSnap.docs.forEach((doc)=> {
-            const data = doc.data()
-            const name = data.name
-            const address = data.address
-
-            setName(name)
-            setAddress(address)
-          })
-        } catch(err){
-          console.error('error fetching user credentials... ', err)
-        }
-      }else{
-        console.log('')
+useEffect(() => {
+const fetchUserData = async () => {
+  const user = getAuth().currentUser;
+  if (user) {
+    console.log('User UID:', user.uid); 
+    try {
+      const userRef = collection(firestoreDB, 'users');
+      const userDocRef = doc(userRef, user.uid); 
+      const docSnapshot = await getDoc(userDocRef); 
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        console.log('User Data:', data); 
+        setName(data.name || '');  
+        setAddress(data.address || '');  
+      } else {
+        console.log('No user data found for this UID');
       }
+    } catch (err) {
+      console.error('Error fetching user data: ', err);
     }
-    fetchUserData()
-  }, [])
+  } else {
+    console.log('No user is logged in');
+  }
+};
+fetchUserData()
+}, [])
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar 
-      placeholder="Search for your order" 
-      profilePress={profileRedirect}
-      cartPress={cartRedirect}/>
+      <SearchBar placeholder='Search for your order' />
 
       <View style={styles.bottomBarPositioning}>
-        <BottomBar 
-        orderPress={() => {navigation.navigate('YourOrderPage')}}
-        homePress={() => {navigation.navigate('HomePage')}}
-        />
+        <BottomNavbar/>
       </View>
 
-      {/* <View style={styles.imageContainer}> */}
         <Image
           style={styles.imageContainer}
           source={profilesample}
         />
-      {/* </View> */}
 
       <View style={styles.detailsProps}>
-        <Text style={styles.textStyle}>{name}</Text>
-        <Text style={styles.subtextStyle}>{address}</Text>
+        <Text style={styles.textStyle}>{name || 'Loading...'}</Text>
+        <Text style={styles.subtextStyle}>{address || 'Loading...'}</Text>
       </View>
 
       <View style={styles.clickablesContainer}>
 
 
 
-        <ProfileClickables
+        {/* <ProfileClickables
           placeholder='Transaction History'
           image={history}
           onPress={() => {navigation.navigate('TransactionHistory')}}
-        />
+        /> */}
 
         <View style = {styles.helpSpace}>
           <ProfileClickables
             placeholder='Help'
             image={help}
-            onPress={() => {navigation.navigate('AboutPage')}}
           />
         </View>
 
@@ -213,7 +199,7 @@ const styles = StyleSheet.create({
   },
 
   bottomBarPositioning: {
-    bottom: '-83%',
+    bottom: '-92%',
   },
 
 })

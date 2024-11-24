@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import locationImage from "../icons/location.png";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigation/NavigationTypes";
@@ -21,7 +21,7 @@ const DeliveryDetailsNoDate: React.FC<DeliveryProps> = ({
 
 }) => {
   return (
-    <TouchableOpacity onPress={containerPress}>
+    <TouchableWithoutFeedback onPress={containerPress}>
     <View style={styles.container}>
       
       {/* Location Image */}
@@ -41,7 +41,7 @@ const DeliveryDetailsNoDate: React.FC<DeliveryProps> = ({
         <Text style={styles.address}>{address}</Text>
       </View>
     </View> 
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
 

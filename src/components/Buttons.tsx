@@ -1,4 +1,4 @@
-import { View, Text, Button, Dimensions, StyleSheet} from 'react-native'
+import { View, Text, Button, Dimensions, StyleSheet, TouchableOpacity} from 'react-native'
 import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
@@ -70,7 +70,7 @@ const Buttons: React.FC<ButtonProps> = ({
 
 
 return(
-  <TouchableWithoutFeedback onPress={onPress}>
+  <TouchableOpacity onPress={onPress}>
       <View
       style={[styles.container, 
         {backgroundColor: buttonHexColor.color,
@@ -86,7 +86,7 @@ return(
             fontSize: 17,
           }}>{placeholder}</Text>
       </View>
-  </TouchableWithoutFeedback>
+  </TouchableOpacity>
 )
 }
 

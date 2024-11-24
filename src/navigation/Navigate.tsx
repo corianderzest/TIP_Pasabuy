@@ -24,6 +24,8 @@ import CheckoutPage from "../screens/CheckoutPage";
 import YourOrderPage from "../screens/YourOrderPage";
 import TransactionHistory from "../screens/TransactionHistory";
 import TransactionDetails from "../screens/TransactionDetails";
+import SellerProfile from '../screens/SellerProfile'
+import MessagePage from '../screens/MessagePage'
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -99,6 +101,18 @@ const Navigator = () => {
       <Stack.Screen
         name="AboutPage"
         component={AboutPage}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="MessagePage"
+        component={MessagePage}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="SellerProfile"
+        component={SellerProfile}
         options={{ headerShown: false }}
       />
 

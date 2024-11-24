@@ -9,14 +9,23 @@ import Add from '../icons/add.png'
 import Order from '../icons/order.png'
 import Cart from '../icons/cart.png'
 import Edit from '../icons/edit.png'
+import { RootStackParamList } from '../navigation/NavigationTypes'
+import { StackNavigationProp } from '@react-navigation/stack'
 
 const {width, height} = Dimensions.get('window')
 
-const AboutPage = () => {
+type AboutNavigation = {
+  navigation: StackNavigationProp<RootStackParamList, 'AboutPage'>
+}
+
+const AboutPage: React.FC <AboutNavigation> = ({navigation}) => {
   return (
     <SafeAreaView style = {styles.container}>
 
-      <SearchBar placeholder='Search for your order'/>
+      <SearchBar 
+      placeholder='Search for your order'
+      profilePress={() => {navigation.navigate('ProfilePage')}}
+      cartPress={() => {navigation.navigate('CartPage')}}/>
 
       <View style = {styles.bottomBarPositioning}>
         <BottomBar/>
@@ -24,35 +33,40 @@ const AboutPage = () => {
 
       <View style = {styles.headerContainer}>
         <Text style = {styles.headerText}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis faucibus, ex a placerat venenatis, urna turpis imperdiet magna, non feugiat risus neque a nisl. Nam aliquet vehicula tortor, ut interdum elit vehicula ut. Integer in ullamcorper nunc, maximus hendrerit sem. 
+          TIP Pasabuy is an innovative software developed by the Technological Institute of the Philippines (TIP), designed to cater to the needs of students by providing a platform similar to Grab. It allows students to register as both riders and customers, offering a convenient way to request or provide delivery services within the campus or nearby areas. 
         </Text>
       </View>
 
       <View style = {styles.helpContainer}>
         <About
-          placeholder='Lorem Ipsum'
+          placeholder='Profile Button: Used to redirect to Profile Page'
           image={Profile}
+          onPress={() => {navigation.navigate('ProfilePage')}}
         />
         <About
-          placeholder='Lorem Ipsum'
+          placeholder='Home Button: Used to navigate to the Home Page'
           image={Home}
+          onPress={() => {navigation.navigate('HomePage')}}
         />
         <About
-          placeholder='Lorem Ipsum'
+          placeholder='Add Button: Where it is used to add items to cart'
           image={Add}
+          onPress={() => {navigation.navigate('FoodPage')}}
         />
         <About
-          placeholder='Lorem Ipsum'
+          placeholder='Orders Button: It is used to navigate to your current order'
           image={Order}
+          onPress={() => {navigation.navigate('YourOrderPage')}}
         />
         <About
-          placeholder='Lorem Ipsum'
+          placeholder='Cart Button: Used to navigate to the cart page'
           image={Cart}
+          onPress={() => {navigation.navigate('CartPage')}}
         />
-        <About
+        {/* <About
           placeholder='Lorem Ipsum'
           image={Edit}
-        />
+        /> */}
       </View>
     </SafeAreaView>
   )
@@ -73,6 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginHorizontal: '5%',
     marginVertical:'5%',
+    textAlign: 'center',
   },
 
   headerContainer: {

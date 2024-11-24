@@ -23,6 +23,8 @@ export type RootStackParamList = {
   YourOrderPage: undefined;
   TransactionHistory: undefined;
   TransactionDetails: undefined;
+  SellerProfile: undefined;
+  MessagePage: undefined;
 };
 
 export type WelcomePageNavigationProp = NativeStackNavigationProp<
@@ -30,9 +32,19 @@ export type WelcomePageNavigationProp = NativeStackNavigationProp<
   "WelcomePage"
 >;
 
+export type SellerProfileNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "SellerProfile"
+>;
+
 export type LoginPageNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   "LoginPage"
+>;
+
+export type MessagePageNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "MessagePage"
 >;
 
 export type LoginModalNavigationProp = NativeStackNavigationProp<

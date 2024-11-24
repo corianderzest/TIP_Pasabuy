@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, SafeAreaView, StyleSheet, Image } from 'react-native';
+import { View, Text, Dimensions, SafeAreaView, StyleSheet, Image, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import SearchBar from '../components/SearchBar';
@@ -10,12 +10,17 @@ import Buttons from '../components/Buttons';
 import { firestoreDB } from '../backend/firebaseInitialization';
 import { collection, getDocs, setDoc, doc, deleteDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 type CartPageProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'CartPage'>;
 };
 
-
+interface Item {
+  id: string;
+  title: string;
+  description: string;
+}
 
 const { width, height } = Dimensions.get('window');
 
@@ -42,6 +47,7 @@ const CartPage: React.FC<CartPageProps> = ({ navigation }) => {
 
   const [cartItems, setCartItems] = useState<any[]>([]); // store the items
   const [totalAmount, setTotalAmount] = useState(0);
+
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -173,9 +179,15 @@ const updateTotalInDatabase = async (total: number) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar placeholder="Search for your order" profilePress={profileRedirect} />
+      <SearchBar 
+      placeholder="Search for your order" 
+      profilePress={profileRedirect}/>
+
       <View style={styles.bottomBarPositioning}>
-        <BottomBar />
+        <BottomBar 
+        orderPress={() => {navigation.navigate('YourOrderPage')}}
+        homePress={() => {navigation.navigate('HomePage')}}
+        />
       </View>
       <View style={styles.headerContainer}>
         <Text style={styles.headerStyling}>Cart</Text>
@@ -228,6 +240,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f7f4',
+  },
+
+ item: {
+    marginBottom: 12,
+  },
+  title: {
+    fontWeight: 'bold',
   },
 
   amountContainer: {

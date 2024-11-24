@@ -38,6 +38,7 @@ const CheckoutPage: React.FC <CheckoutProps> = ({navigation}) => {
   const [address, setAddress] = useState<any[]>([]);
   const [isAccepted, setIsAccepted] = useState(false)
   const [recipient, setRecipient] = useState('')
+  const [contact, setContact] = useState<any>('')
    
   const currentTime = new Date();
   const formattedTime = currentTime.toLocaleString();
@@ -115,8 +116,10 @@ useEffect (() => {
           const data = snapshot.data();
           const userAddress = data.address || ''
           const userName = data.name || ''
+          const contact = data.contact || ''
           setAddress(userAddress);
-          setRecipient(userName)
+          setRecipient(userName);
+          setContact(contact);
           console.log('User address: ', address)
         } 
       } catch(err) { 
@@ -165,6 +168,7 @@ useEffect (() => {
     recipient: recipient,
     orderDate: formattedTime, 
     uniqueID: randomID,
+    contact: contact,
     orderAccepted: false, 
     
   };
@@ -183,7 +187,9 @@ useEffect (() => {
 };
   return (
     <View style={styles.container}>
-      <UpperNavbar title="Checkout" />
+      <UpperNavbar 
+      title="Checkout" 
+      backPress={() => {navigation.goBack()}}/>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <Text style={styles.checkoutText}>Checkout</Text>
@@ -255,9 +261,11 @@ useEffect (() => {
       </ScrollView>
 
       <View style={{ height: bottomNavbarHeight }}>
-        <BottomNavbar           
+        <BottomNavbar 
+        onPressDeliveries={() => {navigation.navigate('YourOrderPage')}}
+        onPressHome={() => {navigation.navigate('HomePage')}}              
         deliveriesIcon={order}
-        deliveriesText="Orders" />
+        deliveriesText="Orders" />  
       </View>
     </View> 
   );

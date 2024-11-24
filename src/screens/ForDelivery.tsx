@@ -21,6 +21,7 @@ import { getAuth } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigation/NavigationTypes";
+import UpperNavbar from "../components/UpperNavbar";
 
 const { width, height } = Dimensions.get("window");
 
@@ -41,6 +42,7 @@ const ForDelivery: React.FC<DeliveryProps> = ({
   const [amount, setAmount] = useState<number>(0)
   const [uniqueID, setUniqueID] = useState<string>('')
   const [documentId, setDocumentId] = useState<string | null>(null);
+  const [contact, setContact] = useState<any>('')
   const user = getAuth().currentUser
 
 useEffect(() => {
@@ -58,9 +60,11 @@ useEffect(() => {
           const date = data.orderDate
           const amount = data.totalAmount
           const uniqueID = data.uniqueID
+          const contact = data.contact
 
           setRecipientName(name)
           setRecipientAddress(address)
+          setContact(contact)
           setOrderDate(date)
           setAmount(amount)
           setUniqueID(uniqueID)
@@ -75,6 +79,20 @@ useEffect(() => {
   }
   fetchData()
 }, [])
+
+// useEffect(() => {
+//   const user = getAuth().currentUser
+//   const fetchUserCredential = async() => {
+//     if(user){
+
+//     } else {
+//       console.error('error invalid.... ')
+//     }
+//   }
+
+
+
+// }, [])
 
 const orderDocument = {
   name: recipientName,
@@ -120,21 +138,9 @@ const deleteData = async() => {
 
   return (
     <View style={styles.container}>
-      {/* Upper Navbar */}
-      <View style={styles.navbarContainer}>
-        {/* Left Arrow Icon */}
-        <TouchableOpacity style={styles.leftArrowContainer}>
-          <Image source={leftArrowIcon} style={styles.leftArrowIcon} />
-        </TouchableOpacity>
 
-        {/* Title */}
-        <Text style={styles.navbarTitle}>For Delivery</Text>
-
-        {/* Help Icon */}
-        <TouchableOpacity style={styles.helpContainer}>
-          <Image source={helpIcon} style={styles.helpIcon} />
-        </TouchableOpacity>
-      </View>
+      <UpperNavbar title="For Delivery" 
+      backPress={() => {navigation.goBack()}}/>
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
 
@@ -147,15 +153,18 @@ const deleteData = async() => {
             A customer is waiting for you
           </Text>
           <Text style={styles.timeMinsText}>Hurry Up</Text>
+
+          <View style = {styles.customerNo}>
+            <Text style = {styles.textSizing1}>Customer Credentials</Text>
+          <Text style = {styles.textSizing2}>{recipientName}</Text>
+          <Text style = {styles.textSizing2}>{contact}</Text>
+          </View>
         </View>
 
-
         <View style = {styles.messaging}>
-        <CustomerInfoWithMail />
         </View>
       </ScrollView>
 
-      {/* Accept Button */}
       <View style={styles.acceptButtonContainer}>
         <TouchableOpacity>
         <Buttons
@@ -171,9 +180,10 @@ const deleteData = async() => {
         </TouchableOpacity>
       </View>
 
-      {/* Bottom Navbar */}
       <View style={{ height: bottomNavbarHeight }}>
-        <BottomNavbar />
+        <BottomNavbar 
+        onPressDeliveries={() => {navigation.navigate('ForDelivery')}}
+        onPressHome={() => {navigation.navigate('HomeSeller')}}/>
       </View>
     </View>
   );
@@ -185,6 +195,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F7F4",
   },
   
+  customerNo: {
+    // position: 'absolute',
+    alignContent: 'center',
+    alignItems: 'center',
+    top: '35%',
+  },
+
+  textSizing1: {
+    fontWeight: 'bold',
+    fontSize: 18
+  },
+
+  textSizing2: {
+    fontSize: 16
+  },
+
   messaging: {
     top: '-8%'
   },
@@ -229,6 +255,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: navbarHeight,
     alignItems: "center",
+    top: '8%'
   },
   logoContainer: {
     marginTop: 10,

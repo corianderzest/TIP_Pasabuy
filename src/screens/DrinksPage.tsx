@@ -120,7 +120,10 @@ const DrinksPage: React.FC <DrinksPageProps> = ({navigation}) => {
       ))}
 
       <View style={styles.bottomBarPositioning}>
-        <BottomBar />
+        <BottomBar 
+        orderPress={() => {navigation.navigate('YourOrderPage')}}
+        homePress={() => {navigation.navigate('HomePage')}}
+        />
       </View>
     </SafeAreaView>
   );

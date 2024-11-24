@@ -17,15 +17,16 @@ type RegisterPageProps = {
 const {width, height} = Dimensions.get('window')
 
 const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [contact, setContact] = useState<any>('');
 
   const auth = getAuth();
   const firestoreDB = getFirestore();
 
-  const registerUser = async (email: string, name:string, address: string) => {
+  const registerUser = async (email: string, name:string, address: string, contact: any) => {
     try {
       const credentials = await createUserWithEmailAndPassword(auth, email, password);
       const user = credentials.user
@@ -34,6 +35,7 @@ const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
         email,
         name,
         address,
+        contact,
       })
 
       console.log('Registration successful');
@@ -99,6 +101,15 @@ const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
             </View>
           </View>
 
+          <View style = {styles.inputSpacing}>
+            <View style = {styles.inputStyling}>
+              <Inputs
+                placeholder='Enter Contact No.'  
+                type = 'account'
+                onChangeText={text => setContact(text)}/>
+            </View>
+          </View>
+
            <View style = {styles.inputSpacing}>
             <View style = {styles.inputStyling}>
               <Inputs
@@ -123,15 +134,17 @@ const RegisterPage: React.FC <RegisterPageProps> = ({navigation}) => {
             onPress={() => {
               console.log(email)
               console.log(password)
-              registerUser(email, name, address)}}/>
+              registerUser(email, name, address, contact)}}/>
             </View>
         </View>
               </TouchableOpacity>
 
         <View style = {styles.forgotContainer}>
+          <TouchableOpacity onPress={() => {navigation.navigate('LoginPage')}}>
             <Text style = {styles.forgotProps}>
                 Have an account?
             </Text>
+          </TouchableOpacity>
         </View>
 
       </SafeAreaView>
@@ -150,7 +163,7 @@ const styles = StyleSheet.create({
   },
 
   positioningContainer: {
-    top: '26%',
+    top: '20%',
   },
 
   imagePosition: {
@@ -205,7 +218,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    left: '55.5%',
+    left: '64%',
     top: '0%',
   },
 
@@ -215,7 +228,7 @@ const styles = StyleSheet.create({
 
   forgotContainer: {
     left: '6%',
-    top: '-9%',
+    top: '-6%',
     
   },
 

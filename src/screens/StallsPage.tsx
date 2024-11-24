@@ -52,7 +52,10 @@ const StallsPage: React.FC<StallsNavigation> = ({navigation}) => {
       </View>
 
     <View style = {styles.bottomBarPositioning}>
-      <BottomBar/>
+        <BottomBar 
+        orderPress={() => {navigation.navigate('YourOrderPage')}}
+        homePress={() => {navigation.navigate('HomePage')}}
+        />
     </View>
 
     </SafeAreaView>

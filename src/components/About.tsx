@@ -1,9 +1,11 @@
 import { View, Text, Image, SafeAreaView, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 interface AboutProps {
   placeholder: string,
   image: any,
+  onPress?: () => void
 }
 
 const {width, height} = Dimensions.get('window')
@@ -11,17 +13,20 @@ const {width, height} = Dimensions.get('window')
 const About: React.FC <AboutProps> = ({
   placeholder,
   image,
+  onPress,
 }) => {
   return (
     <SafeAreaView style = {styles.containerPositioning}>
       <View style = {styles.container}>
         
+      <TouchableOpacity onPress={onPress}>
       <View style = {styles.imageContainer}>
       <Image
         style={styles.imageProps}
         source={image}
       />  
       </View>
+      </TouchableOpacity>
 
       {/* <View style = {styles.placeholderPositioning}> */}
         <View style = {styles.placeholderContainer}> 

@@ -135,7 +135,10 @@ const FoodPage: React.FC <FoodProps> = ({navigation}) => {
       ))}
 
       <View style={styles.bottomBarPositioning}>
-        <BottomBar />
+        <BottomBar 
+        orderPress={() => {navigation.navigate('YourOrderPage')}}
+        homePress={() => {navigation.navigate('HomePage')}}
+        />
       </View>
     </SafeAreaView>
   );

@@ -19,6 +19,7 @@ interface SearchBarProps {
   onChangeText?: (text: string) => void;
   profilePress?: () => void;
   cartPress?: () => void;
+  value?: string;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -26,6 +27,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   onChangeText,
   profilePress,
   cartPress,
+  value,
 }) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -34,6 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           style={styles.input}
           placeholder={placeholder}
           onChangeText={onChangeText}
+          value={value}
         />
 
         <TouchableOpacity onPress={profilePress}>
@@ -80,12 +83,12 @@ const styles = StyleSheet.create({
 
   profilePositioning: {
     right: "14.5%",
-    bottom: "93%",
+    bottom: "80%",
   },
 
   cartPositioning: {
     left: "102.5%",
-    bottom: "194%",
+    bottom: "181%",
   },
 });
 

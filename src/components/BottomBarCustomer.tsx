@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Dimensions, Image, SafeAreaView} from 'react-native'
+import { View, Text, StyleSheet, Dimensions, Image, SafeAreaView, TouchableOpacity} from 'react-native'
 import React from 'react'
 import order from "../icons/order.png"
 import home from "../icons/home.png"
@@ -21,21 +21,21 @@ const BottomBar: React.FC <BottomBarProps> = ({
         <View style = {styles.positioning}>
 
           <View style = {styles.orderContainer}>
-          <TouchableWithoutFeedback onPress={orderPress}>
+          <TouchableOpacity onPress={orderPress}>
             <Image
               style={styles.imageProps}
               source={order}/>
             <Text style = {styles.textProps}>Orders</Text>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
           </View>
 
           <View style = {styles.orderContainer}>
-          <TouchableWithoutFeedback onPress={homePress}>
+          <TouchableOpacity onPress={homePress}>
             <Image
               style={styles.imageProps}
               source={home}/>
             <Text style = {styles.textProps}>Home</Text>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
           </View>
 
         </View>

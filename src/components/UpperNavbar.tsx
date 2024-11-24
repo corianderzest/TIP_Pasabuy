@@ -2,25 +2,30 @@ import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import React from "react";
 import close from "../icons/close.png";
 import help from "../icons/help.png";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { width, height } = Dimensions.get("window");
 
 interface UpperNavbarProps {
   title?: string;
+  backPress?: () => void,
 }
 
-const UpperNavbar: React.FC<UpperNavbarProps> = ({ title }) => {
+const UpperNavbar: React.FC<UpperNavbarProps> = ({ title, backPress }) => {
   return (
     <View style={styles.container}>
       <View style={styles.positioning}>
         <View style={styles.closeContainer}>
+        <TouchableOpacity onPress={backPress}>
           <Image style={styles.closeIcon} source={close} />
+          </TouchableOpacity>
         </View>
+        
 
         {title && <Text style={styles.textProps}>{title}</Text>}
 
         <View style={styles.helpContainer}>
-          <Image style={styles.imageProps} source={help} />
+          {/* <Image style={styles.imageProps} source={help} /> */}
         </View>
       </View>
     </View>

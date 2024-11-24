@@ -60,7 +60,9 @@ const OrderRequest: React.FC<orderProps> = ({
   return (
     <View style={styles.container}>
 
-      <UpperNavbar title="Delivery History" />
+      <UpperNavbar 
+      title="Delivery History" 
+      backPress={() => {navigation.goBack()}}/>
 
 
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -84,7 +86,9 @@ const OrderRequest: React.FC<orderProps> = ({
       </ScrollView>
 
       <View style={{ height: bottomNavbarHeight }}>
-        <BottomNavbar/>
+        <BottomNavbar
+        onPressDeliveries={() => {navigation.navigate('ForDelivery')}}
+        onPressHome={() => {navigation.navigate('HomeSeller')}}/>
       </View>
     </View>
   );

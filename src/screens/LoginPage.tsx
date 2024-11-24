@@ -178,7 +178,6 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
             </View>
           </View>
 
-          <TouchableOpacity>
             <View style={styles.buttonContainer}>
               <View style={styles.buttonStyling}>
                 <Buttons
@@ -191,11 +190,16 @@ const LoginPage: React.FC<LoginPageProps> = ({ navigation }) => {
                 />
               </View>
             </View>
-          </TouchableOpacity>
 
-          <View style={styles.forgotContainer}>
-            <Text style={styles.forgotProps}>Forgot Password?</Text>
+
+          <View style = {styles.forgotContainer}>
+          <TouchableOpacity onPress={() => {navigation.navigate('RegisterPage')}}>
+            <Text style = {styles.forgotProps}>
+                Don't have an account?
+            </Text>
+          </TouchableOpacity>
           </View>
+
         </Animated.View>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -267,7 +271,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    left: "55.5%",
+    left: "62%",
     top: "0%",
   },
 
@@ -275,7 +279,10 @@ const styles = StyleSheet.create({
 
   forgotContainer: {
     left: "6%",
-    top: "-9%",
+    top: "-11%",
+    width: 170,
+    height: 30,
+    // backgroundColor: '#000'
   },
 
   forgotProps: {

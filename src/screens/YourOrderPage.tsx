@@ -18,11 +18,17 @@ import { firestoreDB } from "../backend/firebaseInitialization";
 import { getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
 import order from "../icons/order.png"
+import { RootStackParamList } from "../navigation/NavigationTypes";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 const { width, height } = Dimensions.get("window");
 const bottomNavbarHeight = 60;
 
-const YourOrderPage: React.FC = () => {
+type OrderProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'YourOrderPage'>
+}
+
+const YourOrderPage: React.FC<OrderProps> = ({navigation}) => {
 
     const [priceTotalAmount, setPriceTotalAmount] = useState<number>(0)
     const [orderData, setOrderData] = useState<any[]>([])
@@ -107,37 +113,49 @@ const priceCalculator = (price: number, quantity: number) => {
   return price * quantity
 }
 
+  const getOrderStatusMessage = () => {
+  if (isAccepted === null) {
+    return "Loading...";
+  } else if (isAccepted) {
+    return "Delivery is on the way";
+  } else if (orderData.length > 0) {
+    return `You have ${orderData.length} items waiting to be accepted`;
+  } else {
+    return "No active orders";
+  }
+};
+
+<Text style={styles.timeMinsText}>{getOrderStatusMessage()}</Text>;
+
+
   return (
     <View style={styles.container}>
-      {/* Upper Navbar */}
-      <UpperNavbar title="Your Order" />
 
-      {/* Content Section */}
+      <UpperNavbar 
+      title="Your Order" 
+      backPress={() => {navigation.goBack()}}/>
+
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        {/* Logo */}
+
         <View style={styles.logoContainer}>
           <Image source={logo} style={styles.logo} />
         </View>
 
-        {/* Estimated Delivery Time Section */}
         <View style={styles.estimatedDeliveryContainer}>
           <Text style={styles.estimatedDeliveryText}>
             Order Status
           </Text>
           <Text style={styles.timeMinsText}>
-            {isAccepted !== null ? (isAccepted ? 'Delivery is on the way' : 'Waiting to be accepted') : 'Loading...'}
+            {getOrderStatusMessage()}
             </Text>
         </View>
 
-        {/* Divider */}
         <View style={styles.boldDivider} />
 
-        {/* Message */}
         <Text style={styles.statusMessage}>
           Preparing your food. Your BuyBuddy will pick it up when it’s ready.
         </Text>
 
-        {/* Order Summary Component */}
         <View style={styles.summaryContainer}>
           <Text style={styles.title}>Order Summary</Text>
           
@@ -146,17 +164,15 @@ const priceCalculator = (price: number, quantity: number) => {
                 const priceUpdate = priceCalculator(order.price, order.quantity) 
               return(             
           <View style={styles.itemContainer} key={order.id}>
-            <Text style={styles.itemName}>{order.name} x{order.quantity}</Text>
+            <Text style={styles.itemName}>{order.name} x{order.quantity}</Text> 
             <Text style={styles.price}>₱{priceUpdate}</Text>
           </View>
       )})) : (<Text style={styles.itemName}>No items in cart</Text>)}
         </View> 
 
-        {/* BuyBuddy Name Section */}
-        <BuyBuddyName name={"BuyBuddy"} />
+        {/* <BuyBuddyName name={"BuyBuddy"} /> */}
       </ScrollView>
 
-      {/* Total Amount Section - Moved outside the ScrollView */}
       {priceTotalAmount > 0 ? (
       <View style={styles.totalAmountContainer}>
         <Text style={styles.totalAmountText}>Total Amount</Text>
@@ -165,9 +181,10 @@ const priceCalculator = (price: number, quantity: number) => {
         <Text style={styles.totalAmountValue}>No price available...</Text>
       )}
 
-      {/* Bottom Navbar */}
       <View style={styles.bottomNavbarContainer}>
         <BottomNavbar 
+        onPressDeliveries={() => {navigation.navigate('YourOrderPage')}}
+        onPressHome={() => {navigation.navigate('HomePage')}} 
         deliveriesIcon={order}
         deliveriesText="Orders" 
         />
